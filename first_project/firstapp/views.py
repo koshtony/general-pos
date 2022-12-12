@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Stocks
 # Create your views here.
 orders = [
     {
@@ -15,4 +16,7 @@ def home(request):
     return render(request,'firstapp/home.html',data)
 
 def counter(request):
-    return render(request,'firstapp/counter.html')
+    stocks = {
+        'products': Stocks.objects.all()
+    }
+    return render(request,'firstapp/counter.html',stocks)

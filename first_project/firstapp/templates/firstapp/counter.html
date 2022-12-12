@@ -1,5 +1,4 @@
-{% extends 'firstapp/base.html' %}
-        
+{% extends 'firstapp/base.html' %}      
         <!-- Main content -->
     {% block mainContent %}
         <section class="content">
@@ -56,8 +55,8 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <a href="#" class="btn btn-sm btn-info"></a>
-                      <a href="#" class="btn btn-sm btn-danger">item</a>
+                      <a href="#" class="btn btn-sm btn-info"> checkout </a>
+                      <a href="#" class="btn btn-sm btn-danger">Remove</a>
                     </div>
                   </div>
                 </div>
@@ -67,184 +66,45 @@
                   <input type="text" class="form-control" placeholder="Search">
                 </div>
                 <div class="row">
+                  {% for product in products %}
                   <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
                     <div class="card p-0 m-0">
                       <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/1.png" alt="" class="img-thumbnail">
+                        <img src="/static/firstapp/thumbnail/{{product.p_image}}" alt="" class="img-thumbnail">
                       </div>
                       <div class="title">
+                        {{product.p_name}}
+                      </div>
+                      <div class="card-footer cf">
+                        <div class="row">
+                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                            <span class="price">Ksh {{product.p_price}} </span>
+                          </div>
+                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                            {% if product.p_qty < 5 %}
+                            <a href="#" class="btn-sm btn btn-danger">
+                              
+                              <i class="fa fa-cart-plus" aria-hidden="true">low</i>
                         
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            
+                            
+                              
                             </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/2.png" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                        Pesie 
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                            {% else %}
                             <a href="#" class="btn-sm btn btn-info">
+                              
                               <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/4.jpg" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
                         
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            
+                              
                             </a>
+                            {% endif %}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/3.jpg" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                        
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/1.png" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                   
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/2.png" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                        Pesie 
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/4.jpg" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                        
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <img src="thumbnail/3.jpg" alt="" class="img-thumbnail">
-                      </div>
-                      <div class="title">
-                      
-                      </div>
-                      <div class="card-footer cf">
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price">15.0 </span>
-                          </div>
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            <a href="#" class="btn-sm btn btn-info">
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                 {% endfor %}
                 </div>
               </div>
             </div>
