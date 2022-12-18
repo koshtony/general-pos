@@ -165,7 +165,15 @@
         <!-- /.content-header -->
         
         <!-- Main content -->
-        {% block mainContent %}{% endblock %}
+        {% block mainContent %}
+        {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{message.tags}}">
+            {{message}}
+          </div>
+        {% endfor %}
+        {% endif %}
+        {% endblock mainContent %}
           <!-- /.Left col -->
       </div>
         <!-- /.row (main row) -->

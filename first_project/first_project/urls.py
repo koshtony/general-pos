@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+from posUsers import views as users_views # import users views direct
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('firstapp.urls'))
+    path('',include('firstapp.urls')),
+    path('',include('posUsers.urls'))
 ]
