@@ -1,0 +1,12 @@
+{% extends 'firstapp/base.html' %}
+{% load  crispy_forms_tags %}
+{% block mainContent %}
+<div style="margin-left:300px; margin-right:400px">
+    
+    <div>
+        <small class="text-muted">Login Here
+            {{user.username}}
+        </small>
+    </div>
+</div>
+{% endblock mainContent %}

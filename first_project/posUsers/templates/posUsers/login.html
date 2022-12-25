@@ -2,7 +2,7 @@
 {% load  crispy_forms_tags %}
 {% block mainContent %}
 <div style="margin-left:300px; margin-right:400px">
-    <legend class="border-bottom mb-4" style="color:navy">Register User</legend>
+    <legend class="border-bottom mb-4" style="color:navy">Log In</legend>
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
@@ -10,14 +10,14 @@
 
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit"> create User</button>
+            <button class="btn btn-outline-info" type="submit"> Log In</button>
         </div>
 
     </form>
     <div>
-        <small class="text-muted">Already have an account
-            <a class="ml-2" href="{% url 'login' %}">
-                log in 
+        <small class="text-muted">Need an account
+            <a class="ml-2" href="{% url 'posUsers-register' %}">
+                Create Account 
             </a>
         </small>
     </div>
