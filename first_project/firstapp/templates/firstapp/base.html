@@ -57,7 +57,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index.html" class="brand-link">
-        <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="{{user.profile.image.url}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
         <span class="brand-text font-weight-light">POS</span>
       </a>
@@ -66,12 +66,15 @@
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          {% if user.is_superuser %}
           <div class="image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="{{user.profile.image.url}}" class="img-circle elevation-2" alt="User Image">
           </div>
+         
           <div class="info">
             <a href="/admin" class="d-block">Admin</a>
           </div>
+         {% endif %}
         </div>
         
         <!-- Sidebar Menu -->
@@ -136,9 +139,9 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{% url 'posUsers-profile' %}" class="nav-link">
                       <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
-                      <p>User List</p>
+                      <p>User Profile</p>
                     </a>
                   </li>
                   <li class="nav-item">
