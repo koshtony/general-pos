@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
     'crispy_forms',
+    'admin_interface', 
+    'colorfield', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+X_FRAME_OPTIONS='SAMEORIGIN'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

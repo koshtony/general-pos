@@ -30,3 +30,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+
+
+admin.site.site_header = 'Koshtech POS Systems'                    # default: "Django Administration"
+admin.site.index_title = 'Admin page'                 # default: "Site administration"
+admin.site.site_title = 'koshtech admin'

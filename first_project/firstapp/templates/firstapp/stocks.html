@@ -1,0 +1,66 @@
+{% extends 'firstapp/base.html' %}      
+        <!-- Main content -->
+    {% block mainContent %}
+
+    <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+          <tr>
+            <th>Product Image</th>
+            <th>Product name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Cost</th>
+            <th>Status</th>
+            <th>Creator</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                <img
+                    src="{{product.p_image.url}}"
+                    alt=""
+                    style="width: 45px; height: 45px"
+                    class="rounded-circle"
+                    />
+                
+              </div>
+            </td>
+            <td>
+              {{product.p_name}}
+            </td>
+            <td>
+                {{product.p_category}}
+              </td>
+              <td>
+                {{product.p_desc}}
+              </td>
+              <td>
+                {{product.p_qty}}
+              </td>
+              <td>
+                {{product.p_price}}
+              </td>
+              <td>
+                {{product.p_cost}}
+              </td>
+            <td>
+              <span class="badge badge-success rounded-pill d-inline">Active</span>
+            </td>
+            <td>{{product.p_creator}}</td>
+            <td>
+              <button type="button" class="btn btn-link btn-sm btn-rounded">
+                Edit
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    {% endblock mainContent %}
