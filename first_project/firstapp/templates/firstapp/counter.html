@@ -63,19 +63,27 @@
               </div>
               <div class="col-12 col-sm-12 col-md-7 col-lg-7">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search">
+                  <input list="magicHouses" id="pname" type="text" class="form-control" placeholder="Search">
+                  <datalist id="magicHouses">
+                    {% for product in products %}
+                    <option value="{{product.p_name}}">{{product.p_name}}</option>
+                    {% endfor %}
+              </datalist>
                 </div>
-                <div class="row">
+                <div class="row" id="prodDiv">
                   {% for product in products %}
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2">
+                  
+                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2" >
+                    <div class="prods">
                     <div class="card p-0 m-0">
                       <div class="card-body p-0 m-0 b-0">
                         <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
                       </div>
-                      <div class="title">
-                        {{product.p_name}}
-                      </div>
+                      
+                        
+                      
                       <div class="card-footer cf">
+                        {{product.p_name}}
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                             <span class="price">Ksh {{product.p_price}} </span>
@@ -103,7 +111,9 @@
                         </div>
                       </div>
                     </div>
+                    </div>
                   </div>
+                
                  {% endfor %}
                 </div>
               </div>
@@ -112,5 +122,16 @@
         </div>
       </div>
     </section>
+    <script>
+      $(document).ready(function(){
+        $("#pname").on("keyup",function(){
+            var value=$(this).val().toLowerCase();
+           $('.prods').hide()
+
+          $('.prods:contains("'+value+'")').show()
+
+        });
+    });
+    </script>
   {% endblock mainContent %}
   
