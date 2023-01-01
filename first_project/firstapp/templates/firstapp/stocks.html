@@ -1,8 +1,45 @@
 {% extends 'firstapp/base.html' %}      
         <!-- Main content -->
     {% block mainContent %}
+    
+    <!-- Button trigger modal -->
+<button style="margin-left:10px; border:0px" type="button"  data-toggle="modal" data-target="#dateModal">
+ <i class="fa fa-filter"></i>by date
+</button>
 
-    <table class="table align-middle mb-0 bg-white">
+<!-- Modal -->
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <form method="post" action="{% url 'firstapp-stocks' %}">
+          {% csrf_token %}
+           <label>from</label>
+           <input type="date" name="date1" id="date1">
+           <label>To</label>
+           <input type="date" name="date2" id="date2">
+           <button type="submit">filter</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
+    <br><br>
+    <datalist id="stocksList">
+          {% for product in products %}
+          <option value="{{product.p_name}}">{{product.p_name}}</option>
+          {% endfor %}
+    </datalist>
+    
+    <table class="table align-middle mb-0 bg-white" style="margin-left:10px">
         <thead class="bg-light">
           <tr>
             <th>Product Image</th>
@@ -15,10 +52,11 @@
             <th>Status</th>
             <th>Creator</th>
             <th>Actions</th>
+            <th>Created</th>
           </tr>
         </thead>
-        <tbody>
-            {% for product in products %}
+        <tbody id="stocks">
+            {% for product in page_obj %}
           <tr>
             <td>
               <div class="d-flex align-items-center">
@@ -58,9 +96,53 @@
                 Edit
               </button>
             </td>
+            <td>
+              {{product.p_created}}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
+       
+
+            
       </table>
+    
+        <div style="margin-left:20px">
+          {% if page_obj.has_previous %}
+              <a class="btn btn-info mb-4" href="?page=1">first</a>
+              <a class="btn btn-info mb-4" href="?page={{page_obj.previous_page_number}}">prev</a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+             {% if page_obj.number == num %}
+
+                  <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
+                  
+              {% elif num > page_obj.number|add:'-2' and  num < page_obj.number|add:'2' %}
+
+                  <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>                    
+              {% endif %}
+
+             
+          {% endfor %}
+          
+          {% if page_obj.has_next %}
+
+              <a class="btn btn-info mb-4" href="?page={{page_obj.next_page_number}}">Next</a>
+              <a class="btn btn-info mb-4" href="?page={{page_obj.paginator_num_pages}}">Last</a>
+
+          {% endif %}
+        </div>
+      
+      <script>
+        $(document).ready(function(){
+        $("#pname").on("keyup",function(){
+            var value=$(this).val().toLowerCase();
+            $("#stocks tr").filter(function(){
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+      </script>
 
     {% endblock mainContent %}
