@@ -92,9 +92,11 @@
             </td>
             <td>{{product.p_creator}}</td>
             <td>
+              <a href="{% url 'firstapp-updatestocks' product.p_id %}">
               <button type="button" class="btn btn-link btn-sm btn-rounded">
                 Edit
               </button>
+              </a>
             </td>
             <td>
               {{product.p_created}}

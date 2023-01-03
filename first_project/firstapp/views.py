@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView,CreateView
+from django.http import HttpResponse
+from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
@@ -20,10 +21,16 @@ def home(request):
     return render(request,'firstapp/home.html',data)
 
 def counter(request):
+  
     stocks = {
         'products': Stocks.objects.all()
     }
     return render(request,'firstapp/counter.html',stocks)
+
+def getCounter(request):
+    qty = request.GET.get("qty")
+    print(qty)
+    return HttpResponse(qty)
 
 def stocksView(request):
     if request.POST:
@@ -58,6 +65,22 @@ class StocksCreateView(CreateView):
     def form_valid(self,form):
         form.instance.p_creator = self.request.user
         return super().form_valid(form)
+    
+class StocksDetailView(DetailView):
+    model= Stocks
+
+class StocksUpdateView(UpdateView):
+    model = Stocks
+    template_name = 'firstapp/update_stocks.html'
+    fields = ['p_name','p_category','p_desc',
+              'p_image','p_qty','p_price','p_cost','p_created'
+              ]
+    
+    def form_valid(self,form):
+        form.instance.p_creator = self.request.user
+        return super().form_valid(form)
+    
+    
 
 
 class ShopsCreateView(SuccessMessageMixin,CreateView):

@@ -1,0 +1,73 @@
+{% extends 'firstapp/base.html' %}
+{% load  crispy_forms_tags %}
+{% block mainContent %}
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="{{user.profile.image.url}}"><span class="font-weight-bold">{{user.username}}</span><span class="text-black-50">{{user.email}}</span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Update products</h4>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="row mt-3">
+                    <div class="col-md-12">{{form | crispy }}</div>
+                    
+                   
+                </div>
+               
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Edit product</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <button style="margin-left:10px; border:0px" type="button"  data-toggle="modal" data-target="#tabModal">
+                    <i class="fa fa-table"></i>
+                   </button>
+                   
+                   <!-- Modal -->
+                   <div class="modal fade" id="tabModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">update tab</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">
+                            <style>
+                                table, th, td {
+                                    border: 10px solid;
+                                    }
+                            </style>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>{{stocks.p_id}}</td>
+                                    
+                                        <td>{{stocks.p_name}}</td>
+                                    
+                                        <td>{{stocks.p_creator}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <br><br>
+                last update <p style="color:green">{{stocks.p_created}}</p>
+
+                update by <p style="color:green">{{stocks.p_creator}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock mainContent %}
