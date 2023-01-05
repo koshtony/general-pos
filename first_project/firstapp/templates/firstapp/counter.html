@@ -98,7 +98,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
               <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link active">
+                <a href="/" class="nav-link active">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                  dashboard
@@ -203,58 +203,75 @@
               <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                 <div class="card">
                   <div class="card-body p-0">
-                    <table class="table table-striped">
-                      <thead>
+                    <table class="table table-striped"  id="countTab">
+                      <thead style="background-color:orange">
                         <tr>
-                          <th style="width: 10px"></th>
-                          <th></th>
-                          <th></th>
-                          <th style="width: 40px"></th>
-                          <th style="width: 60px"></th>
+                          <th style="width: 10px">name</th>
+                          <th>qty</th>
+                          <th>price</th>
+                          <th style="width: 40px">Total</th>
+                          <th style="width: 60px">Remove</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>1.</td>
-                          <td>items</td>
-                          <td>h</td>
-                          <td>7</td>
-                          <td>90</td>
-                        </tr>
-                        <tr>
-                          <td>2.</td>
-                          <td>items</td>
-                          <td>h</td>
-                          <td>7</td>
-                          <td>90</td>
-                        </tr>
+                      <tbody  style="background-color:aqua">
+                        
                       </tbody>
                     </table>
                   </div>
                   <div class="card-footer">
-                    <div class="row">
+                    <div class="row" >
                       <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-                        <label for=""></label>
-                        <label for="">(%)</label>
-                        <label for=""></label>
+                        <label for="total">Sub Total</label>
+                        <br>
+                        <label for="minus">-</label>
+                        <br>
+                        <label for="nettotal">Total</label>
                       </div>
                       <div class="col-8 col-sm-8 col-md-8 col-lg-8">
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" class="form-control" readonly value="0">
+                          <input type="text" class="form-control" id="total" name="total" readonly value="0">
                         </div>
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" class="form-control" >
+                          <input type="text" id="minus" name="minus" class="form-control" >
                         </div>
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" class="form-control" readonly value="0">
+                          <input type="text" id ='nettotal' name="nettotal" class="form-control" readonly value="0">
                         </div>
                       </div>
                     </div>
                     <div class="text-center">
-                      <a href="#" class="btn btn-sm btn-info"> checkout </a>
-                      <a href="#" class="btn btn-sm btn-danger">Remove</a>
+                      <button onclick="balCounter()" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
+                      <button type="button" onclick="clears();" class="btn btn-sm btn-danger" id="remvTbd">Remove</button>
                       
                     </div>
+                    
+                     
+                     <!-- Modal -->
+                     <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                           <div class="modal-header">
+                             <h5 class="modal-title" id="exampleModalLabel">===================Bal Counter==============</h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                             </button>
+                           </div>
+                           <div class="modal-body">
+                            <div class="form-group">
+                              <label for="paid">paid>>>>>>>></label>
+                             <input type="text" id="paid" value="" style="margin-left:100px">
+                             <br> <br>
+                             <label for="all">Total>>>>>>></label>
+                             <input type="text" id="all" value="" style="margin-left:105px">
+                             <br> <br>
+                             <label for="bal">Bal>>>>>>>>></label>
+                             <input type="text" id="bal" value=""style="margin-left:103px">
+                             </div>
+                            
+                           </div> 
+                         </div>
+                       </div>
+                     </div>
                   </div>
                 </div>
               </div>
@@ -278,28 +295,21 @@
                       </div>
                       
                         
-                     <input type="hidden" value="{{product.p_id}}" size="3">
+                    
+                     <span id="{{product.p_name}}">{{product.p_name}}</span>
                       
                       <div class="card-footer cf">
 
-                        <p id="pname">{{product.p_name}}</p>
+                        
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <span class="price" id="prc">Ksh {{product.p_price}} </span>
+                            <p  id="{{product.p_price}}">Ksh{{product.p_price}} </p>
+                            <input type="number" id="{{product.p_id}}" value="{{product.p_qty}}" style="width:50px; height:30px">
                           </div>
-                          <input type="number" id="qty" value="{{product.p_qty}}">
+                          
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            {% if product.p_qty < 5 %}
-                            <a href="#" class="btn-sm btn btn-danger" >
-                              
-                              <i class="fa fa-cart-plus" aria-hidden="true">low</i>
-                        
                             
-                            
-                              
-                            </a>
-                            {% else %}
-                            <button type="button" class="btn-sm btn btn-info" id="subLink" >
+                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
                               
                               <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         
@@ -307,7 +317,7 @@
                               
                             </button>
                             
-                            {% endif %}
+                            
                             
                           </div>
                         </div>
@@ -324,17 +334,75 @@
         </div>
       </div>
       <script type="text/javascript">
+        function balCounter(){
+          var ntotal = $("#nettotal").val()
+          $("#all").val(ntotal)
+          $("#paid").on("keyup",function(){
+            var paid = parseFloat($(this).val())
+            var newtot = paid - parseFloat($("#all").val())
+            $("#bal").val(newtot)
+          })
+        }
       
-        $(document).on('click','#subLink',function(e){
-          e.preventDefault()
+      function counter(qty,names,prices){
+          
+
           $.get("{% url 'firstapp-getcounter' %}",{
-            qty:$("#qty").val()
+            qty: $('#'+qty).val(),
+            price :prices,
+            p_name:names
           },
           function(data,status){
-            alert(data)
+          
+
+            $("#countTab tbody").prepend(
+              `
+              <tr>
+                  <td>${data["name"]}</td>
+                  <td>${data["qty"]}</td>
+                  <td>${data["price"]}</td>
+                  <td>${data["total"]}</td>
+                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+              </tr>
+
+              `
+            
+            )
+            
+            
+            tot =parseFloat($("#total").val())
+            
+            tot += data["total"]
+            $("#total").val(tot)
+            minuses = $("#minus").val()
+            nettot = tot - minuses
+            $("#nettotal").val(nettot)
+
+            
           }
           )
-        })
+      }
+      $("#countTab").on("click", "#delBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("td:eq(3)").text())
+                  
+                  newtotal = parseFloat($("#total").val())- tabval
+                  newnets = parseFloat($("#nettotal").val()) - tabval
+                  $("#total").val(newtotal)
+                  $("#nettotal").val(newnets)
+                  cRow.remove()
+                });
+
+       function clears(){
+          
+        $("#countTab tbody").empty()
+        $("#total").val(0)
+        $("#nettotal").val(0)
+       }
+
+      
+
         $(document).ready(function(){
           $("#pname").on("keyup",function(){
               var value=$(this).val().toLowerCase();
@@ -347,7 +415,7 @@
       </script>
     </section>
     
-   
+    <script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>  
  
 </html>
 

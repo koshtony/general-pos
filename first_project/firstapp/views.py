@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -28,17 +28,23 @@ def counter(request):
     return render(request,'firstapp/counter.html',stocks)
 
 def getCounter(request):
+    name  = request.GET.get("p_name")
     qty = request.GET.get("qty")
-    print(qty)
-    return HttpResponse(qty)
+    price = request.GET.get("price")
+    total = float(price)*int(qty)
+    data = {"name":name,"qty":qty,"price":price,"total":total}
+    print(data)
+    return JsonResponse(data,status=200)
 
 def stocksView(request):
     if request.POST:
         date1 = request.POST.get("date1")
         date2 = request.POST.get("date2")
-        products = Stocks.objects.filter(p_created__range=[date1,date2])
-    else:
-        products = Stocks.objects.all()
+        if date1!='' or date1!='':
+            products = Stocks.objects.filter(p_created__range=[date1,date2])
+        else: 
+            products = Stocks.objects.all()
+    products = Stocks.objects.all()  
     page_num = request.GET.get('page',1)
     paginator = Paginator(products,5)
     try:
