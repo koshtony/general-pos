@@ -28,12 +28,17 @@ def counter(request):
     return render(request,'firstapp/counter.html',stocks)
 
 def getCounter(request):
+    pid = request.GET.get("pid")
     name  = request.GET.get("p_name")
     qty = request.GET.get("qty")
     price = request.GET.get("price")
     total = float(price)*int(qty)
     data = {"name":name,"qty":qty,"price":price,"total":total}
-    print(data)
+    print(pid)
+    filt_data = Stocks.objects.filter(p_name=name).first()
+    new_obj=Stocks.objects.get(p_name=name)
+    new_obj.p_qty = filt_data.p_qty - int(qty)
+    new_obj.save()
     return JsonResponse(data,status=200)
 
 def stocksView(request):
@@ -64,8 +69,8 @@ def stocksView(request):
 class StocksCreateView(CreateView):
     model = Stocks
     template_name = 'firstapp/add_stocks.html'
-    fields = ['p_name','p_category','p_desc',
-              'p_image','p_qty','p_price','p_cost','p_created'
+    fields = ['p_name','p_serial','p_category','p_desc',
+              'p_image','p_qty','p_price','p_cost','p_shop','p_creator','p_created'
               ]
     
     def form_valid(self,form):

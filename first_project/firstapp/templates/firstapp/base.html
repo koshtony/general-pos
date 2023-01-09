@@ -61,6 +61,9 @@
           <a class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-plus">shops</i></a>
         </li>
       </ul>
+     
+        <a style="margin-left:780px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">1</i></a>
+      
       
       <!-- Right navbar links -->
       <!-- <ul class="navbar-nav ml-auto">
@@ -73,11 +76,11 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="" class="brand-link">
-        <img src="{{user.profile.image.url}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="{% static 'firstapp/Images/admin.png' %}" alt="" class="brand-image img-circle elevation-3"
         style="opacity: .8">
         
       </a>
-      <h4 contenteditable="true">POS</h4>
+      <h4>POS</h4>
       
       <!-- Sidebar -->
       <div class="sidebar">
@@ -124,9 +127,9 @@
               </li>
               <li class="nav-item">
                 <a href="pages/widgets.html" class="nav-link">
-                  <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
+                  <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
                   <p>
-                  
+                  Sales
                   </p>
                 </a>
               </li>

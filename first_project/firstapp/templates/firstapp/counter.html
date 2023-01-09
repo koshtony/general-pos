@@ -293,8 +293,7 @@
                       <div class="card-body p-0 m-0 b-0">
                         <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
                       </div>
-                      
-                        
+                      <input type="hidden" id="p_ids" value="{{product.p_id}}">
                     
                      <span id="{{product.p_name}}">{{product.p_name}}</span>
                       
@@ -304,7 +303,7 @@
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                             <p  id="{{product.p_price}}">Ksh{{product.p_price}} </p>
-                            <input type="number" id="{{product.p_id}}" value="{{product.p_qty}}" style="width:50px; height:30px">
+                            <input type="number" id="{{product.p_id}}" value="1" style="width:50px; height:30px">
                           </div>
                           
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
@@ -348,6 +347,7 @@
           
 
           $.get("{% url 'firstapp-getcounter' %}",{
+            pid: $("#p_ids").val(),
             qty: $('#'+qty).val(),
             price :prices,
             p_name:names
