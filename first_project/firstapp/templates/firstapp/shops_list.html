@@ -1,0 +1,158 @@
+{% extends 'firstapp/base.html' %}      
+        <!-- Main content -->
+    {% block mainContent %}
+ 
+    <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
+    <br><br>
+    <datalist id="stocksList">
+          {% for shop in shops %}
+          <option value="{{shop.shop_name}}">{{shop.shop_name}}</option>
+          {% endfor %}
+    </datalist>
+    
+    <table class="table align-middle mb-0 bg-white" style="margin-left:10px">
+        <thead class="bg-light">
+          <tr>
+            <th>shop ID</th>
+            <th>shop name</th>
+            <th>shop Category</th>
+            <th>shop location</th>
+            <th>shop Authority</th>
+            <th>shop created</th>
+            <th>Status</th>
+            <th>Actions</th>
+          
+          </tr>
+        </thead>
+        <tbody id="stocks">
+            {% for shop in page_obj %}
+          <tr>
+           
+            <td>
+              {{shop.shop_id}}
+            </td>
+            <td>
+                {{shop.shop_name}}
+              </td>
+              <td>
+                {{shop.shop_cat}}
+              </td>
+              <td>
+                {{shop.shop_loc}}
+              </td>
+              <td>
+                {{user.shop_auth}}
+              </td>
+              <td>
+                {{shop.shop_created}}
+              </td>
+            <td>
+              <span class="badge badge-success rounded-pill d-inline">Active</span>
+            </td>
+           
+            <td>
+              
+              <button type="button" class="btn btn-sm btn-info" onclick="modalData('{{shop.shop_id}}','{{shop.shop_name}}','{{shop.shop_cat}}','{{shop.shop_loc}}')">
+                Edit
+              </button>
+              
+            </td>
+            <td>
+              
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        
+        
+         
+         <!-- Modal -->
+         
+
+            
+      </table>
+      <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 style="color:green" class="modal-title" id="exampleModalLabel">================Edit shop Info===============</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table  id="shopsTab" class="table align-middle mb-0 bg-white" style="margin-left:10px">
+                <tbody >
+
+                </tbody>
+              </table>
+             
+            </div> 
+          </div>
+        </div>
+      </div>
+        <div style="margin-left:20px">
+          {% if page_obj.has_previous %}
+              <a class="btn btn-info mb-4" href="?page=1">first</a>
+              <a class="btn btn-info mb-4" href="?page={{page_obj.previous_page_number}}">prev</a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+             {% if page_obj.number == num %}
+
+                  <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
+                  
+              {% elif num > page_obj.number|add:'-2' and  num < page_obj.number|add:'2' %}
+
+                  <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>                    
+              {% endif %}
+
+             
+          {% endfor %}
+          
+          {% if page_obj.has_next %}
+
+              <a class="btn btn-info mb-4" href="?page={{page_obj.next_page_number}}">Next</a>
+              <a class="btn btn-info mb-4" href="?page={{page_obj.paginator_num_pages}}">Last</a>
+
+          {% endif %}
+        </div>
+      
+      <script>
+        $(document).ready(function(){
+        $("#pname").on("keyup",function(){
+            var value=$(this).val().toLowerCase();
+            $("#stocks tr").filter(function(){
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+    function modalData(id,name,cat,loc){
+
+      $("#EditModal").modal("show")
+      $("#shopsTab tbody").prepend(
+              `
+              <tr>
+                <form>
+                  <tr>
+                <td>id<input type="number" value="${id}"></td>
+                <td>Name<input type="text" value="${name}"></td>
+                </tr>
+                <tr>
+                <td>Category<input type="text" value="${cat}"></td>
+                <td>Location<input type="text" value="${loc}"></td>
+                </tr>
+                 
+                  <td><button type="button" class="btn btn-success">Update</button></td>
+                 
+                  </form>
+              </tr>
+
+              `
+            
+            )
+    }
+      </script>
+
+    {% endblock mainContent %}

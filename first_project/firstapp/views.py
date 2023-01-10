@@ -34,7 +34,7 @@ def getCounter(request):
     price = request.GET.get("price")
     total = float(price)*int(qty)
     data = {"name":name,"qty":qty,"price":price,"total":total}
-    print(pid)
+    
     filt_data = Stocks.objects.filter(p_name=name).first()
     new_obj=Stocks.objects.get(p_name=name)
     new_obj.p_qty = filt_data.p_qty - int(qty)
@@ -92,7 +92,13 @@ class StocksUpdateView(UpdateView):
         return super().form_valid(form)
     
     
-
+# display the shops details
+class ShopsListView(ListView):
+    model =Shops
+    template_name = 'firstapp/shops_list.html'
+    context_object_name = 'shops'
+    paginate_by = 5
+    
 
 class ShopsCreateView(SuccessMessageMixin,CreateView):
     model = Shops
@@ -101,4 +107,13 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
     fields =['shop_name','shop_cat','shop_loc','shop_auth']
     
     def form_valid(self,form):
+        return super().form_valid(form)
+    
+class ShopsUpdateView(UpdateView):
+    model = Shops
+    template_name = 'firstapp/shops_list.html'
+    fields = ['shop_name','shop_cat','shop_loc','shop_auth']
+    
+    def form_valid(self,form):
+        form.instance.p_creator = self.request.user
         return super().form_valid(form)

@@ -16,7 +16,7 @@ class Shops(models.Model):
         return self.shop_name
     
     def get_absolute_url(self):
-        return reverse('firstapp-addshops')
+        return reverse('firstapp-shops')
     
 class Stocks(models.Model):
     p_id=models.AutoField(primary_key=True)
