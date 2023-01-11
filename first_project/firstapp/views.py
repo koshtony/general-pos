@@ -109,11 +109,12 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
     def form_valid(self,form):
         return super().form_valid(form)
     
-class ShopsUpdateView(UpdateView):
-    model = Shops
-    template_name = 'firstapp/shops_list.html'
-    fields = ['shop_name','shop_cat','shop_loc','shop_auth']
-    
-    def form_valid(self,form):
-        form.instance.p_creator = self.request.user
-        return super().form_valid(form)
+def shopsUpdate(request):
+    if request.GET:
+        id = request.GET.get("id")
+        name = request.GET.get("name")
+        cat = request.GET.get("cat")
+        loc = request.GET.get("loc")
+        data = {"id":id}
+        print(data)
+        return JsonResponse(data)
