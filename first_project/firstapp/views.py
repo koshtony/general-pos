@@ -110,11 +110,11 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
         return super().form_valid(form)
     
 def shopsUpdate(request):
-    if request.GET:
-        id = request.GET.get("id")
-        name = request.GET.get("name")
-        cat = request.GET.get("cat")
-        loc = request.GET.get("loc")
+    if request.POST:
+        id = request.POST.get("id")
+        name = request.POST.get("name")
+        cat = request.POST.get("cat")
+        loc = request.POST.get("loc")
         data = {"id":id}
         print(data)
         return JsonResponse(data)

@@ -1,4 +1,4 @@
-{% extends 'firstapp/base.html' %}      
+{% extends 'firstapp/base2.html' %}      
         <!-- Main content -->
     {% block mainContent %}
  
@@ -82,8 +82,25 @@
             </div>
             <div class="modal-body">
               <table  id="shopsTab" class="table align-middle mb-0 bg-white" style="margin-left:10px">
+                <div id="spins" class="d-flex justify-content-center">
+      
+                </div>
                 <tbody >
-
+                  <tr>
+                    <form>
+                      <tr>
+                    <td>id<input type="number" id="ids" value=""></td>
+                    <td>Name<input type="text" id="names" value=""></td>
+                    </tr>
+                    <tr>
+                    <td>Category<input type="text" id="cats" value=""></td>
+                    <td>Location<input type="text" id="locs" value=""></td>
+                    </tr>
+                     
+                      <td><button type="button" id="upBtn" class="btn btn-success">Update</button></td>
+                     
+                      </form>
+                  </tr>  
                 </tbody>
               </table>
              
@@ -129,30 +146,47 @@
     });
 
     function modalData(id,name,cat,loc){
-
+     
+    $(document).ready(function(){
       $("#EditModal").modal("show")
-      $("#shopsTab tbody").prepend(
-              `
-              <tr>
-                <form>
-                  <tr>
-                <td>id<input type="number" value="${id}"></td>
-                <td>Name<input type="text" value="${name}"></td>
-                </tr>
-                <tr>
-                <td>Category<input type="text" value="${cat}"></td>
-                <td>Location<input type="text" value="${loc}"></td>
-                </tr>
-                 
-                  <td><button type="button" class="btn btn-success">Update</button></td>
-                 
-                  </form>
-              </tr>
 
-              `
-            
-            )
+    })
+    $("#ids").val(id)
+    $("#names").val(name)
+    $("#cats").val(cat)
+    $("#locs").val(loc)
+      
     }
+    $(document).ready(function(){
+        $("#upBtn").click(function(){
+          $.ajax({
+          url:"{% url 'firstapp-updateshops' %}",
+          type:'POST',
+          data:{
+            id: $("#ids").val(),
+            name: $("#names").val(),
+            cat: $("#cats").val(),
+            loc: $("#locs").val(),
+            csrfmiddlewaretoken:'{{ csrf_token }}'
+          },
+          beforeSend:function(){
+            $("#spins").html(`
+            <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+            `)
+          },
+          complete:function(){
+            $("#spins").remove()
+          },
+          success:function(data,status){
+            
+            alert("shop info edited successfully")
+            
+          }
+        })
+    })
+  })
       </script>
 
     {% endblock mainContent %}
