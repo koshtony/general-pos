@@ -122,10 +122,10 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
-                  <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
+                <a href="{% url 'firstapp-sales' %}" class="nav-link">
+                  <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
                   <p>
-                  
+                    sales
                   </p>
                 </a>
               </li>
@@ -214,7 +214,20 @@
                         </tr>
                       </thead>
                       <tbody  style="background-color:aqua">
-                        
+                        <!--
+                        {% if "sales" in request.session %} 
+                           {% for key,val in request.session.sales.items %}
+                           <tr>
+                            <td>{{ val.name }}</td>
+                            <td>{{ val.qty }}</td>
+                            <td>{{ val.price }}</td>
+                            <td>{{ val.total }}</td>
+                            
+                            <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                           {% endfor %}
+                           {% endif %}
+                      -->
                       </tbody>
                     </table>
                   </div>
@@ -267,7 +280,7 @@
                              <label for="bal">Bal>>>>>>>>></label>
                              <input type="text" id="bal" value=""style="margin-left:103px">
                              </div>
-                            
+                             <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
                            </div> 
                          </div>
                        </div>
@@ -293,7 +306,8 @@
                       <div class="card-body p-0 m-0 b-0">
                         <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
                       </div>
-                      <input type="hidden" id="p_ids" value="{{product.p_id}}">
+                      
+                      
                     
                      <span id="{{product.p_name}}">{{product.p_name}}</span>
                       
@@ -347,7 +361,7 @@
           
 
           $.get("{% url 'firstapp-getcounter' %}",{
-            pid: $("#p_ids").val(),
+            pid: qty,
             qty: $('#'+qty).val(),
             price :prices,
             p_name:names

@@ -36,6 +36,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <body class="hold-transition sidebar-mini layout-fixed" >
   <div class="spinner-grow" role="status">
@@ -67,7 +68,7 @@
       </li>
     </ul>
      
-        <a style="margin-left:780px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">1</i></a>
+        <a style="margin-left:580px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">1</i></a>
       
       
       <!-- Right navbar links -->
@@ -131,7 +132,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
+                <a href="{% url 'firstapp-sales' %}" class="nav-link">
                   <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
                   <p>
                   Sales

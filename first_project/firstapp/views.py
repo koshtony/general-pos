@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
+from django.contrib import messages
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.utils.decorators import method_decorator
-from .models import Stocks,Shops
+from .models import Stocks,Shops,Sales
+from datetime import datetime
 # Create your views here.
+
 orders = [
     {
         'title':"today orders",
@@ -27,19 +30,65 @@ def counter(request):
     }
     return render(request,'firstapp/counter.html',stocks)
 
+# gets the select item info 
 def getCounter(request):
     pid = request.GET.get("pid")
-    name  = request.GET.get("p_name")
     qty = request.GET.get("qty")
-    price = request.GET.get("price")
+    product = Stocks.objects.get(p_id=pid)
+    name  = product.p_name
+    serial = product.p_serial
+    cat =product.p_category
+    shops = product.p_shop.shop_id
+    price = product.p_price
+    cost = product.p_cost
     total = float(price)*int(qty)
-    data = {"name":name,"qty":qty,"price":price,"total":total}
+    total_cost = float(cost)*int(qty) 
+    profit = total-total_cost
+    data ={pid:
+        
+            {
+                "serial":serial,"name":name,"category":cat,"shops":shops,
+                "qty":qty,"price":total,"cost":total_cost,
+                "profit":profit
+                
+            }
+                
+        }
     
+    pass_data = {"name":name,"qty":qty,"price":price,"total":total}
+
+    if request.session.has_key('sales'):
+        
+            request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
+    
+    else:
+        request.session["sales"] = data
+            
+        
     filt_data = Stocks.objects.filter(p_name=name).first()
     new_obj=Stocks.objects.get(p_name=name)
     new_obj.p_qty = filt_data.p_qty - int(qty)
     new_obj.save()
-    return JsonResponse(data,status=200)
+    return JsonResponse(pass_data,status=200)
+
+def addSales(request):
+    if 'sales' in request.session:
+        for key,value in request.session["sales"].items():
+            sales= Sales(
+                s_serial = request.session["sales"][key]["serial"],
+                s_name = request.session["sales"][key]["name"],
+                s_shop = Shops.objects.get(shop_id=request.session["sales"][key]["shops"] ),
+                s_price = request.session["sales"][key]["price"],
+                s_cost = request.session["sales"][key]["cost"],
+                s_negatives = 0,
+                s_profit = request.session["sales"][key]["profit"],
+                s_created = datetime.now(),
+                s_creator = request.user
+            )
+            sales.save()
+        del request.session["sales"]
+        return redirect('firstapp-counter')
+        
 
 def stocksView(request):
     if request.POST:
@@ -49,7 +98,7 @@ def stocksView(request):
             products = Stocks.objects.filter(p_created__range=[date1,date2])
         else: 
             products = Stocks.objects.all()
-    products = Stocks.objects.all()  
+    products = products = Stocks.objects.all()
     page_num = request.GET.get('page',1)
     paginator = Paginator(products,5)
     try:
@@ -116,5 +165,26 @@ def shopsUpdate(request):
         cat = request.POST.get("cat")
         loc = request.POST.get("loc")
         data = {"id":id}
-        print(data)
+        filt_shop = Shops.objects.get(shop_id=id)
+        filt_shop.shop_name = name
+        filt_shop.shop_cat = cat
+        filt_shop.shop_loc = loc
+        filt_shop.save()
         return JsonResponse(data)
+    
+# ---- sales view
+
+class SalesListView(ListView):
+    model = Sales
+    template = 'firstapp/sales_list.html'
+    context_object_name = 'sales'
+    paginate_by = 5
+    
+    def get_queryset(self):
+        if self.request.GET:
+            date1 = self.request.GET.get("date1")
+            date2 = self.request.GET.get("date2")
+            queryset =  Sales.objects.filter(s_created__gte=date1,s_created__lte=date2)
+        
+            return queryset
+        return super().get_queryset()
