@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib import messages
+from django.db.models import Sum
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -29,6 +30,22 @@ def counter(request):
         'products': Stocks.objects.all()
     }
     return render(request,'firstapp/counter.html',stocks)
+
+def Charts(request):
+    
+    x_sales = []
+    y_sales = []
+    
+    sales  = Sales.objects.values('s_name').annotate(total_profit= Sum('s_profit'))
+    for sale in sales:
+        x_sales.append(sale["s_name"])
+        y_sales.append(sale["total_profit"])
+    print(x_sales)
+    contxt = {
+        "labels": x_sales,
+        "data":y_sales,
+    }
+    return render(request,'firstapp/reports.html',contxt)
 
 # gets the select item info 
 def getCounter(request):

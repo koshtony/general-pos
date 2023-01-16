@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
-from .views import StocksCreateView,ShopsCreateView,StocksUpdateView,ShopsListView,shopsUpdate,addSales,SalesListView
+from .views import StocksCreateView,ShopsCreateView,StocksUpdateView,ShopsListView,shopsUpdate,addSales,SalesListView,Charts
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
     path('counter/', views.counter,name='firstapp-counter'),
     path('getcounter', views.getCounter,name='firstapp-getcounter'),
     path('addsales', views.addSales,name='firstapp-addsales'),
+    path('reports/charts', views.Charts,name='firstapp-charts'),
     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
     path('stocks/list',views.stocksView,name="firstapp-stocks"),
     path('shops/list',views.ShopsListView.as_view(),name="firstapp-shops"),
