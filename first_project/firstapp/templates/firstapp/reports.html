@@ -1,62 +1,162 @@
 {% extends 'firstapp/base.html' %}      
         <!-- Main content -->
     {% block mainContent %}
+<style>
+ 
 
-    <div class="row" style="margin-left:50px">
-        <div class="col">
-            <div id="container" style="width: 75%;">
-                <canvas id="bar-chart"></canvas>
-            </div>
-        </div>
-        <div class="col">
-            <div id="container" style="width: 75%;">
-                <canvas id="pie-chart"></canvas>
-            </div>
-        </div>
-      </div>
+canvas {
+  border: 1px dotted red;
+}
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 50vh;
+  width: 80vh;
+}
+
+</style>
+<a style="margin-left:20px" ><i class="fa fa-cogs"></i></a>
+&nbsp; &nbsp;
+<input type="color">
+<br><br>
+
+<div class="container" style="overflow-x: hidden; margin-top:0px">
+  <div class="row">
+    <div class="col">
+      <div class="chart-container" style="background-color:black; color:black">
+        <canvas id="chart"></canvas>
+    </div>
+    </div>
+    <div class="col">
+      <div class="chart-container">
+        <canvas id="chart3"></canvas>
+    </div>
+    </div>
+    
+    
+  </div>
+  <br>
+  <div class="row">
+    
+    <div class="container" style="background-color:black; height:300px; margin-left: 50px; margin-right:50px; margin-bottom: 30px;">
+      <canvas id="chart2"></canvas>
+  </div>
+  </div>
+</div>
      
       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
       <script>
+         var data = {
+  labels: {{labels | safe }},
+  datasets: [{
+    label: "items profits",
+    backgroundColor: "rgba(255,99,132,0.2)",
+    borderColor: "rgba(255,99,132,1)",
+    borderWidth: 2,
+    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+    hoverBorderColor: "rgba(255,99,132,1)",
+    data:{{data | safe }},
+  }]
+};
 
-        var config = {
-          type: 'bar',
-          data: {
-            datasets: [{
-              data: {{ data | safe }},
-              backgroundColor: [
-                '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-              ],
-              label: 'item profit'
-            }],
-            labels: {{labels | safe }},
-          },
-          options: {
-            responsive: true
-          }
-        };
-        var config2 = {
-          type: 'line',
-          data: {
-            datasets: [{
-              data: [1,2,3,4,5,6],
-              backgroundColor: [
-                '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
-              ],
-              label: 'shop sales'
-            }],
-            labels: ["shop1","shop2","shop3","shop4","shop5"],
-          },
-          options: {
-            responsive: true
-          }
-        };
-    
-        window.onload = function() {
-          var ctx = document.getElementById('bar-chart').getContext('2d');
-          window.myPie = new Chart(ctx, config);
-          var ctx2 = document.getElementById('pie-chart').getContext('2d');
-          window.myPie = new Chart(ctx2, config2);
-        };
-    
-      </script>
+var options = {
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      stacked: true,
+      grid: {
+        display: true,
+        color: "rgba(255,99,132,0.2)"
+      }
+    },
+    x: {
+      grid: {
+        display: false
+      }
+    }
+  }
+};
+
+new Chart('chart', {
+  type: 'bar',
+  options: options,
+  data: data
+});
+// end of chart 1
+var data = {
+  labels: {{labels | safe }},
+  datasets: [{
+    label: "items profits",
+    backgroundColor: "rgba(255,99,132,0.2)",
+    borderColor: "rgba(255,99,132,1)",
+    borderWidth: 2,
+    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+    hoverBorderColor: "rgba(255,99,132,1)",
+    data:{{data | safe }},
+  }]
+};
+
+var options = {
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      stacked: true,
+      grid: {
+        display: true,
+        color: "rgba(255,99,132,0.2)"
+      }
+    },
+    x: {
+      grid: {
+        display: false
+      }
+    }
+  }
+};
+
+new Chart('chart2', {
+  type: 'line',
+  options: options,
+  data: data
+});
+
+// end of chart 2
+var data = {
+  labels: {{labels | safe }},
+  datasets: [{
+    label: "items profits",
+    backgroundColor: "rgba(255,99,132,0.2)",
+    borderColor: "rgba(255,99,132,1)",
+    borderWidth: 2,
+    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+    hoverBorderColor: "rgba(255,99,132,1)",
+    data:{{data | safe }},
+  }]
+};
+
+var options = {
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      stacked: true,
+      grid: {
+        display: true,
+        color: "rgba(255,99,132,0.2)"
+      }
+    },
+    x: {
+      grid: {
+        display: false
+      }
+    }
+  }
+};
+
+new Chart('chart3', {
+  type: 'horizontalBar',
+  options: options,
+  data: data
+});
+       </script>
     {% endblock mainContent %}
