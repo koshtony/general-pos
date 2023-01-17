@@ -39,7 +39,7 @@ class Stocks(models.Model):
     
     def get_absolute_url(self):
         try:
-            return reverse('firstapp-updatestocks',kwargs={'pk':self.pk})
+            return reverse('firstapp-addstocks',kwargs={'pk':self.pk})
         except:
             return reverse('firstapp-stocks')
 

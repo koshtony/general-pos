@@ -18,17 +18,17 @@ canvas {
 </style>
 <a style="margin-left:20px" ><i class="fa fa-cogs"></i></a>
 &nbsp; &nbsp;
-<input type="color">
+<input type="color" id="colors"> <button onclick="applyCol();" type="button" class="btn btn-success">set color</button>
 <br><br>
 
 <div class="container" style="overflow-x: hidden; margin-top:0px">
   <div class="row">
     <div class="col">
-      <div class="chart-container" style="background-color:black; color:black">
+      <div id="c1" class="chart-container" style="background-color:white; color:black; margin-left: 50px;">
         <canvas id="chart"></canvas>
     </div>
     </div>
-    <div class="col">
+    <div id="c2" class="col" style="background-color:white; margin-right:50px">
       <div class="chart-container">
         <canvas id="chart3"></canvas>
     </div>
@@ -39,7 +39,7 @@ canvas {
   <br>
   <div class="row">
     
-    <div class="container" style="background-color:black; height:300px; margin-left: 50px; margin-right:50px; margin-bottom: 30px;">
+    <div class="container" id="c3" style="background-color:white; height:300px; margin-left: 50px; margin-right:50px; margin-bottom: 30px;">
       <canvas id="chart2"></canvas>
   </div>
   </div>
@@ -158,5 +158,12 @@ new Chart('chart3', {
   options: options,
   data: data
 });
+
+function applyCol(){
+   document.getElementById("c1").style.backgroundColor = $("#colors").val()
+   document.getElementById("c2").style.backgroundColor = $("#colors").val()
+   document.getElementById("c3").style.backgroundColor = $("#colors").val()
+}
+
        </script>
     {% endblock mainContent %}

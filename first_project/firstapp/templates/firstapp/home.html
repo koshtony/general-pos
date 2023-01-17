@@ -11,9 +11,9 @@
                 <!-- small box -->
                 <div class="small-box bg-dark">
                   <div class="inner">
-                    <h3>{{order.qty}}</h3>
+                    <h3>0</h3>
                     
-                    <p>{{order.title}}</p>
+                    <p>Today Orders</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-bag"></i>
@@ -26,9 +26,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3>{{order.qty}}<sup style="font-size: 20px">%</sup></h3>
+                    <h3>0<sup style="font-size: 20px"></sup></h3>
                     
-                    <p>{{order.title}}</p>
+                    <p>Total Orders</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -41,14 +41,14 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                   <div class="inner">
-                    <h3>44</h3>
+                    <h3>0</h3>
                     
-                    <p>User Registrations</p>
+                    <p>Total Sales</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-person-add"></i>
                   </div>
-                  <a href="#" class="small-box-footer">view more<i class="fas fa-arrow-circle-right"></i></a>
+                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more<i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               <!-- ./col -->
@@ -56,23 +56,23 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3>65</h3>
+                    <h3>4</h3>
                     
-                    <p>Unique Visitors</p>
+                    <p>Stock Levels</p>
                   </div>
                   <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                   </div>
-                  <a href="#" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                  <a href="{% url 'firstapp-stocks' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
               {% endfor %}
+              
               <!-- ./col -->
             </div>
             
             
-            <!-- /.row -->
-          </section>
+          
     {% endblock mainContent %}
 
   

@@ -205,3 +205,6 @@ class SalesListView(ListView):
         
             return queryset
         return super().get_queryset()
+    
+def OrdersView(request):
+    return render(request, 'firstapp/orders_list.html')

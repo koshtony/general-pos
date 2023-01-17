@@ -6,6 +6,7 @@
 <button style="margin-left:10px; border:0px" type="button"  data-toggle="modal" data-target="#dateModal">
  <i class="fa fa-filter"></i>by date
 </button>
+<button type="button" class="btn btn-success"><i class="fa fa-download">Export</i></button>
 
 <!-- Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -31,7 +32,7 @@
     </div>
   </div>
 </div>
-    <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
+    <input style="margin-left:620px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
     <datalist id="stocksList">
           {% for sale in sales %}
@@ -108,7 +109,7 @@
 
             
       </table>
-    
+    <!--
         <div style="margin-left:20px">
           {% if page_obj.has_previous %}
               <a class="btn btn-info mb-4" href="?page=1">first</a>
@@ -135,7 +136,7 @@
 
           {% endif %}
         </div>
-      
+      -->
       <script>
         $(document).ready(function(){
         $("#pname").on("keyup",function(){
