@@ -6,9 +6,11 @@ from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
+from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from .models import Stocks,Shops,Sales
 from datetime import datetime
+import pdfkit
 # Create your views here.
 
 orders = [
@@ -112,25 +114,26 @@ def stocksView(request):
         date1 = request.POST.get("date1")
         date2 = request.POST.get("date2")
         if date1!='' or date1!='':
-            products = Stocks.objects.filter(p_created__range=[date1,date2])
+            products = Stocks.objects.filter(p_created__gte=date1,p_created__lte=date2)
         else: 
             products = Stocks.objects.all()
-    products = products = Stocks.objects.all()
-    page_num = request.GET.get('page',1)
-    paginator = Paginator(products,5)
-    try:
-        page_obj = paginator.page(page_num)
-    except PageNotAnInteger: 
-        page_obj =paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
         
-    contxt = {
-        'products':products,
-        'page_obj': page_obj
-    }
-    
-    return render(request,'firstapp/stocks.html',contxt)
+        page_num = request.GET.get('page',1)
+        paginator = Paginator(products,5)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger: 
+            page_obj =paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+            
+        contxt = {
+            'products':products,
+            'page_obj': page_obj
+        }
+        
+        return render(request,'firstapp/stocks.html',contxt)
+    return render(request,'firstapp/stocks.html')
 
 class StocksCreateView(CreateView):
     model = Stocks
@@ -208,3 +211,17 @@ class SalesListView(ListView):
     
 def OrdersView(request):
     return render(request, 'firstapp/orders_list.html')
+
+def InvoiceView(request):
+    data = request.GET.get("htmlData")
+    if data != None:
+        data = '<html>'+data + '</html>'
+        html_path =  "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.html"
+        pdf_path = "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.pdf"
+        with open(html_path,"w+") as file:
+        
+            file.write(data)
+            
+        pdfkit.from_file(html_path,pdf_path)
+        
+    return render(request,'firstapp/invoice.html',{'filename':'invoice.pdf'})
