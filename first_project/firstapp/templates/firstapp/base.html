@@ -73,9 +73,15 @@
         <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
       </li>
       &nbsp; &nbsp;
-      <li class="nav-item">
-        <a class="btn btn-primary" href="" role="button"><i class="fas fa-desktop">Reports</i></a>
-      </li>
+     <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-desktop">Manage</i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}">Add Expenses</a></li>
+          <li><a style="margin-left:30px" type="button" href="">Tasks</a></li>
+          
+        </ul>
+      </div>
       &nbsp; &nbsp;
       <li class="nav-item">
         <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>

@@ -225,3 +225,10 @@ def InvoiceView(request):
         pdfkit.from_file(html_path,pdf_path)
         
     return render(request,'firstapp/invoice.html',{'filename':'invoice.pdf'})
+
+
+def financeView(request):
+    return render(request,'firstapp/financials.html')
+
+
+    
