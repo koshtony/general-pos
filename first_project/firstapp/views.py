@@ -8,7 +8,7 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
-from .models import Stocks,Shops,Sales
+from .models import Stocks,Shops,Sales,Expenses
 from datetime import datetime
 import pdfkit
 # Create your views here.
@@ -217,18 +217,42 @@ def InvoiceView(request):
     if data != None:
         data = '<html>'+data + '</html>'
         html_path =  "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.html"
-        pdf_path = "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.pdf"
+        pdf_path = "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice1.pdf"
         with open(html_path,"w+") as file:
         
             file.write(data)
             
         pdfkit.from_file(html_path,pdf_path)
         
-    return render(request,'firstapp/invoice.html',{'filename':'invoice.pdf'})
+    return render(request,'firstapp/invoice.html')
 
 
 def financeView(request):
-    return render(request,'firstapp/financials.html')
+    
+    expenses = Expenses.objects.all()
+    contxt = {
+                  "expenses":expenses,
+                  "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"]
+              
+              }
+    
+    return render(request,'firstapp/financials.html',contxt)
+
+def financePostView(request):
+   
+        date = request.GET.get("date")
+        desc = request.GET.get("desc")
+        amount = request.GET.get("amount")
+        print(desc)
+        exp = Expenses(exp_desc = desc,exp_amount = amount , 
+                       exp_date = date, exp_creator=request.user
+                       )
+        exp.save()
+        
+        return JsonResponse({'date':date,desc:"desc","amount":amount})
+        
+        
+    
 
 
     

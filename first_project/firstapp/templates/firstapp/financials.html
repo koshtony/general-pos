@@ -165,6 +165,7 @@ h2 {
 </style>
 
 <div id="container" style="background-color:aqua">
+  <p id="datas"></p>
     <div id="overview">
       <div class="balance">
         <h2> Balance </h2>
@@ -173,7 +174,9 @@ h2 {
       
       <div class="spending" style="background-color:red">
         <h2> Spending </h2>
-        <p style="margin-top:30px">300</p>
+        
+        <h5 style="margin-top:30px">Ksh {{sum}}</h5>
+        
       </div>
       
       <div class="income"  style="background-color:green">
@@ -184,11 +187,25 @@ h2 {
     </div>
     
     <div class="entry new"  >
-      <input type="date" class="date" placeholder="10/16/1986" />
-      <input class="note" placeholder="Desc"/>
-      <input class="amount" placeholder="Ksh 800"/>
+
+      <input type="date" id="date" class="date" placeholder="10/16/1986" />
+      <input type="text" id="desc" class="note" placeholder="Desc"/>
+      <input type="number" id="amount" class="amount" placeholder="Ksh 800"/>
       <div id="add-transaction" class="add-button">+</div>
+      
     </div>
+    {% for expense in expenses %}
+  
+    <div class="entry new"  >
+
+      <input type="text" id="date" class="date" value="{{expense.exp_date}}"  />
+      <input type="text" id="desc" class="note" value="{{expense.exp_desc}}" />
+      <input type="number" id="amount" class="amount" value="{{expense.exp_amount}}" />
+      <button type="button" style="background-color:red">-</button>
+      
+    </div>
+    {% endfor %}
+    
     
     <div id="sheet">
       
@@ -259,20 +276,9 @@ function RenderTable() {
   });
 }
 
-// Just like AJAX, except not.
-/**
-function FakeData() {
-  for(var i = 0; i < 25; i += 1) {
-    var trans = Object.create(Object.getPrototypeOf(transaction));
-    trans.id = i;
-    trans.date = '10/16/1986';
-    trans.description = 'New Birthday Hats!';
-    trans.amount = (Math.random() * 500) - 100;
-    
-    sheet.push(trans);
-  }
-}
-**/
+
+
+
 
 function ClearRenderSpace() {
   $('.remove-button').unbind('on', RemoveTransaction);
@@ -303,7 +309,6 @@ function RemoveTransaction(id) {
 }
 
 function Init(){
-
   UpdateSums();
   RenderTable();
   $('#add-transaction').on('click', function () {
@@ -312,6 +317,19 @@ function Init(){
       $('.new .note').val(),
       $('.new .amount').val()
     );
+   
+   $.get("{% url 'firstapp-financeadd' %}",{
+      date:$('#date').val(),
+      desc:$('#desc').val(),
+      amount:$('#amount').val()
+     
+
+   },
+   function(data,status){
+      alert("confirmed added")
+   }
+
+   )
   });
 }
 

@@ -64,7 +64,6 @@ class Expenses(models.Model):
     exp_desc = models.TextField()
     exp_amount= models.FloatField()
     exp_creator = models.ForeignKey(User,on_delete=models.PROTECT)
-    exp_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
     exp_date = models.DateTimeField(default= timezone.now())
     
     def __str__(self):
