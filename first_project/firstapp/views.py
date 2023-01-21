@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from .models import Stocks,Shops,Sales,Expenses
 from datetime import datetime
 import pdfkit
+import time
 # Create your views here.
 
 orders = [
@@ -27,9 +28,16 @@ def home(request):
     return render(request,'firstapp/home.html',data)
 
 def counter(request):
+    sums = 0
+    if 'sales' in request.session:
+        for key,value in request.session["sales"].items():
+            sums+=float(request.session["sales"][key]["price"])
+            
   
     stocks = {
-        'products': Stocks.objects.all()
+        'products': Stocks.objects.all(),
+        'sum':sums
+        
     }
     return render(request,'firstapp/counter.html',stocks)
 
@@ -63,27 +71,39 @@ def getCounter(request):
     total = float(price)*int(qty)
     total_cost = float(cost)*int(qty) 
     profit = total-total_cost
+    pid = hash(time.time())+int(pid)
     data ={pid:
         
             {
                 "serial":serial,"name":name,"category":cat,"shops":shops,
-                "qty":qty,"price":total,"cost":total_cost,
+                "qty":qty,"price1":price,"price":total,"cost":total_cost,
                 "profit":profit
                 
             }
                 
         }
     
-    pass_data = {"name":name,"qty":qty,"price":price,"total":total}
+    
 
     if request.session.has_key('sales'):
-        
+        if pid not in request.session["sales"]:
             request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
-    
+       
     else:
         request.session["sales"] = data
             
+    
         
+    pass_data = {"name":request.session["sales"][pid]["name"],
+                 
+                 "qty":request.session["sales"][pid]["qty"],
+                 
+                 "price":request.session["sales"][pid]["price1"],
+                 
+                 "total":request.session["sales"][pid]["price"]
+                 
+                }
+       
     filt_data = Stocks.objects.filter(p_name=name).first()
     new_obj=Stocks.objects.get(p_name=name)
     new_obj.p_qty = filt_data.p_qty - int(qty)
@@ -198,7 +218,7 @@ class SalesListView(ListView):
     model = Sales
     template = 'firstapp/sales_list.html'
     context_object_name = 'sales'
-    paginate_by = 5
+   
     
     def get_queryset(self):
         if self.request.GET:

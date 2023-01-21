@@ -37,7 +37,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-<body class="hold-transition sidebar-mini layout-fixed" >
+<body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
   <div class="spinner-grow" role="status">
     <span class="sr-only">Loading...</span>
   </div>
@@ -266,20 +266,20 @@
                         </tr>
                       </thead>
                       <tbody  style="background-color:aqua">
-                        <!--
+                        
                         {% if "sales" in request.session %} 
                            {% for key,val in request.session.sales.items %}
                            <tr>
                             <td>{{ val.name }}</td>
                             <td>{{ val.qty }}</td>
+                            <td>{{ val.price1 }}</td>
                             <td>{{ val.price }}</td>
-                            <td>{{ val.total }}</td>
                             
                             <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
                         </tr>
                            {% endfor %}
                            {% endif %}
-                      -->
+                      
                       </tbody>
                     </table>
                   </div>
@@ -294,13 +294,13 @@
                       </div>
                       <div class="col-8 col-sm-8 col-md-8 col-lg-8">
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" class="form-control" id="total" name="total" readonly value="0">
+                          <input type="text" class="form-control" id="total" name="total" readonly value="{{sum}}">
                         </div>
                         <div class="input-group input-group-sm mb-1">
                           <input type="text" id="minus" name="minus" class="form-control" >
                         </div>
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" id ='nettotal' name="nettotal" class="form-control" readonly value="0">
+                          <input type="text" id ='nettotal' name="nettotal" class="form-control" readonly value="{{sum}}">
                         </div>
                       </div>
                     </div>
@@ -422,7 +422,6 @@
           },
           function(data,status){
           
-
             $("#countTab tbody").prepend(
               `
               <tr>
@@ -436,6 +435,7 @@
               `
             
             )
+            
             
             
             tot =parseFloat($("#total").val())

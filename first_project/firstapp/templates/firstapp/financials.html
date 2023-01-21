@@ -61,7 +61,7 @@ input {
   border-bottom: 1px solid rgba( 255, 255, 255, 0.1);
   height: 40px;
   padding: 0 0 0 0;
-  width: 500px;
+  width: 1000px;
 }
 
 .entry.new{
@@ -69,7 +69,7 @@ input {
   border-bottom: 1px solid rgba( 255, 255, 255, 0.1);
   height: 40px;
   padding: 0 0 0 0;
-  width: 500px;
+  width: 800px;
 }
 
 .entry div {
@@ -77,6 +77,7 @@ input {
   font: 14px/40px sans-serif;
   float: left;
   padding: 0 10px 0 10px;
+  
 }
 
 .entry input {
@@ -87,6 +88,7 @@ input {
   float: left;
   margin: 0 0 0 0;
   padding: 0 10px 0 10px;
+  width:250px;
 }
 
 input.date {
@@ -164,7 +166,7 @@ h2 {
 }
 </style>
 
-<div id="container" style="background-color:aqua">
+<div id="container" style="background-color:aqua; width:800px">
   <p id="datas"></p>
     <div id="overview">
       <div class="balance">
@@ -186,7 +188,7 @@ h2 {
       
     </div>
     
-    <div class="entry new"  >
+    <div class="entry new" style="width:800px" >
 
       <input type="date" id="date" class="date" placeholder="10/16/1986" />
       <input type="text" id="desc" class="note" placeholder="Desc"/>
@@ -196,7 +198,7 @@ h2 {
     </div>
     {% for expense in expenses %}
   
-    <div class="entry new"  >
+    <div class="entry new"   >
 
       <input type="text" id="date" class="date" value="{{expense.exp_date}}"  />
       <input type="text" id="desc" class="note" value="{{expense.exp_desc}}" />
@@ -210,7 +212,7 @@ h2 {
     <div id="sheet">
       
     </div>
-  </div>
+</div>
   
 
   <script>
@@ -226,7 +228,7 @@ var $balance = $('#overview .balance p'),
       description: '',
       amount: 0
     },
-    transactionHTML = '<div id=" {id} " class="entry {class} "><div class="date"> {date} </div><div class="note"> {description} </div><div class="amount"> {amount} </div><div class="remove-button">-</div></div>',
+    transactionHTML = '<div style="width:800px" id=" {id} " class="entry {class} "><div class="date"> {date} </div><div class="note"> {description} </div><div class="amount"> {amount} </div><div class="remove-button">-</div></div>',
     spendingClass = 'spending',
     incomeClass = 'income';
 
