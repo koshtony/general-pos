@@ -3,12 +3,12 @@
 {% load static %}     
         <!-- Main content -->
     {% block mainContent %}
-	<a type="button" onclick="sendHtml();" style="margin-left:950px"><i class="fa fa-save"></i></a>
+	<a type="button" onclick="sendHtml();" style="margin-left:1050px"><i class="fa fa-save"></i></a>
      &nbsp;&nbsp;
-	<a href="{% static 'firstapp/exports/invoice1.pdf' %}" download><i class="fa fa-download"></i></a>
+	<a href="{% static 'firstapp/exports/invoice.html' %}" download><i class="fa fa-download"></i></a>
 
 	
-	<div id="invoiceMain">
+	<div id="invoiceMain" style="width:1000px; margin-left:180px">
 		
    <style>
 
@@ -132,15 +132,15 @@ tr:hover .cut { opacity: 1; }
 
 @page { margin: 0; }
    </style>
-   
+
     <header style="margin-left:100px;margin-right: 100px;">
-        <h1>Invoice</h1>
+        <h1 style="background-color:aqua; color:black">Invoice</h1>
         <address contenteditable>
             <p>My company name</p>
             <p>my comapny address<br>p.o box</p>
             <p>my company Phone</p>
         </address>
-        <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
+        <span  style="color:black; margin-left:500px"><img id="img_id" style="margin-left:500px; width:100px" alt="logo" src=""><input type="file" accept="image/*"></span>
     </header>
     <article style="margin-left:100px;margin-right: 100px; margin-bottom: 100px;">
         <h1>Recipient</h1>
@@ -200,7 +200,7 @@ tr:hover .cut { opacity: 1; }
         </table>
     </article>
     <aside style="margin-left:100px;margin-right: 100px;">
-        <h1><span contenteditable>Additional Notes</span></h1>
+        <h1><span contenteditable>Terms</span></h1>
         <div contenteditable>
             <p>additionals notes here------.</p>
         </div>
@@ -371,7 +371,7 @@ function onContentLoad() {
 
 	var
 	input = document.querySelector('input'),
-	image = document.querySelector('img');
+	image = document.getElementById('img_id');
 
 	function onClick(e) {
 		var element = e.target.querySelector('[contenteditable]'), row;

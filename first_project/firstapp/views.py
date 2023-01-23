@@ -237,25 +237,26 @@ def InvoiceView(request):
     if data != None:
         data = '<html>'+data + '</html>'
         html_path =  "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.html"
-        pdf_path = "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice1.pdf"
         with open(html_path,"w+") as file:
         
             file.write(data)
             
-        pdfkit.from_file(html_path,pdf_path)
+        
         
     return render(request,'firstapp/invoice.html')
 
 
 def financeView(request):
     
-    expenses = Expenses.objects.all()
+    
+    
     contxt = {
-                  "expenses":expenses,
-                  "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"]
+                  "expenses":Expenses.objects.all(),
+                  "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"],
+                  "profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"],
+                  "net_profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] 
               
               }
-    
     return render(request,'firstapp/financials.html',contxt)
 
 def financePostView(request):
