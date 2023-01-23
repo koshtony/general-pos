@@ -271,6 +271,16 @@ def financePostView(request):
         exp.save()
         
         return JsonResponse({'date':date,desc:"desc","amount":amount})
+
+def financeUpdateView(request):
+    if request.POST:
+        date = request.POST.get("date_edited")
+        desc = request.POST.get("desc_edited")
+        amount = request.POST.get("amount_edited")
+        
+        data = {"date":date}
+        print(data)
+        return JsonResponse(data)
         
         
     

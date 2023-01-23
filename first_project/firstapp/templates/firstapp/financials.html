@@ -166,6 +166,42 @@ h2 {
 }
 </style>
 
+<div class="modal fade" id="updateExp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 style="color:green" class="modal-title" id="exampleModalLabel">================Edit expenses===============</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table  id="shopsTab" class="table table-striped" style="margin-left:10px">
+          <div id="spins" class="d-flex justify-content-center">
+
+          </div>
+          <tbody >
+            <tr>
+              <form>
+                <tr style="background-color:white">
+                  date &nbsp;<input style="background-color:white" type="date" id="date_edit" >
+                  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
+                  amnt &nbsp;<input style="background-color:white" type="number" id="amount_edit" >
+                  <input style="background-color:black; color:white; width:460px" type="text" id="desc_edit" >
+                  
+              </tr>
+               
+                <td><button type="button" id="upBtn" class="btn btn-success">Update</button></td>
+               
+                </form>
+            </tr>  
+          </tbody>
+        </table>
+       
+      </div> 
+    </div>
+  </div>
+</div>
 <div id="container" style="background-color:aqua; width:800px">
   <p id="datas"></p>
     <div id="overview">
@@ -198,12 +234,13 @@ h2 {
     </div>
     {% for expense in expenses %}
   
-    <div class="entry new"   >
+    <div class="entry new" style="width:800px"  >
 
       <input type="text" id="date" class="date" value="{{expense.exp_date}}"  />
       <input type="text" id="desc" class="note" value="{{expense.exp_desc}}" />
       <input type="number" id="amount" class="amount" value="{{expense.exp_amount}}" />
-      <button type="button" style="background-color:red">-</button>
+      <button type="button" onclick="updateModal('{{expense.exp_date}}','{{expense.exp_desc}}','{{expense.exp_amount}}');"><i class="fa fa-wrench"></i></button>
+     
       
     </div>
     {% endfor %}
@@ -336,6 +373,40 @@ function Init(){
 }
 
 Init();
+
+// update modal function, updates expenses in the ledger
+
+function updateModal(date,desc,amount){
+
+  $("#updateExp").modal("show");
+
+  $("#date_edit").val(date)
+  $("#desc_edit").val(desc)
+  $("#amount_edit").val(amount)
+
+  $(document).ready(function(){
+
+$("#upBtn").click(function(){
+
+  $.ajax({
+
+  type: "POST",
+  url: "{% url 'firstapp-financeupdate' %}",
+  data:{
+    date_edited: $("#date_edit").val(),
+    desc_edited:$("#desc_edit").val(),
+    amount_edited: $("#amount_edit").val(),
+    csrfmiddlewaretoken:'{{ csrf_token }}'
+  },
+  success:function(data,status){
+
+    alert(data["date"])
+  }
+  })
+})
+})
+
+}
   </script>
 
 

@@ -5,7 +5,7 @@ from .views import StocksCreateView,\
     ShopsListView,shopsUpdate,\
     addSales,SalesListView,Charts,\
     OrdersView,InvoiceView,financeView,\
-        financePostView
+        financePostView,financeUpdateView
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
     path('counter/', views.counter,name='firstapp-counter'),
@@ -19,6 +19,7 @@ urlpatterns = [
    path('invoice',views.InvoiceView,name="firstapp-invoice"),
    path('finance',views.financeView,name="firstapp-finance"),
     path('finance-add',views.financePostView,name="firstapp-financeadd"),
+    path('finance-update',views.financeUpdateView,name="firstapp-financeupdate"),
     path('shops/update',views.shopsUpdate,name="firstapp-updateshops"),
     path('stocks/addstocks/',StocksCreateView.as_view(),name="firstapp-addstocks"),
     path('stocks/<int:pk>/updates',StocksUpdateView.as_view(),name="firstapp-updatestocks"),
