@@ -184,6 +184,7 @@ h2 {
             <tr>
               <form>
                 <tr style="background-color:white">
+                  <input type="hidden" id="id_edit">
                   date &nbsp;<input style="background-color:white" type="date" id="date_edit" >
                   &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
                   amnt &nbsp;<input style="background-color:white" type="number" id="amount_edit" >
@@ -239,7 +240,7 @@ h2 {
       <input type="text" id="date" class="date" value="{{expense.exp_date}}"  />
       <input type="text" id="desc" class="note" value="{{expense.exp_desc}}" />
       <input type="number" id="amount" class="amount" value="{{expense.exp_amount}}" />
-      <button type="button" onclick="updateModal('{{expense.exp_date}}','{{expense.exp_desc}}','{{expense.exp_amount}}');"><i class="fa fa-wrench"></i></button>
+      <button type="button" onclick="updateModal('{{expense.exp_id}}','{{expense.exp_date}}','{{expense.exp_desc}}','{{expense.exp_amount}}');"><i class="fa fa-wrench"></i></button>
      
       
     </div>
@@ -376,10 +377,11 @@ Init();
 
 // update modal function, updates expenses in the ledger
 
-function updateModal(date,desc,amount){
+function updateModal(id,date,desc,amount){
 
   $("#updateExp").modal("show");
 
+  $("#id_edit").val(id)
   $("#date_edit").val(date)
   $("#desc_edit").val(desc)
   $("#amount_edit").val(amount)
@@ -393,10 +395,13 @@ $("#upBtn").click(function(){
   type: "POST",
   url: "{% url 'firstapp-financeupdate' %}",
   data:{
+
+    id_edited:$("#id_edit").val(),
     date_edited: $("#date_edit").val(),
     desc_edited:$("#desc_edit").val(),
     amount_edited: $("#amount_edit").val(),
     csrfmiddlewaretoken:'{{ csrf_token }}'
+    
   },
   success:function(data,status){
 

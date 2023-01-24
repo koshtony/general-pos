@@ -18,15 +18,17 @@
         </button>
       </div>
       <div class="modal-body">
-        
-        <form method="post" action="{% url 'firstapp-stocks' %}">
-          {% csrf_token %}
+        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
+      
+          
            <label>from</label>
            <input type="date" name="date1" id="date1">
            <label>To</label>
            <input type="date" name="date2" id="date2">
-           <button type="submit">filter</button>
-        </form>
+           <button type="button" id="filtForm">filter</button>
+        
       </div>
     </div>
   </div>
@@ -57,7 +59,7 @@
           </tr>
         </thead>
         <tbody id="stocks">
-            {% for product in page_obj %}
+            {% for product in products %}
           <tr>
             <td>
               <div class="d-flex align-items-center">
@@ -109,7 +111,7 @@
 
             
       </table>
-    
+    <!--
         <div style="margin-left:20px">
           {% if page_obj.has_previous %}
               <a class="btn btn-info mb-4" href="?page=1">first</a>
@@ -136,6 +138,7 @@
 
           {% endif %}
         </div>
+      -->
       
       <script>
         $(document).ready(function(){
@@ -146,7 +149,39 @@
             });
         });
     });
+// ====================submitting form ===============
 
+$(document).ready(function(){
+
+  $("#filtForm").click(function(){
+
+       $.ajax({
+         type: "POST",
+         url: "{% url 'firstapp-stockspost' %}",
+         data:{
+           date1: $("#date1").val(),
+           date2: $("#date2").val(),
+           csrfmiddlewaretoken:'{{ csrf_token }}'
+
+         },
+         beforeSend:function(){
+              $("#spinners").show()
+         },
+         complete:function(){
+             $("#spinners").hide()
+         },
+         success:function(data,status){
+
+          alert (typeof data)
+         }
+
+
+
+       })
+  })
+
+ 
+})
 
     function download_csv(csv, filename) {
     var csvFile;

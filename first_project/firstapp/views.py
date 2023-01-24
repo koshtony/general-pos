@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
 from django.db.models import Sum
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
@@ -8,9 +8,10 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
+from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses
 from datetime import datetime
-import pdfkit
+import json
 import time
 # Create your views here.
 
@@ -129,32 +130,30 @@ def addSales(request):
         return redirect('firstapp-counter')
         
 
-def stocksView(request):
+def stocksView(request): 
+    products = Stocks.objects.all()        
+    contxt = {
+            'products':products,
+    }
+    return render(request,'firstapp/stocks.html',contxt)
+
+def stocksPostView(request):
     if request.POST:
         date1 = request.POST.get("date1")
         date2 = request.POST.get("date2")
         if date1!='' or date1!='':
             products = Stocks.objects.filter(p_created__gte=date1,p_created__lte=date2)
+            products = serializers.serialize('json',products)
+            products = json.loads(products)
+            products = json.dumps(products[0])
         else: 
             products = Stocks.objects.all()
-        
-        page_num = request.GET.get('page',1)
-        paginator = Paginator(products,5)
-        try:
-            page_obj = paginator.page(page_num)
-        except PageNotAnInteger: 
-            page_obj =paginator.page(1)
-        except EmptyPage:
-            page_obj = paginator.page(paginator.num_pages)
-            
-        contxt = {
-            'products':products,
-            'page_obj': page_obj
-        }
-        
-        return render(request,'firstapp/stocks.html',contxt)
-    return render(request,'firstapp/stocks.html')
-
+            products = serializers.serialize('json',products)
+            products = json.loads(products)
+            products = json.dumps(products[0])
+        return JsonResponse(products,safe=False,status=200)
+    
+    
 class StocksCreateView(CreateView):
     model = Stocks
     template_name = 'firstapp/add_stocks.html'
@@ -271,16 +270,28 @@ def financePostView(request):
         exp.save()
         
         return JsonResponse({'date':date,desc:"desc","amount":amount})
-
+    
+#==========handles post requests from expenses page ======
+   
 def financeUpdateView(request):
     if request.POST:
+        id = request.POST.get("id_edited")
         date = request.POST.get("date_edited")
         desc = request.POST.get("desc_edited")
         amount = request.POST.get("amount_edited")
         
-        data = {"date":date}
-        print(data)
-        return JsonResponse(data)
+        # edit info and save in the expenses table
+        
+        filt_exp = Expenses.objects.get(exp_id = id)
+        filt_exp.exp_date = date
+        filt_exp.exp_desc = desc
+        filt_exp.exp_amount = amount 
+        filt_exp.exp_creator = request.user
+        filt_exp.save()
+        
+        data = {}
+        
+        return JsonResponse(data,status=200)
         
         
     
