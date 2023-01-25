@@ -171,8 +171,34 @@ $(document).ready(function(){
              $("#spinners").hide()
          },
          success:function(data,status){
+            var info = JSON.parse(data)
+            $("#stocks").html('')
+            for( var key in info){
+              $("#stocks").prepend(
 
-          alert (typeof data)
+              `
+                <tr>
+                  <td>
+              <div class="d-flex align-items-center">
+                <img
+                    src="${info[key]["fields"]["p_image"]}"
+                    alt=""
+                    style="width: 45px; height: 45px"
+                    class="rounded-circle"
+                    />
+                
+              </div>
+            </td>
+
+                    <td>${info[key]["fields"]["p_serial"]}</td>
+                  </tr>
+
+              `
+
+
+              )
+              //alert(info[key]["fields"]["p_serial"])
+            }
          }
 
 

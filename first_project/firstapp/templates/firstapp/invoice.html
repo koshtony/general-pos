@@ -177,7 +177,7 @@ tr:hover .cut { opacity: 1; }
                 <tr>
                     <td><a class="cut">-</a><span contenteditable>item 1</span></td>
                     <td><span contenteditable>item 1 desc</span></td>
-                    <td><span data-prefix>Ksh</span><span contenteditable>150.00</span></td>
+                    <td><span ></span><span contenteditable>150.00</span></td>
                     <td><span contenteditable>4</span></td>
                     <td><span data-prefix>Ksh</span><span>600.00</span></td>
                 </tr>
@@ -187,15 +187,15 @@ tr:hover .cut { opacity: 1; }
         <table class="balance">
             <tr>
                 <th><span contenteditable>Total</span></th>
-                <td><span data-prefix>Ksh</span><span>600.00</span></td>
+                <td><span data-prefix></span><span>600.00</span></td>
             </tr>
             <tr>
                 <th><span contenteditable>Amount Paid</span></th>
-                <td><span data-prefix>Ksh</span><span contenteditable>0.00</span></td>
+                <td><span data-prefix></span><span contenteditable>0.00</span></td>
             </tr>
             <tr>
                 <th><span contenteditable>Balance Due</span></th>
-                <td><span data-prefix>Ksh</span><span>600.00</span></td>
+                <td><span data-prefix></span><span>600.00</span></td>
             </tr>
         </table>
     </article>
@@ -287,11 +287,11 @@ function generateTableRow() {
 }
 
 function parseFloatHTML(element) {
-	return parseFloat(element.innerHTML.replace(/[^\d\.\-]+/g, '')) || 0;
+	return parseFloat(element.innerHTML);
 }
 
 function parsePrice(number) {
-	return number.toFixed(2).replace(/(\d)(?=(\d\d\d)+([^\d]|Ksh))/g, 'Ksh1,');
+	return number.toFixed(2);
 }
 
 /* Update Number

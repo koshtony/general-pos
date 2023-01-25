@@ -144,14 +144,13 @@ def stocksPostView(request):
         if date1!='' or date1!='':
             products = Stocks.objects.filter(p_created__gte=date1,p_created__lte=date2)
             products = serializers.serialize('json',products)
-            products = json.loads(products)
-            products = json.dumps(products[0])
+            print(products)
+            
         else: 
-            products = Stocks.objects.all()
+            products = Stocks.objects.all().values()
             products = serializers.serialize('json',products)
-            products = json.loads(products)
-            products = json.dumps(products[0])
-        return JsonResponse(products,safe=False,status=200)
+        
+        return JsonResponse(products,safe=False)
     
     
 class StocksCreateView(CreateView):
