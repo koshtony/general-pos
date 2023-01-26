@@ -144,7 +144,7 @@ def stocksPostView(request):
         if date1!='' or date1!='':
             products = Stocks.objects.filter(p_created__gte=date1,p_created__lte=date2)
             products = serializers.serialize('json',products)
-            print(products)
+           
             
         else: 
             products = Stocks.objects.all().values()
@@ -226,6 +226,21 @@ class SalesListView(ListView):
         
             return queryset
         return super().get_queryset()
+    
+def salesPostView(request):
+    if request.POST:
+        date1 = request.POST.get("date1")
+        date2 = request.POST.get("date2")
+        if date1!='' or date1!='':
+            sales = Sales.objects.filter(s_created__gte=date1,s_created__lte=date2)
+            sales = serializers.serialize('json',sales)
+           
+            
+        else: 
+            sales = Sales.objects.all().values()
+            sales = serializers.serialize('json',sales)
+        
+        return JsonResponse(sales,safe=False)
     
 def OrdersView(request):
     return render(request, 'firstapp/orders_list.html')

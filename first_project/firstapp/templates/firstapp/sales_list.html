@@ -12,22 +12,24 @@
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:#24a0ed">
         <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
+        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         
-        <form method="GET" action="{% url 'firstapp-sales' %}">
-          {% csrf_token %}
+        
            <label>from</label>
            <input type="date" name="date1" id="date1">
            <label>To</label>
            <input type="date" name="date2" id="date2">
-           <button type="submit">filter</button>
-        </form>
+           <button type="button" id="filtForm">filter</button>
+        
       </div>
     </div>
   </div>
@@ -43,7 +45,7 @@
     <table class="table align-middle mb-0 bg-white" style="margin-left:10px">
         <thead class="bg-light">
           <tr>
-            <th>Product Image</th>
+            
             <th>Serial</th>
             <th>Name</th>
             <th>shop</th>
@@ -56,20 +58,10 @@
             <th>Person</th>
           </tr>
         </thead>
-        <tbody id="stocks">
+        <tbody id="sales">
             {% for sale in sales %}
           <tr>
-            <td>
-              <div class="d-flex align-items-center">
-                <img
-                    src=""
-                    alt=""
-                    style="width: 45px; height: 45px"
-                    class="rounded-circle"
-                    />
-                
-              </div>
-            </td>
+            
             <td>
               {{sale.s_serial}}
             </td>
@@ -95,7 +87,7 @@
             <td>
               <a href="">
               <button type="button" class="btn btn-link btn-sm btn-rounded">
-                Edit
+                <i class="fa fa-undo">return</i>
               </button>
               </a>
             </td>
@@ -141,12 +133,80 @@
         $(document).ready(function(){
         $("#pname").on("keyup",function(){
             var value=$(this).val().toLowerCase();
-            $("#stocks tr").filter(function(){
+            $("#sales tr").filter(function(){
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
     });
 
+// handle post requests
+$(document).ready(function(){
+
+$("#filtForm").click(function(){
+
+     $.ajax({
+       type: "POST",
+       url: "{% url 'firstapp-salespost' %}",
+       data:{
+         date1: $("#date1").val(),
+         date2: $("#date2").val(),
+         csrfmiddlewaretoken:'{{ csrf_token }}'
+
+       },
+       beforeSend:function(){
+
+            $("#spinners").show()
+       },
+       complete:function(){
+           $("#spinners").hide()
+       },
+       success:function(data,status){
+          var info = JSON.parse(data)
+          $("#sales").html('')
+          for( var key in info){
+            $("#sales").prepend(
+
+            `
+            <tr>
+                  <td>${info[key]["fields"]["s_serial"]}</td>
+           
+                    <td>${info[key]["fields"]["s_name"]}</td>
+                    <td>${info[key]["fields"]["s_shop"]}</td>
+                    <td>${info[key]["fields"]["s_cost"]}</td>
+                    <td>${info[key]["fields"]["s_price"]}</td>
+                    <td>${info[key]["fields"]["s_profit"]}</td>
+                    <td>
+              <span style="background-color:red" class="badge badge-success rounded-pill d-inline">sold</span>
+            </td>
+                    <td>${info[key]["fields"]["s_created"]}</td>
+                    
+                    
+                   
+                   <td>
+              <a href="">
+              <button type="button" class="btn btn-link btn-sm btn-rounded">
+                <i class="fa fa-undo">return</i>
+              </button>
+              </a>
+              </td>
+              <td>${info[key]["fields"]["s_creator"]}</td>
+                  </tr>
+
+            `
+
+
+            )
+            //alert(info[key]["fields"]["p_serial"])
+          }
+       }
+
+
+
+     })
+})
+
+
+})
 
     function download_csv(csv, filename) {
     var csvFile;

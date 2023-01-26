@@ -11,16 +11,17 @@
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:#24a0ed">
         <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
+        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
-          <span class="sr-only">Loading...</span>
-        </div>
+      <div class="modal-body" id="modalBdy">
+        
       
           
            <label>from</label>
@@ -165,6 +166,7 @@ $(document).ready(function(){
 
          },
          beforeSend:function(){
+             
               $("#spinners").show()
          },
          complete:function(){
@@ -178,19 +180,26 @@ $(document).ready(function(){
 
               `
                 <tr>
-                  <td>
-              <div class="d-flex align-items-center">
-                <img
-                    src="${info[key]["fields"]["p_image"]}"
-                    alt=""
-                    style="width: 45px; height: 45px"
-                    class="rounded-circle"
-                    />
-                
-              </div>
-            </td>
-
-                    <td>${info[key]["fields"]["p_serial"]}</td>
+                  <td>${info[key]["fields"]["p_serial"]}</td>
+           
+                    <td>${info[key]["fields"]["p_name"]}</td>
+                    <td>${info[key]["fields"]["p_category"]}</td>
+                    <td>${info[key]["fields"]["p_desc"]}</td>
+                    <td>${info[key]["fields"]["p_qty"]}</td>
+                    <td>${info[key]["fields"]["p_price"]}</td>
+                    <td>${info[key]["fields"]["p_cost"]}</td>
+                    <td>
+              <span class="badge badge-success rounded-pill d-inline">Active</span>
+                   </td>
+                   <td>${info[key]["fields"]["p_creator"]}</td>
+                   <td>
+              <a href="">
+              <button type="button" class="btn btn-link btn-sm btn-rounded">
+                Edit
+              </button>
+              </a>
+              </td>
+              <td>${info[key]["fields"]["p_created"]}</td>
                   </tr>
 
               `
