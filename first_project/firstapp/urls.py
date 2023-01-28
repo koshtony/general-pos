@@ -6,11 +6,16 @@ from .views import StocksCreateView,\
     addSales,SalesListView,Charts,\
     OrdersView,InvoiceView,financeView,\
         financePostView,financeUpdateView,\
-            stocksPostView,salesPostView
+            stocksPostView,salesPostView,\
+                counterPlusSess,counterMinusSess,counterRemvSess
+            
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
     path('counter/', views.counter,name='firstapp-counter'),
     path('getcounter', views.getCounter,name='firstapp-getcounter'),
+    path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
+    path('counter/minus', views.counterMinusSess,name='firstapp-counterminus'),
+    path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
     path('addsales', views.addSales,name='firstapp-addsales'),
     path('reports/charts', views.Charts,name='firstapp-charts'),
     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),

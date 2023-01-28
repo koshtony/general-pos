@@ -60,9 +60,9 @@ def Charts(request):
 
 # gets the select item info 
 def getCounter(request):
-    pid = request.GET.get("pid")
+    pids = request.GET.get("pid")
     qty = request.GET.get("qty")
-    product = Stocks.objects.get(p_id=pid)
+    product = Stocks.objects.get(p_id=pids)
     name  = product.p_name
     serial = product.p_serial
     cat =product.p_category
@@ -72,12 +72,12 @@ def getCounter(request):
     total = float(price)*int(qty)
     total_cost = float(cost)*int(qty) 
     profit = total-total_cost
-    pid = hash(time.time())+int(pid)
+    pid = hash(time.time())+int(pids)
     data ={pid:
         
             {
-                "serial":serial,"name":name,"category":cat,"shops":shops,
-                "qty":qty,"price1":price,"price":total,"cost":total_cost,
+                "key":pid,"serial":serial,"name":name,"category":cat,"shops":shops,
+                "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
                 "profit":profit
                 
             }
@@ -94,22 +94,52 @@ def getCounter(request):
         request.session["sales"] = data
             
     
-        
-    pass_data = {"name":request.session["sales"][pid]["name"],
-                 
-                 "qty":request.session["sales"][pid]["qty"],
-                 
-                 "price":request.session["sales"][pid]["price1"],
-                 
-                 "total":request.session["sales"][pid]["price"]
-                 
-                }
-       
+  
+   
     filt_data = Stocks.objects.filter(p_name=name).first()
     new_obj=Stocks.objects.get(p_name=name)
     new_obj.p_qty = filt_data.p_qty - int(qty)
     new_obj.save()
-    return JsonResponse(pass_data,status=200)
+    return JsonResponse(data,status=200)
+
+def counterPlusSess(request):
+    key = request.GET.get("key")
+    qty = request.GET.get("qty")
+    print(key)
+    if 'sales' in request.session:
+        request.session["sales"][key]["qty"]=qty
+        
+        request.session["sales"][key]["price"] = float(request.session["sales"][key]["price1"])*float(qty)
+        
+        request.session["sales"][key]["profit"] = float(request.session["sales"][key]["price1"])*float(qty) -  request.session["sales"][key]["cost1"]*float(qty)
+        
+        request.session["sales"] = request.session["sales"]
+    key = {"key":key}
+    return JsonResponse(key)
+
+def counterMinusSess(request):
+    key = request.GET.get("key")
+    qty = request.GET.get("qty")
+    
+    if 'sales' in request.session:
+        request.session["sales"][key]["qty"]=qty
+        
+        request.session["sales"][key]["price"] = float(request.session["sales"][key]["price1"])*float(qty)
+        
+        request.session["sales"][key]["profit"] = float(request.session["sales"][key]["price1"])*float(qty) -  request.session["sales"][key]["cost1"]*float(qty)
+        
+        request.session["sales"] = request.session["sales"]
+    key = {"key":key}
+    return JsonResponse(key)
+
+def counterRemvSess(request):
+    key = request.GET.get('key')
+    if 'sales' in request.session:
+        print(request.session["sales"][key])
+        del request.session["sales"][key]
+        request.session["sales"] = request.session["sales"]
+    data ={"key":key}
+    return JsonResponse(data)
 
 def addSales(request):
     if 'sales' in request.session:

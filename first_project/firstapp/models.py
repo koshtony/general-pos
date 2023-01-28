@@ -48,6 +48,7 @@ class Sales(models.Model):
     s_serial = models.CharField(max_length=100)
     s_name = models.CharField(max_length=100)
     s_shop = models.CharField(max_length=100)
+    s_qty = models.FloatField(null=True,default=None)
     s_price = models.FloatField()
     s_cost = models.FloatField()
     s_negatives = models.FloatField()

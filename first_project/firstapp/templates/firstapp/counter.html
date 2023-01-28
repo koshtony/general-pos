@@ -249,15 +249,19 @@
 
 
         <section class="content">
-          
+          <div class="alert alert-primary" role="alert" id="plusAlerts" style="display:none">
+            <i style="margin-left:400px">product changed</i>
+          </div>
           <div class="container-fluid">
             <div class="row">
               <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                 <div class="card">
                   <div class="card-body p-0">
                     <table class="table table-striped"  id="countTab">
+                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
                       <thead style="background-color:orange">
                         <tr>
+                          
                           <th style="width: 10px">name</th>
                           <th>qty</th>
                           <th>price</th>
@@ -265,13 +269,19 @@
                           <th style="width: 60px">Remove</th>
                         </tr>
                       </thead>
-                      <tbody  style="background-color:aqua">
+                      <tbody  style="background-color:aqua" id="countBody">
                         
                         {% if "sales" in request.session %} 
                            {% for key,val in request.session.sales.items %}
                            <tr>
+                            
                             <td>{{ val.name }}</td>
-                            <td>{{ val.qty }}</td>
+                            <td>
+                              <input type="hidden" value="{{ key }}">
+                              <a class="btn btn-sm btn-info" id="plusBtn">+</a>
+                              <input type="number" value="{{ val.qty }}" style="width:40px">
+                              <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
+                            </td>
                             <td>{{ val.price1 }}</td>
                             <td>{{ val.price }}</td>
                             
@@ -402,7 +412,7 @@
       </div>
       <script type="text/javascript">
         function balCounter(){
-          var ntotal = $("#nettotal").val()
+          var ntotal = $("#nettotal").val() - $("#minus").val()
           $("#all").val(ntotal)
           $("#paid").on("keyup",function(){
             var paid = parseFloat($(this).val())
@@ -411,8 +421,13 @@
           })
         }
       
+      // detect changes in minus value
+      $("#minus").on("keyup",function(){
+               $("#nettotal").val($("#total").val()-$("#minus").val())
+          })
+
       function counter(qty,names,prices){
-          
+          event.preventDefault()
 
           $.get("{% url 'firstapp-getcounter' %}",{
             pid: qty,
@@ -421,29 +436,37 @@
             p_name:names
           },
           function(data,status){
-          
+            //var data = JSON.parse(data)
+        var sum = 0;
+         for (var key in data){
             $("#countTab tbody").prepend(
               `
               <tr>
-                  <td>${data["name"]}</td>
-                  <td>${data["qty"]}</td>
-                  <td>${data["price"]}</td>
-                  <td>${data["total"]}</td>
+                  <td>${data[key]["name"]}</td>
+                  <td>
+                              
+                            ${data[key]["qty"]}
+                             
+                  </td>
+                  <td>${data[key]["price1"]}</td>
+                  <td>${data[key]["price"]}</td>
                   <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
               </tr>
 
               `
             
             )
+            sum += data[key]["price"]
+         }
             
             
             
             tot =parseFloat($("#total").val())
             
-            tot += data["total"]
-            $("#total").val(tot)
+            
+            $("#total").val(sum)
             minuses = $("#minus").val()
-            nettot = tot - minuses
+            nettot = sum - minuses
             $("#nettotal").val(nettot)
 
             
@@ -459,6 +482,16 @@
                   newnets = parseFloat($("#nettotal").val()) - tabval
                   $("#total").val(newtotal)
                   $("#nettotal").val(newnets)
+
+                  // send unique key 
+                  $.get("{% url 'firstapp-counterremove' %}",{
+                     key: cRow.find("input[type=hidden]").val()
+                  },
+                    function(data,status){
+                       document.getElementById("plusAlerts").style.display = "block"
+                    }
+                  )
+        
                   cRow.remove()
                 });
 
@@ -468,8 +501,72 @@
         $("#total").val(0)
         $("#nettotal").val(0)
        }
+      // clicking plus button adding items
+       $("#countTab").on("click", "#plusBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("input[type=number]").val())
+                  
+                  cRow.find("input[type=number]").val(tabval+1)
 
-      
+                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
+
+                  
+
+                  cRow.find("td:eq(3)").text(cRow.find("input[type=number]").val()*row2Val) 
+
+                  var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(3)").text());
+                        });
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
+                        $.get("{% url 'firstapp-counterplus' %}",{
+
+                            key: cRow.find("input[type=hidden]").val(),
+                            qty: cRow.find("input[type=number]").val(),
+
+                            },
+                            function(data,status){
+                              document.getElementById("plusAlerts").style.display = "block"
+                              
+                            }
+                          )
+
+        }); 
+
+      // clicking minus button 
+      $("#countTab").on("click", "#minusBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("input[type=number]").val())
+                  
+                  cRow.find("input[type=number]").val(tabval-1)
+
+                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
+
+                  
+
+                  cRow.find("td:eq(3)").text(cRow.find("input[type=number]").val()*row2Val) 
+
+                  var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(3)").text());
+                        });
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
+                  $.get("{% url 'firstapp-counterplus' %}",{
+
+                     key: cRow.find("input[type=hidden]").val(),
+                     qty: cRow.find("input[type=number]").val(),
+
+                  },
+                   function(data,status){
+                    document.getElementById("plusAlerts").style.display = "block"
+                   }
+                  )
+
+        }); 
 
         $(document).ready(function(){
           $("#pname").on("keyup",function(){
