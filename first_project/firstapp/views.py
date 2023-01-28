@@ -28,6 +28,8 @@ def home(request):
     }
     return render(request,'firstapp/home.html',data)
 
+#==============render counter page =================
+
 def counter(request):
     sums = 0
     if 'sales' in request.session:
@@ -42,6 +44,7 @@ def counter(request):
     }
     return render(request,'firstapp/counter.html',stocks)
 
+# =============renders visuals page =================
 def Charts(request):
     
     x_sales = []
@@ -58,7 +61,9 @@ def Charts(request):
     }
     return render(request,'firstapp/reports.html',contxt)
 
-# gets the select item info 
+#============= gets info of the selected item===========
+#============= item added to cart=======================
+
 def getCounter(request):
     pids = request.GET.get("pid")
     qty = request.GET.get("qty")
