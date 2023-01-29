@@ -32,6 +32,7 @@ def home(request):
 
 def counter(request):
     sums = 0
+    
     if 'sales' in request.session:
         for key,value in request.session["sales"].items():
             sums+=float(request.session["sales"][key]["price"])
@@ -66,8 +67,11 @@ def Charts(request):
 
 def getCounter(request):
     pids = request.GET.get("pid")
+    
     qty = request.GET.get("qty")
+    
     product = Stocks.objects.get(p_id=pids)
+    
     name  = product.p_name
     serial = product.p_serial
     cat =product.p_category
@@ -77,7 +81,10 @@ def getCounter(request):
     total = float(price)*int(qty)
     total_cost = float(cost)*int(qty) 
     profit = total-total_cost
+    
+    
     pid = hash(time.time())+int(pids)
+    
     data ={pid:
         
             {
@@ -110,7 +117,8 @@ def getCounter(request):
 def counterPlusSess(request):
     key = request.GET.get("key")
     qty = request.GET.get("qty")
-    print(key)
+   
+   
     if 'sales' in request.session:
         request.session["sales"][key]["qty"]=qty
         
@@ -120,6 +128,7 @@ def counterPlusSess(request):
         
         request.session["sales"] = request.session["sales"]
     key = {"key":key}
+    
     return JsonResponse(key)
 
 def counterMinusSess(request):
@@ -139,11 +148,14 @@ def counterMinusSess(request):
 
 def counterRemvSess(request):
     key = request.GET.get('key')
+    
     if 'sales' in request.session:
         print(request.session["sales"][key])
         del request.session["sales"][key]
         request.session["sales"] = request.session["sales"]
+        
     data ={"key":key}
+    
     return JsonResponse(data)
 
 def addSales(request):
@@ -161,11 +173,14 @@ def addSales(request):
                 s_creator = request.user
             )
             sales.save()
+            
         del request.session["sales"]
+        
         return redirect('firstapp-counter')
         
 
 def stocksView(request): 
+    
     products = Stocks.objects.all()        
     contxt = {
             'products':products,
@@ -185,12 +200,15 @@ def stocksPostView(request):
             products = Stocks.objects.all().values()
             products = serializers.serialize('json',products)
         
+        
         return JsonResponse(products,safe=False)
     
     
 class StocksCreateView(CreateView):
     model = Stocks
+    
     template_name = 'firstapp/add_stocks.html'
+    
     fields = ['p_name','p_serial','p_category','p_desc',
               'p_image','p_qty','p_price','p_cost','p_shop','p_creator','p_created'
               ]
@@ -204,7 +222,9 @@ class StocksDetailView(DetailView):
 
 class StocksUpdateView(UpdateView):
     model = Stocks
+    
     template_name = 'firstapp/update_stocks.html'
+    
     fields = ['p_name','p_category','p_desc',
               'p_image','p_qty','p_price','p_cost','p_created'
               ]
@@ -224,8 +244,11 @@ class ShopsListView(ListView):
 
 class ShopsCreateView(SuccessMessageMixin,CreateView):
     model = Shops
+    
     template_name = 'firstapp/add_shops.html'
+    
     success_message = ' shop added successfully'
+    
     fields =['shop_name','shop_cat','shop_loc','shop_auth']
     
     def form_valid(self,form):
@@ -249,7 +272,9 @@ def shopsUpdate(request):
 
 class SalesListView(ListView):
     model = Sales
+    
     template = 'firstapp/sales_list.html'
+    
     context_object_name = 'sales'
    
     
@@ -282,6 +307,7 @@ def OrdersView(request):
 
 def InvoiceView(request):
     data = request.GET.get("htmlData")
+    
     if data != None:
         data = '<html>'+data + '</html>'
         html_path =  "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.html"
