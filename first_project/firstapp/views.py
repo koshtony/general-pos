@@ -123,7 +123,7 @@ def counterPlusSess(request):
         request.session["sales"][key]["qty"]=qty
         
         request.session["sales"][key]["price"] = float(request.session["sales"][key]["price1"])*float(qty)
-        
+       
         request.session["sales"][key]["profit"] = float(request.session["sales"][key]["price1"])*float(qty) -  request.session["sales"][key]["cost1"]*float(qty)
         
         request.session["sales"] = request.session["sales"]
@@ -232,9 +232,13 @@ class StocksUpdateView(UpdateView):
     def form_valid(self,form):
         form.instance.p_creator = self.request.user
         return super().form_valid(form)
+
+#========add stocks simple method ========
+def StocksInbound(request):
+    if request.POST:
+        pass
     
-    
-# display the shops details
+#=======display the shops details========
 class ShopsListView(ListView):
     model =Shops
     template_name = 'firstapp/shops_list.html'
@@ -253,7 +257,9 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
     
     def form_valid(self,form):
         return super().form_valid(form)
-    
+
+#==========update shop post request==
+
 def shopsUpdate(request):
     if request.POST:
         id = request.POST.get("id")

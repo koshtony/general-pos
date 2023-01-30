@@ -34,7 +34,49 @@
     </div>
   </div>
 </div>
+
+<!-- inbound modal -->
+<div class="modal fade" id="inboundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#24a0ed">
+        <h5 class="modal-title" id="exampleModalLabel"> Quick Inbound</h5>
+        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBdy">
+        
+         
+         
+        <label>item </label>&nbsp;&nbsp;
+           <select id="item">
+             {% for product in products %}
+             <option value="{{product.p_name}}">{{product.p_name}}</option>
+               {% endfor %}
+           </select>
+         
+         <label>shop </label>&nbsp;&nbsp;
+       
+            <select id="shop">
+              {% for product in products %}
+             <option value="{{product.p_shop.shop_name}}">{{product.p_shop.shop_name}}</option>
+             {% endfor %}
+           </select>
+          <br><br>
+           qty<input type="number" name="qty" id="qty">
+           <button type="button" id="filtForm">filter</button>
+         
+      </div>
+    </div>
+  </div>
+</div>
 <a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
+<button class="btn btn-primary" style="margin-left:520px" data-toggle="modal" data-target="#inboundModal">inbound</button>
+
     <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
     <datalist id="stocksList">
