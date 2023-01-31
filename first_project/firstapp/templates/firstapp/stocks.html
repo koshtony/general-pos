@@ -53,7 +53,7 @@
          
          
         <label>item </label>&nbsp;&nbsp;
-           <select id="item">
+           <select id="item" style="width:150px;">
              {% for product in products %}
              <option value="{{product.p_name}}">{{product.p_name}}</option>
                {% endfor %}
@@ -61,14 +61,22 @@
          
          <label>shop </label>&nbsp;&nbsp;
        
-            <select id="shop">
+            <select id="shop" style="width:150px;">
               {% for product in products %}
              <option value="{{product.p_shop.shop_name}}">{{product.p_shop.shop_name}}</option>
              {% endfor %}
            </select>
           <br><br>
-           qty<input type="number" name="qty" id="qty">
-           <button type="button" id="filtForm">filter</button>
+          <label>qty</label>
+           <input type="number" name="qty" id="qty" style="width:150px; margin-left:18px;">
+           <label>date</label>
+           <input type="date" name="date" id="date" style="width:150px;">
+           <br>
+           <label>remarks</label>
+           <br>
+           <textarea cols="50" id="remarks"></textarea>
+           <br><br>
+           <button type="button" id="inboundForm"  style="margin-left:200px;">inbound</button>
          
       </div>
     </div>
@@ -192,7 +200,7 @@
             });
         });
     });
-// ====================submitting form ===============
+// ====================submitting date filter form ===============
 
 $(document).ready(function(){
 
@@ -258,6 +266,46 @@ $(document).ready(function(){
   })
 
  
+})
+// end of submitting date filter form
+
+// ==== post inbound data 
+
+$(document).ready(function(){
+
+$("#inboundForm").click(function(){
+
+       $.ajax({
+           
+           type:"POST",
+           url:"{% url 'firstapp-stocksinbound' %}",
+           data:{
+               
+               item:$("#item").val(),
+
+               qty: $("#qty").val(),
+
+               shop: $("#shop").val(),
+                
+               remarks:$("#remarks").val(),
+
+               csrfmiddlewaretoken:'{{ csrf_token }}'
+
+
+
+
+
+           },
+
+           success:function(data,status){
+                alert("stocks added successfully")
+
+           }
+
+       })
+
+})
+
 })
 
     function download_csv(csv, filename) {

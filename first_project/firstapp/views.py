@@ -236,7 +236,25 @@ class StocksUpdateView(UpdateView):
 #========add stocks simple method ========
 def StocksInbound(request):
     if request.POST:
-        pass
+
+        item = request.POST.get("item")
+        shop = request.POST.get("shop")
+        qty = request.POST.get("qty")
+        remarks = request.POST.get("remarks")
+        
+        # filter stocks by product name and edit 
+
+        filt_stocks = Stocks.objects.filter(p_name = item).first()
+        filt_stocks.p_shop.shop_name = shop
+        filt_stocks.p_qty = filt_stocks.p_qty + int(qty)
+        filt_stocks.p_creator = request.user 
+        filt_stocks.p_created = datetime.now()
+        filt_stocks.save()
+
+        data = {"remarks":remarks}
+    
+        
+        return JsonResponse(data,status=200)
     
 #=======display the shops details========
 class ShopsListView(ListView):
