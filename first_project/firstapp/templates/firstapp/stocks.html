@@ -87,7 +87,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#24a0ed">
-        <h5 class="modal-title" id="exampleModalLabel"> Quick Inbound</h5>
+        <h5 class="modal-title" id="exampleModalLabel"> Transfers qty-wise</h5>
         <div id="spinner3" class="spinner-border" role="status" style="margin-left:150px; display:none">
           <span class="sr-only">Loading...</span>
         </div>
@@ -139,12 +139,12 @@
           <span class="sr-only">Loading...</span>
         </div>
 <button class="btn btn-primary"  style="margin-left:420px" data-toggle="modal" data-target="#inboundModal">inbound</button>
-<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-exchange">Transfers</i>
+<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sliders">Transfers</i>
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li> <button  style="margin-left:0px; width:200px" class="btn btn-success"  type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-arrows">bulky</i></button></li>
-            
-          <li><button style="margin-left:0px; width:200px" class="btn btn-secondary" type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-arrows">serial</i></button></li>
+          <li> <button  style="margin-left:0px; width:200px; border-width: 0px;"  type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-folder">bulky</i></button></li>
+            <br>
+          <li><button style="margin-left:0px; width:200px; border-width: 0px;"  type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-bars">serial</i></button></li>
           
         </ul>
 
@@ -152,15 +152,16 @@
      
           
 
-    <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
+    
+   
+    <table class="table align-middle mb-0 bg-white" style="margin-left:10px;" >
+      <input style="margin-left:20px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
     <datalist id="stocksList">
           {% for product in products %}
           <option value="{{product.p_name}}">{{product.p_name}}</option>
           {% endfor %}
     </datalist>
-   
-    <table class="table align-middle mb-0 bg-white" style="margin-left:10px;" >
         <thead class="bg-light">
           <tr>
             <th>Product Image</th>
@@ -171,6 +172,7 @@
             <th>Price</th>
             <th>Cost</th>
             <th>Status</th>
+            <th>shop name</th>
             <th>Creator</th>
             <th>Actions</th>
             <th>Created</th>
@@ -211,6 +213,7 @@
             <td>
               <span class="badge badge-success rounded-pill d-inline">Active</span>
             </td>
+            <td>{{product.p_shop.shop_name}}</td>
             <td>{{product.p_creator}}</td>
             <td>
               <a href="{% url 'firstapp-updatestocks' product.p_id %}">
@@ -423,6 +426,8 @@ $(document).ready(function(){
            success:function(data,status){
             if (data["error"]){
                 alert(data["error"])
+              }else if(data["added"]){
+                data["added"]
               }else{
                 alert("transfer was successfull")
               }

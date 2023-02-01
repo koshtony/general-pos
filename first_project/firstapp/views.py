@@ -273,18 +273,51 @@ def StocksTransfer(request):
         qty = request.POST.get("qty")
         item = request.POST.get("item")
         
-        filt_stocks_ = Stocks.objects.filter(p_name = item).first()
-        if filt_stocks_.p_shop.shop_name == from_:
+        filt_shop_1 = Shops.objects.filter(shop_name=from_).first()
+        filt_stocks_1 = Stocks.objects.filter(p_name = item).filter(p_shop = filt_shop_1.shop_id).first()
+        print(filt_stocks_1)
+        filt_shop_2 = Shops.objects.filter(shop_name = to_).first()
+        filt_stocks_2 = Stocks.objects.filter(p_name = item).filter(p_shop = filt_shop_2.shop_id).first()
+        print(filt_stocks_2)
+        
+        try:
             
-            filt_stocks_.p_qty = filt_stocks_.p_qty - int(qty)
-            #filt_stocks_.save()
+            filt_stocks_1.p_qty = filt_stocks_1.p_qty - int(qty)
+            filt_stocks_2.p_qty = filt_stocks_1.p_qty + int(qty)
+            filt_stocks_2.save()
+            
             
  
             data = {"success":"success"}
             
-        else:
-
-             data = {"error":"error"}
+        except:
+            mssg = ''
+            if filt_stocks_2 == None:
+            #filt_stocks_1.p_qty = filt_stocks_1.p_qty - int(qty)
+                stock_ = Stocks(
+                    
+                    p_serial = filt_stocks_1.p_serial,
+                    p_name = item,
+                    p_category = filt_stocks_1.p_category,
+                    p_desc = filt_stocks_1.p_desc,
+                    p_image = filt_stocks_1.p_image,
+                    p_qty = qty,
+                    p_price = filt_stocks_1.p_price,
+                    p_cost = filt_stocks_1.p_cost,
+                    p_shop = filt_shop_2,
+                    p_creator = request.user,
+                    p_created = datetime.now()
+                    
+                )
+                filt_stocks_1.save()
+                stock_.save()
+                mssg += "matching error but item transferred, duplicate created "
+                
+             
+            else:
+                mssg +="error"
+            
+            data = {"error":mssg}
 
 
 
