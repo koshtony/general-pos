@@ -187,6 +187,8 @@ def stocksView(request):
     }
     return render(request,'firstapp/stocks.html',contxt)
 
+# ======view to handle filter post query ==============
+
 def stocksPostView(request):
     if request.POST:
         date1 = request.POST.get("date1")
@@ -202,7 +204,8 @@ def stocksPostView(request):
         
         
         return JsonResponse(products,safe=False)
-    
+
+#=====view to handle stocks addittion=====
     
 class StocksCreateView(CreateView):
     model = Stocks
@@ -220,6 +223,9 @@ class StocksCreateView(CreateView):
 class StocksDetailView(DetailView):
     model= Stocks
 
+#========handles stocks updates ===========
+
+
 class StocksUpdateView(UpdateView):
     model = Stocks
     
@@ -233,7 +239,9 @@ class StocksUpdateView(UpdateView):
         form.instance.p_creator = self.request.user
         return super().form_valid(form)
 
+
 #========add stocks simple method ========
+
 def StocksInbound(request):
     if request.POST:
 
@@ -255,8 +263,38 @@ def StocksInbound(request):
     
         
         return JsonResponse(data,status=200)
+
+#==========Transfer bulky quantity ===========
+
+def StocksTransfer(request):
+    if request.POST:
+        from_ = request.POST.get("shop1")
+        to_ = request.POST.get("shop2")
+        qty = request.POST.get("qty")
+        item = request.POST.get("item")
+        
+        filt_stocks_ = Stocks.objects.filter(p_name = item).first()
+        if filt_stocks_.p_shop.shop_name == from_:
+            
+            filt_stocks_.p_qty = filt_stocks_.p_qty - int(qty)
+            #filt_stocks_.save()
+            
+ 
+            data = {"success":"success"}
+            
+        else:
+
+             data = {"error":"error"}
+
+
+
+                       
+        
+
+        return JsonResponse(data,status=200)
     
 #=======display the shops details========
+
 class ShopsListView(ListView):
     model =Shops
     template_name = 'firstapp/shops_list.html'

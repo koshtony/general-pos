@@ -7,7 +7,7 @@
  <i class="fa fa-filter"></i>by date
 </button>
 
-<!-- Modal -->
+<!-- date filter Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -41,7 +41,7 @@
     <div class="modal-content">
       <div class="modal-header" style="background-color:#24a0ed">
         <h5 class="modal-title" id="exampleModalLabel"> Quick Inbound</h5>
-        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+        <div id="spinner2" class="spinner-border" role="status" style="margin-left:150px; display:none">
           <span class="sr-only">Loading...</span>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -82,8 +82,75 @@
     </div>
   </div>
 </div>
-<a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
-<button class="btn btn-primary" style="margin-left:520px" data-toggle="modal" data-target="#inboundModal">inbound</button>
+<!-- transfer modal -->
+<div class="modal fade" id="transModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#24a0ed">
+        <h5 class="modal-title" id="exampleModalLabel"> Quick Inbound</h5>
+        <div id="spinner3" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBdy">
+        
+          <label style="margin-left: 10px;">From</label>&nbsp;&nbsp;
+            <select id="shop1" style="width:150px;">
+              {% for product in products %}
+             <option value="{{product.p_shop.shop_name}}">{{product.p_shop.shop_name}}</option>
+             {% endfor %}
+           </select>
+         
+         <label>To </label>&nbsp;&nbsp;
+       
+            <select id="shop2" style="width:150px;">
+              {% for product in products %}
+             <option value="{{product.p_shop.shop_name}}">{{product.p_shop.shop_name}}</option>
+             {% endfor %}
+           </select>
+          <br><br>
+          <label style="margin-left: 10px;">qty</label>
+           <input type="number" name="qty" id="transqty" style="width:150px; margin-left:18px;">
+           <label>item</label>
+               <select id="transitem" style="width:150px;">
+              {% for product in products %}
+             <option value="{{product.p_name}}">{{product.p_name}}</option>
+             {% endfor %}
+           </select>
+           <br>
+           <label style="margin-left: 10px;">remarks</label>
+           <br>
+           <textarea style="margin-left: 20px;" cols="35" id="transremarks"></textarea>
+           <br><br>
+           <button type="button" id="transferForm"  style="margin-left:200px;">Transfer</button>
+         
+    
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+<a id="downTab" style=""><i class="fa fa-download"></i></a>
+<div id="spinner3" class="spinner-border" role="status" style="margin-left:150px; display: none;">
+          <span class="sr-only">Loading...</span>
+        </div>
+<button class="btn btn-primary"  style="margin-left:420px" data-toggle="modal" data-target="#inboundModal">inbound</button>
+<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-exchange">Transfers</i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li> <button  style="margin-left:0px; width:200px" class="btn btn-success"  type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-arrows">bulky</i></button></li>
+            
+          <li><button style="margin-left:0px; width:200px" class="btn btn-secondary" type="button" data-toggle="modal" data-target="#transModal"><i class="fa fa-arrows">serial</i></button></li>
+          
+        </ul>
+
+
+     
+          
 
     <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
@@ -296,6 +363,13 @@ $("#inboundForm").click(function(){
 
 
            },
+           beforeSend:function(){
+             
+              $("#spinners2").show()
+         },
+         complete:function(){
+             $("#spinners2").hide()
+         },
 
            success:function(data,status){
                 alert("stocks added successfully")
@@ -305,6 +379,58 @@ $("#inboundForm").click(function(){
        })
 
 })
+
+})
+// ========end inbound form submission===
+
+// ====== transfer form submission    
+
+$(document).ready(function(){
+ 
+  $("#transferForm").click(function(){
+      
+      $.ajax({
+           
+           type:"POST",
+           url:"{% url 'firstapp-stockstransfer' %}",
+           data:{
+               
+               item:$("#transitem").val(),
+
+               qty: $("#transqty").val(),
+
+               shop1: $("#shop1").val(),
+
+               shop2: $("#shop2").val(),
+                
+               remarks:$("#transremarks").val(),
+
+               csrfmiddlewaretoken:'{{ csrf_token }}'
+
+
+
+
+
+           },
+           beforeSend:function(){
+             
+              $("#spinners3").show()
+         },
+         complete:function(){
+             $("#spinners3").hide()
+         },
+
+           success:function(data,status){
+            if (data["error"]){
+                alert(data["error"])
+              }else{
+                alert("transfer was successfull")
+              }
+
+           }
+
+       })
+  })
 
 })
 

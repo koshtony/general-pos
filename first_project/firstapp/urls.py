@@ -8,7 +8,7 @@ from .views import StocksCreateView,\
         financePostView,financeUpdateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
-                StocksInbound
+                StocksInbound, StocksTransfer
             
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
@@ -24,6 +24,7 @@ urlpatterns = [
     path('stocks/list',views.stocksView,name="firstapp-stocks"),
     path('stocks/post',views.stocksPostView,name="firstapp-stockspost"),
     path('stocks/inbound',views.StocksInbound,name="firstapp-stocksinbound"),
+    path('stocks/transfer',views.StocksTransfer,name="firstapp-stockstransfer"),
     path('shops/list',views.ShopsListView.as_view(),name="firstapp-shops"),
     path('orders/list',views.OrdersView,name="firstapp-orders"),
     path('invoice',views.InvoiceView,name="firstapp-invoice"),
