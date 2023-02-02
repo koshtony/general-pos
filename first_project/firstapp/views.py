@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from django.core import serializers
-from .models import Stocks,Shops,Sales,Expenses
+from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
 from datetime import datetime
 import json
 import time
@@ -23,8 +23,10 @@ orders = [
     
 ]
 def home(request):
+    tasks = Tasks.objects.all()
     data={
-        "orders":orders
+        "orders":orders,
+        "tasks":tasks
     }
     return render(request,'firstapp/home.html',data)
 
@@ -465,6 +467,26 @@ def financeUpdateView(request):
         
         
     
+#=============handles (location) coordinates storage and audit==
 
+def HandleLoc(request):
+
+    if request.POST:
+        lat = request.POST.get("lat")
+        long_ = request.POST.get("long")
+
+        location = Location(
+
+                    latitude = lat,
+                    longitude = long_,
+                    loc_tag = "normal",
+                    loc_created = datetime.now(),
+                    loc_creator = request.user
+            )
+        location.save()
+
+        data = {"latitude":lat,"longitude":long_}
+
+        return JsonResponse(data,status=200)
 
     

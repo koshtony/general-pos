@@ -70,6 +70,139 @@
               
               <!-- ./col -->
             </div>
+
+            <style>
+                  .btn-circle.btn-xl {
+            width: 200px;
+            height: 200px;
+            padding: 10px 16px;
+            border-radius: 35px;
+            font-size: 12px;
+            text-align: center;
+            margin-left: 80px;
+            margin-top:30px;
+        }
+
+            </style>
+
+            <script>
+
+              function getLoc(){
+                  
+              
+
+                  if (navigator.geolocation){
+
+                     navigator.geolocation.getCurrentPosition(sendLoc)
+                  }else{
+                    alert("failed")
+                  }
+              }
+
+              function sendLoc(position){
+
+                var lat = position.coords.latitude
+                var long = position.coords.longitude
+
+                $.ajax({
+
+                type:"POST",
+                url: "{% url 'firstapp-location' %}",
+
+                data: {
+
+                  lat:lat,
+                  long:long,
+                  csrfmiddlewaretoken:'{{ csrf_token }}'
+                },
+
+                success:function(data,status){
+
+                    alert("clock in successfully")
+                }
+
+                })
+
+                
+
+              }
+
+              function errorLoc(error){
+
+                if (error.PERMISSION_DENIED){
+
+                   alert("access denied")
+                }
+              }
+              
+             // creatint the clock 
+              setInterval(showTime, 1000);
+              function showTime() {
+                  let time = new Date();
+                  let hour = time.getHours();
+                  let min = time.getMinutes();
+                  let sec = time.getSeconds();
+                  am_pm = "AM";
+                
+                  if (hour > 12) {
+                      hour -= 12;
+                      am_pm = "PM";
+                  }
+                  if (hour == 0) {
+                      hr = 12;
+                      am_pm = "AM";
+                  }
+                
+                  hour = hour < 10 ? "0" + hour : hour;
+                  min = min < 10 ? "0" + min : min;
+                  sec = sec < 10 ? "0" + sec : sec;
+                
+                  let currentTime = hour + ":" 
+                          + min + ":" + sec + am_pm;
+                
+                  document.getElementById("clockBtn")
+                          .innerHTML = currentTime;
+              }
+              showTime();
+
+</script>
+<div class="container" style="margin-left:0px;" >
+
+  <div class="row" style="width:1750px" >
+    <div  style="background-color: aqua; height:250px; width:400px;">
+            <button type="button" onclick="getLoc()" class="btn btn-secondary btn-circle btn-xl"><span id="clockBtn">time</span></button>
+    </div>
+    &nbsp; &nbsp;
+    <div  style=" height:250px; overflow:hidden; width:650px;">
+      <table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">task</th>
+      <th scope="col">assigned_by</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      <th scope="row"><input type="checkbox" value="done"></th>
+      <th>{{ task.task_name }}</th>
+      <th>{{ task.task_creator }}</th>
+      <th>{{ task.task_status }}</th>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    </div>
+     &nbsp; &nbsp;
+    <div  style="background-color: yellow; height:250px;  overflow:scroll; width:550px">
+      Important
+    </div>
+
+  </div>
+</div>
             
             
           

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from datetime import datetime
 # Create your models here.
 class Shops(models.Model):
     shop_id = models.AutoField(primary_key=True)
@@ -9,7 +10,7 @@ class Shops(models.Model):
     shop_name =  models.CharField(max_length=100)
     shop_cat = models.CharField(max_length=100)
     shop_loc = models.CharField(max_length=100)
-    shop_created = models.DateTimeField(default= timezone.now())
+    shop_created = models.DateTimeField(default= datetime.now())
     
     
     def __str__(self):
@@ -30,7 +31,7 @@ class Stocks(models.Model):
     p_cost=models.FloatField()
     p_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
     p_creator=models.ForeignKey(User,on_delete=models.PROTECT)
-    p_created=models.DateTimeField(default= timezone.now())
+    p_created=models.DateTimeField(default= datetime.now())
     
     
     
@@ -54,7 +55,7 @@ class Sales(models.Model):
     s_negatives = models.FloatField()
     s_profit = models.FloatField()
     s_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
-    s_created = models.DateTimeField(default= timezone.now())
+    s_created = models.DateTimeField(default= datetime.now())
     s_creator = models.ForeignKey(User,on_delete=models.PROTECT)
     
     def __str__(self):
@@ -65,7 +66,7 @@ class Expenses(models.Model):
     exp_desc = models.TextField()
     exp_amount= models.FloatField()
     exp_creator = models.ForeignKey(User,on_delete=models.PROTECT)
-    exp_date = models.DateTimeField(default= timezone.now())
+    exp_date = models.DateTimeField(default= datetime.now())
     
     def __str__(self):
         return self.exp_desc
@@ -78,7 +79,31 @@ class Transfers(models.Model):
     t_to =  models.CharField(max_length=100)
     t_qty = models.IntegerField()
     t_creator = models.ForeignKey(User,on_delete=models.PROTECT)
-    t_created = models.DateTimeField(default= timezone.now())
+    t_created = models.DateTimeField(default= datetime.now())
     
     def __str__(self):
         return self.t_name
+
+class Location(models.Model):
+    loc_id = models.AutoField(primary_key=True)
+    latitude = models.CharField(max_length = 100000)
+    longitude = models.CharField(max_length = 100000,default=0.0)
+    loc_tag = models.CharField(max_length=100,default="not set")
+    loc_creator = models.ForeignKey(User,on_delete=models.CASCADE)
+    loc_created = models.DateTimeField(default= datetime.now())
+
+    def __str__(self):
+        return f"latitude:{self.latitude} longitude:{self.longitude}"
+
+class Tasks(models.Model):
+
+    task_id = models.AutoField(primary_key=True)
+    task_name = models.CharField(max_length=1000)
+    task_desc = models.TextField()
+    task_to = models.ManyToManyField(User)
+    task_status = models.CharField(max_length=1000)
+    task_creator = models.CharField(max_length=1000)
+    task_created = models.DateTimeField(default=datetime.now())
+
+    def __str__(self):
+        return self.task_name
