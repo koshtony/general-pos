@@ -39,9 +39,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
-  <div class="spinner-grow" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
+  
   <div class="wrapper" >
     
     <!-- Navbar -->
@@ -78,7 +76,8 @@
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}">Add Expenses</a></li>
-          <li><a style="margin-left:30px" type="button" href="">Tasks</a></li>
+          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-taskslist' %}">Tasks</a></li>
+           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-locationlist' %}">Attendance</a></li>
           
         </ul>
       </div>

@@ -71,16 +71,78 @@
               <!-- ./col -->
             </div>
 
+          <div class="row">
+              
+              <div class="col-lg-3 col-6">
+
+               <div class="small-box bg-outline">
+                <h4 id="status" style="margin-left:50px;"> status </h4>
+            <button type="button" id="cBtn" onclick="getLoc()" class="btn btn-secondary btn-circle btn-xl"><span id="clockBtn">time</span></button>
+              </div>
+                
+              </div>
+
+              <div class="col-lg-3 col-6">
+               <div class="small-box bg-info">
+                    <table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">task</th>
+      <th scope="col">assigned_by</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr>
+      {% if task.task_status == "pending" %}
+      <th scope="row"><input type="checkbox" value="pending"></th>
+      {% else }
+       <th scope="row"><input type="checkbox" value="done"></th>
+       {% endif %}
+      <th>{{ task.task_name }}</th>
+      <th>{{ task.task_creator }}</th>
+      <th>{{ task.task_status }}</th>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+              </div>
+                
+              </div>
+
+
+              <div class="col-lg-3 col-6">
+               <div class="small-box bg-secondary">
+                     <p> important </p>
+              </div>
+                
+              </div>
+              <div class="col-lg-3 col-6">
+               <div class="small-box bg-info">
+                    <p> reminders </p>
+              </div>
+                
+              </div>
+                 
+             </div>
+
+          </div>
+        </section>
+
             <style>
                   .btn-circle.btn-xl {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 100px;
             padding: 10px 16px;
             border-radius: 35px;
             font-size: 12px;
             text-align: center;
-            margin-left: 80px;
-            margin-top:30px;
+            margin-left: 170px;
+            margin-top:40px;
+            margin-bottom: 40px;
         }
 
             </style>
@@ -147,10 +209,19 @@
                   if (hour > 12) {
                       hour -= 12;
                       am_pm = "PM";
+
                   }
                   if (hour == 0) {
                       hr = 12;
                       am_pm = "AM";
+
+                  }
+                  if(hour > 8){
+
+                       document.getElementById('status').innerHTML = "late"
+                       document.getElementById('status').style.color = "red"
+                       document.getElementById('cBtn').style.background = "red"
+
                   }
                 
                   hour = hour < 10 ? "0" + hour : hour;
@@ -165,45 +236,14 @@
               }
               showTime();
 
+
+          // update confirmed tasks 
+
+
+
 </script>
-<div class="container" style="margin-left:0px;" >
 
-  <div class="row" style="width:1750px" >
-    <div  style="background-color: aqua; height:250px; width:400px;">
-            <button type="button" onclick="getLoc()" class="btn btn-secondary btn-circle btn-xl"><span id="clockBtn">time</span></button>
-    </div>
-    &nbsp; &nbsp;
-    <div  style=" height:250px; overflow:hidden; width:650px;">
-      <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">task</th>
-      <th scope="col">assigned_by</th>
-      <th scope="col">status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for task in tasks %}
-    <tr>
-      <th scope="row"><input type="checkbox" value="done"></th>
-      <th>{{ task.task_name }}</th>
-      <th>{{ task.task_creator }}</th>
-      <th>{{ task.task_status }}</th>
 
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-    </div>
-     &nbsp; &nbsp;
-    <div  style="background-color: yellow; height:250px;  overflow:scroll; width:550px">
-      Important
-    </div>
-
-  </div>
-</div>
-            
             
           
     {% endblock mainContent %}

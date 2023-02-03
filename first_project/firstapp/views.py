@@ -13,6 +13,7 @@ from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
 from datetime import datetime
 import json
 import time
+import os
 # Create your views here.
 
 orders = [
@@ -404,10 +405,10 @@ def OrdersView(request):
 
 def InvoiceView(request):
     data = request.GET.get("htmlData")
-    
+    dir= os.path.dirname(os.path.abspath(__file__))
     if data != None:
         data = '<html>'+data + '</html>'
-        html_path =  "/home/koshtech/Videos/general-pos/first_project/firstapp/static/firstapp/exports/invoice.html"
+        html_path =  dir+"/static/firstapp/exports/invoice.html"
         with open(html_path,"w+") as file:
         
             file.write(data)
@@ -489,4 +490,26 @@ def HandleLoc(request):
 
         return JsonResponse(data,status=200)
 
+#===========displays location/attendance info
+
+def ShowLoc(request):
+
+    location = Location.objects.all()
+
+    contxt = {
+                   "locs":location
+                }
     
+    return render(request,"firstapp/location.html",contxt)
+
+
+def ShowTasks(request):
+
+    tasks = Tasks.objects.all()
+
+    contxt = { 
+                  "tasks":tasks
+
+                }
+
+    return render(request,"firstapp/tasks.html",contxt)
