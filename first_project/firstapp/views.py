@@ -8,6 +8,7 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
 from datetime import datetime
@@ -32,7 +33,7 @@ def home(request):
     return render(request,'firstapp/home.html',data)
 
 #==============render counter page =================
-
+@login_required
 def counter(request):
     sums = 0
     
@@ -49,6 +50,7 @@ def counter(request):
     return render(request,'firstapp/counter.html',stocks)
 
 # =============renders visuals page =================
+@login_required
 def Charts(request):
     
     x_sales = []
@@ -182,7 +184,7 @@ def addSales(request):
         
         return redirect('firstapp-counter')
         
-
+@login_required
 def stocksView(request): 
     
     products = Stocks.objects.all()        
@@ -245,7 +247,7 @@ class StocksUpdateView(UpdateView):
 
 
 #========add stocks simple method ========
-
+@login_required
 def StocksInbound(request):
     if request.POST:
 
@@ -352,7 +354,7 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
         return super().form_valid(form)
 
 #==========update shop post request==
-
+@login_required
 def shopsUpdate(request):
     if request.POST:
         id = request.POST.get("id")
@@ -385,7 +387,7 @@ class SalesListView(ListView):
         
             return queryset
         return super().get_queryset()
-    
+
 def salesPostView(request):
     if request.POST:
         date1 = request.POST.get("date1")
@@ -461,7 +463,7 @@ def InvoiceView(request):
         
     return render(request,'firstapp/invoice.html')
 
-
+@login_required
 def financeView(request):
     
     
@@ -535,7 +537,7 @@ def HandleLoc(request):
         return JsonResponse(data,status=200)
 
 #===========displays location/attendance info
-
+@login_required
 def ShowLoc(request):
 
     location = Location.objects.all()
@@ -546,7 +548,7 @@ def ShowLoc(request):
     
     return render(request,"firstapp/location.html",contxt)
 
-
+@login_required
 def ShowTasks(request):
 
     tasks = Tasks.objects.all()
