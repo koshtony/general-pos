@@ -49,6 +49,7 @@
             <th>Serial</th>
             <th>Name</th>
             <th>shop</th>
+            <th>Qty</th>
             <th>Cost</th>
             <th>price</th>
             <th>profit</th>
@@ -69,7 +70,10 @@
                 {{sale.s_name}}
               </td>
               <td>
-                {{sale.s_shop}}
+                {{sale.s_shop.shop_name}}
+              </td>
+              <td>
+                   {{sale.s_qty}}
               </td>
               <td>
                 {{sale.s_cost}}
@@ -92,7 +96,7 @@
               </a>
             </td>
             <td>
-              {{sale.s_creator}}
+              {{sale.s_creator.username}}
             </td>
           </tr>
           {% endfor %}

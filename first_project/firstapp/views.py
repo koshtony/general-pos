@@ -70,7 +70,7 @@ def Charts(request):
 
 def getCounter(request):
     pids = request.GET.get("pid")
-    
+    print(pids)
     qty = request.GET.get("qty")
     
     product = Stocks.objects.get(p_id=pids)
@@ -112,7 +112,7 @@ def getCounter(request):
   
    
     filt_data = Stocks.objects.filter(p_name=name).first()
-    new_obj=Stocks.objects.get(p_name=name)
+    new_obj=Stocks.objects.filter(p_name=name).first()
     new_obj.p_qty = filt_data.p_qty - int(qty)
     new_obj.save()
     return JsonResponse(data,status=200)

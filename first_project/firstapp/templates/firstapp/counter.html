@@ -456,10 +456,13 @@
               `
             
             )
-            sum += data[key]["price"]
+            
          }
             
-            
+            var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(3)").text());
+                        });
             
             tot =parseFloat($("#total").val())
             
