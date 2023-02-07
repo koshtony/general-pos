@@ -54,6 +54,7 @@ class Sales(models.Model):
     s_cost = models.FloatField()
     s_negatives = models.FloatField()
     s_profit = models.FloatField()
+    s_status = models.CharField(max_length=100,default="sold")
     s_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
     s_created = models.DateTimeField(default= datetime.now())
     s_creator = models.ForeignKey(User,on_delete=models.PROTECT)

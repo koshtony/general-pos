@@ -121,16 +121,16 @@ tr:hover .cut { opacity: 1; }
 }
 
 @page { margin: 0; }
-   </style>
+   </style><style class="darkreader darkreader--sync" media="screen"></style>
 
     <header style="margin-left:100px;margin-right: 100px;">
-        <h1 style="background-color:aqua; color:black">Invoice</h1>
+        <h1 style="background-color: aqua; color: black; --darkreader-inline-bgcolor:#00cccc; --darkreader-inline-color:#e8e6e3;" data-darkreader-inline-bgcolor="" data-darkreader-inline-color="">Invoice</h1>
         <address contenteditable="">
             <p>My company name</p>
             <p>my comapny address<br>p.o box</p>
             <p>my company Phone</p>
         </address>
-        <span style="color:black; margin-left:500px"><img id="img_id" style="margin-left:500px; width:100px" alt="logo" src="" class=""><input type="file" accept="image/*"></span>
+        <span style="color: black; margin-left: 500px; --darkreader-inline-color:#e8e6e3;" data-darkreader-inline-color=""><img id="img_id" style="margin-left:500px; width:100px" alt="logo" src=""><input type="file" accept="image/*"></span>
     </header>
     <article style="margin-left:100px;margin-right: 100px; margin-bottom: 100px;">
         <h1>Recipient</h1>
@@ -150,7 +150,7 @@ tr:hover .cut { opacity: 1; }
             </tr>
             <tr>
                 <th><span contenteditable="">Amount Due</span></th>
-                <td><span id="prefix" contenteditable="">Ksh</span><span>900.00</span></td>
+                <td><span id="prefix" contenteditable="">Ksh</span><span>600.00</span></td>
             </tr>
         </tbody></table>
         <table class="inventory">
@@ -171,13 +171,13 @@ tr:hover .cut { opacity: 1; }
                     <td><span contenteditable="">4</span></td>
                     <td><span data-prefix="">Ksh</span><span>600.00</span></td>
                 </tr>
-            <tr><td><a class="cut">-</a><span contenteditable="">item 2</span></td><td><span contenteditable="">item 2 desc</span></td><td><span data-prefix="">Ksh</span><span contenteditable="">300.00</span></td><td><span contenteditable="">1</span></td><td><span data-prefix="">Ksh</span><span>300.00</span></td></tr></tbody>
+            </tbody>
         </table>
         <a class="add">+</a>
         <table class="balance">
             <tbody><tr>
                 <th><span contenteditable="">Total</span></th>
-                <td><span data-prefix="">Ksh</span><span>900.00</span></td>
+                <td><span data-prefix="">Ksh</span><span>600.00</span></td>
             </tr>
             <tr>
                 <th><span contenteditable="">Amount Paid</span></th>
@@ -185,7 +185,7 @@ tr:hover .cut { opacity: 1; }
             </tr>
             <tr>
                 <th><span contenteditable="">Balance Due</span></th>
-                <td><span data-prefix="">Ksh</span><span>900.00</span></td>
+                <td><span data-prefix="">Ksh</span><span>600.00</span></td>
             </tr>
         </tbody></table>
     </article>

@@ -8,7 +8,8 @@
 </button>
 <a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
 
-<!-- Modal -->
+<!-- ================filter Modal============== -->
+
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -34,6 +35,38 @@
     </div>
   </div>
 </div>
+
+<!--===============================return item modal===========================-->
+
+<div class="modal fade" id="returnsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">items info</h5>
+        <div id="spinner-return" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="item_id"></p>
+         <input type="text" id="item_name">
+         <input type="number" id="item_qty">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="returnBtn">return</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+     
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ============================================================================================================-->
+
+
     <input style="margin-left:620px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
     <datalist id="stocksList">
@@ -85,15 +118,19 @@
                 {{sale.s_profit}}
               </td>
             <td>
+              {% if sale.s_status == "sold" %}
               <span style="background-color:red" class="badge badge-success rounded-pill d-inline">sold</span>
+              {% else %}
+              <span style="background-color:yellow" class="badge badge-success rounded-pill d-inline">returned</span>
+              {% endif %}
             </td>
             <td>{{sale.s_created}}</td>
             <td>
-              <a href="">
-              <button type="button" class="btn btn-link btn-sm btn-rounded">
+        
+              <button type="button" onclick="returnModal('{{sale.s_id}}','{{sale.s_qty}}','{{sale.s_name}}')" class="btn btn-link btn-sm btn-rounded">
                 <i class="fa fa-undo">return</i>
               </button>
-              </a>
+              
             </td>
             <td>
               {{sale.s_creator.username}}
@@ -238,6 +275,8 @@ $("#filtForm").click(function(){
     downloadLink.click();
 }
 
+// html table converted to csv format
+
 function export_table_to_csv(html, filename) {
 	var csv = [];
 	var rows = document.querySelectorAll("table tr");
@@ -261,6 +300,63 @@ document.getElementById("downTab").addEventListener("click", function () {
     var fileName = 'sales' + now
 	export_table_to_csv(html, fileName);
 });
+
+// modal button triggered
+
+function returnModal(id,qty,name){     
+        $(document).ready(function() {
+                $("#returnsModal").modal("show");
+                                    
+                });
+
+                    document.getElementById("item_id").innerHTML=id
+                    document.getElementById("item_qty").value=qty
+                    document.getElementById("item_name").value=name
+                    
+                               
+            }
+
+// pass item info to be passed 
+
+$(document).ready(function(){
+
+  $("#returnBtn").click(function(){
+
+      $.ajax({
+        type:"post",
+        url:"{% url 'firstapp-salesreturn' %}",
+        data:{
+
+                id:$("#item_id").text(),
+                name:$("#item_name").val(),
+                qty:$("#item_qty").val(),
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+
+        },
+        beforeSend:function(){
+
+          $("#spinner-return").show()
+        },
+        complete: function(){
+        
+          $("#spinner-return").hide()
+        },
+        success:function(data,status){
+
+          if(data["success"]){
+
+             alert(data["success"])
+          }else{
+
+            data["error"]
+          }
+
+
+        }
+      })
+  })
+  
+})
       </script>
 
     {% endblock mainContent %}

@@ -168,6 +168,7 @@ def addSales(request):
                 s_serial = request.session["sales"][key]["serial"],
                 s_name = request.session["sales"][key]["name"],
                 s_shop = Shops.objects.get(shop_id=request.session["sales"][key]["shops"] ),
+                s_qty = request.session["sales"][key]["qty"],
                 s_price = request.session["sales"][key]["price"],
                 s_cost = request.session["sales"][key]["cost"],
                 s_negatives = 0,
@@ -399,7 +400,50 @@ def salesPostView(request):
             sales = serializers.serialize('json',sales)
         
         return JsonResponse(sales,safe=False)
-    
+
+#==========handles return of items======//moves from sales table to stocks table
+
+def SalesReturn(request):
+    if request.method:
+        
+        id = int(request.POST.get("id"))
+        name = request.POST.get("name")
+        qty = float(request.POST.get("qty"))
+        
+        # filter both sales and stocks by id and name resp...
+        sales_filt = Sales.objects.get(s_id = id)
+        stocks_filt = Stocks.objects.filter(p_name = sales_filt.s_name).first()
+        
+        # removes from sales -qty and adds to stocks +qty
+        try:
+            # deducting from sales
+            
+            sales_filt.s_qty = sales_filt.s_qty-qty
+            sales_filt.s_cost = sales_filt.s_qty*stocks_filt.p_cost
+            sales_filt.s_price = sales_filt.s_qty*stocks_filt.p_price
+            sales_filt.s_profit = (sales_filt.s_qty*stocks_filt.p_price)-(sales_filt.s_qty*stocks_filt.p_cost)
+            sales_filt.s_creator = request.user
+            sales_filt.s_status = "returned"
+            sales_filt.s_created = datetime.now()
+            
+            sales_filt.save()
+            
+            # adding to stocks
+            
+            stocks_filt.p_qty = stocks_filt.p_qty + qty
+            stocks_filt.p_creator = request.user
+            stocks_filt.p_created = datetime.now()
+            stocks_filt.save()
+            
+            mssg = {"success":"item returned successfully"}
+            
+        except Exception as e:
+             
+             mssg = {"error":"failed to return"}
+        print(mssg) 
+        return JsonResponse(mssg,status=200)
+            
+        
 def OrdersView(request):
     return render(request, 'firstapp/orders_list.html')
 

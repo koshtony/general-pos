@@ -9,7 +9,7 @@ from .views import StocksCreateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
-                ShowTasks
+                ShowTasks,SalesReturn
             
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
@@ -22,6 +22,7 @@ urlpatterns = [
     path('reports/charts', views.Charts,name='firstapp-charts'),
     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
     path('sales/post',views.salesPostView,name="firstapp-salespost"),
+    path('sales/return',views.SalesReturn,name="firstapp-salesreturn"),
     path('stocks/list',views.stocksView,name="firstapp-stocks"),
     path('stocks/post',views.stocksPostView,name="firstapp-stockspost"),
     path('stocks/inbound',views.StocksInbound,name="firstapp-stocksinbound"),
