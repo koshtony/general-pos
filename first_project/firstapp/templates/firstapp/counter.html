@@ -269,7 +269,7 @@
                           <th style="width: 60px">Remove</th>
                         </tr>
                       </thead>
-                      <tbody  style="background-color:aqua" id="countBody">
+                      <tbody  style="background-color:grey" id="countBody">
                         
                         {% if "sales" in request.session %} 
                            {% for key,val in request.session.sales.items %}
@@ -315,12 +315,48 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <button onclick="balCounter()" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
-                      <button type="button" onclick="clears();" class="btn btn-sm btn-danger" id="remvTbd">Remove</button>
+                      <button onclick="balCounter()" style="margin-left:0px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
+                      
+                      
+                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
                       
                     </div>
                     
-                     
+                    <!---      mpesa modal-->
+                    
+                    <div class="modal fade" id="mpesaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">=======Mpesa Checkout==========</h5>
+                            <div id="spinner-mpesa" class="spinner-border" role="status" style="margin-left:150px; display:none">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body" style="background-color:green">
+                           <div class="form-group">
+                             <label for="paid"></label>
+                            <input type="text" id="names" value="" style="margin-left:105px" placeholder="name">
+                            <br> <br>
+                            <label for="all"></label>
+                            <input type="text" id="phone_no" value="" style="margin-left:105px" placeholder="phone number">
+                            <br> <br>
+                            <label for="bal"></label>
+                            <input type="number" id="pay" value=""style="margin-left:105px" placeholder="amount">
+                            </div>
+                            <button type="button" onclick="" class="btn btn-sm btn-info" > complete </button>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+
                      <!-- Modal -->
                      <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                        <div class="modal-dialog" role="document">
@@ -411,6 +447,7 @@
         </div>
       </div>
       <script type="text/javascript">
+
         function balCounter(){
           var ntotal = $("#nettotal").val() - $("#minus").val()
           $("#all").val(ntotal)
@@ -420,7 +457,43 @@
             $("#bal").val(newtot)
           })
         }
-      
+       
+        // mpesa 
+
+        function mpesaCounter(){
+          var ntotal = $("#nettotal").val() - $("#minus").val()
+          $("#pay").val(ntotal)
+
+        }
+
+        // mpesa complete payment
+
+        function mpesaComplete(){
+
+          $.ajax({
+
+            type:"post",
+            url:"",
+            data:{
+              name:$("#names").val(),
+              phone:$("#phone_no").val(),
+              amount:$("#pay").val(),
+              csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            beforeSend: function(){
+                $("#spinner-mpesa").show()
+            },
+            complete: function(){
+       
+
+            },
+            success: function(){
+
+
+            }
+
+          })
+        }
       // detect changes in minus value
       $("#minus").on("keyup",function(){
                $("#nettotal").val($("#total").val()-$("#minus").val())
