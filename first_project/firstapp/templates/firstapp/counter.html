@@ -328,13 +328,12 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">=======Mpesa Checkout==========</h5>
-<<<<<<< HEAD
+                            <h5 class="modal-title" id="exampleModalLabel">===Mpesa Checkout======</h5>
+
                             <div id="spinner-mpesa" class="spinner-border" role="status" style="margin-left:150px; display:none">
                               <span class="sr-only">Loading...</span>
                             </div>
-=======
->>>>>>> 9a1646a (added mpesa stk_push)
+
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -350,11 +349,10 @@
                             <label for="bal"></label>
                             <input type="number" id="pay" value=""style="margin-left:105px" placeholder="amount">
                             </div>
-<<<<<<< HEAD
-                            <button type="button" onclick="" class="btn btn-sm btn-info" > complete </button>
-=======
-                            <button type="button" class="btn btn-sm btn-info" > complete </button>
->>>>>>> 9a1646a (added mpesa stk_push)
+
+                            <button type="button" onclick="mpesaComplete();" class="btn btn-sm btn-info" > complete </button>
+                            
+
                           </div> 
                         </div>
                       </div>
@@ -472,7 +470,7 @@
           $("#pay").val(ntotal)
 
         }
-<<<<<<< HEAD
+
 
         // mpesa complete payment
 
@@ -481,7 +479,7 @@
           $.ajax({
 
             type:"post",
-            url:"",
+            url:"{% url 'firstapp-stkpush' %}",
             data:{
               name:$("#names").val(),
               phone:$("#phone_no").val(),
@@ -492,18 +490,17 @@
                 $("#spinner-mpesa").show()
             },
             complete: function(){
-       
+                $("#spinner-mpesa").hide()
 
             },
-            success: function(){
+            success: function(data,status){
 
-
+                 alert(data)
             }
 
           })
         }
-=======
->>>>>>> 9a1646a (added mpesa stk_push)
+
       // detect changes in minus value
       $("#minus").on("keyup",function(){
                $("#nettotal").val($("#total").val()-$("#minus").val())

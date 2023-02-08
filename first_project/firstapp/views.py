@@ -10,6 +10,7 @@ from django.templatetags.static import static
 from django.utils.decorators import method_decorator
 from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
+from .mpesa import stk_push
 from datetime import datetime
 import json
 import time
@@ -562,4 +563,19 @@ def ShowTasks(request):
 # ==========initiate mpesa transaction (stk-push)==
 
 def MpesaTrans(request):
-    pass
+    if request.POST:
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        amount = request.POST.get("amount")
+
+        try:
+
+            data = stk_push(phone,amount)
+
+        except:
+
+            data = {"error":"failed"}
+
+        return JsonResponse(data,status=200,safe=False)
+
+

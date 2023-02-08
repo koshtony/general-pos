@@ -9,7 +9,7 @@ from .views import StocksCreateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
-                ShowTasks,SalesReturn
+                ShowTasks,SalesReturn,MpesaTrans
             
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
@@ -18,6 +18,7 @@ urlpatterns = [
     path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
     path('counter/minus', views.counterMinusSess,name='firstapp-counterminus'),
     path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
+    path('counter/mpesa', views.MpesaTrans,name='firstapp-stkpush'),
     path('addsales', views.addSales,name='firstapp-addsales'),
     path('reports/charts', views.Charts,name='firstapp-charts'),
     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
@@ -40,6 +41,7 @@ urlpatterns = [
     path('location/', views.HandleLoc,name='firstapp-location'),
     path('location/list', views.ShowLoc,name='firstapp-locationlist'),
     path('tasks/list', views.ShowTasks,name='firstapp-taskslist'),
+
 
 
 ]

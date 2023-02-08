@@ -1,7 +1,11 @@
 import requests
 from requests.auth import *
 import json
-from flask import Flask
+import os 
+
+os.environ["key"] = "HP9NKPmw9tC8y5d8T7XrOPEF46xQDNE2"
+os.environ["secret"] = "8StFF1RCXyVqgqxA"
+
 
 # getting the credentials
 def get_token():
