@@ -8,6 +8,8 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.templatetags.static import static
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
 from .mpesa import stk_push
@@ -24,6 +26,8 @@ orders = [
     },
     
 ]
+
+@login_required
 def home(request):
     tasks = Tasks.objects.all()
     data={
@@ -33,7 +37,7 @@ def home(request):
     return render(request,'firstapp/home.html',data)
 
 #==============render counter page =================
-
+@login_required
 def counter(request):
     sums = 0
     
@@ -50,6 +54,7 @@ def counter(request):
     return render(request,'firstapp/counter.html',stocks)
 
 # =============renders visuals page =================
+@login_required
 def Charts(request):
     
     x_sales = []
@@ -68,7 +73,7 @@ def Charts(request):
 
 #============= gets info of the selected item===========
 #============= item added to cart=======================
-
+@login_required
 def getCounter(request):
     pids = request.GET.get("pid")
     print(pids)
@@ -119,7 +124,7 @@ def getCounter(request):
     new_obj.p_qty = filt_data.p_qty - int(qty)
     new_obj.save()
     return JsonResponse(data,status=200)
-
+@login_required
 def counterPlusSess(request):
     key = request.GET.get("key")
     qty = request.GET.get("qty")
@@ -136,7 +141,7 @@ def counterPlusSess(request):
     key = {"key":key}
     
     return JsonResponse(key)
-
+@login_required
 def counterMinusSess(request):
     key = request.GET.get("key")
     qty = request.GET.get("qty")
@@ -152,6 +157,7 @@ def counterMinusSess(request):
     key = {"key":key}
     return JsonResponse(key)
 
+@login_required
 def counterRemvSess(request):
     key = request.GET.get('key')
     
@@ -164,6 +170,7 @@ def counterRemvSess(request):
     
     return JsonResponse(data)
 
+@login_required
 def addSales(request):
     if 'sales' in request.session:
         for key,value in request.session["sales"].items():
@@ -185,7 +192,7 @@ def addSales(request):
         
         return redirect('firstapp-counter')
         
-
+@login_required
 def stocksView(request): 
     
     products = Stocks.objects.all()        
@@ -195,7 +202,7 @@ def stocksView(request):
     return render(request,'firstapp/stocks.html',contxt)
 
 # ======view to handle filter post query ==============
-
+@login_required
 def stocksPostView(request):
     if request.POST:
         date1 = request.POST.get("date1")
@@ -214,7 +221,7 @@ def stocksPostView(request):
 
 #=====view to handle stocks addittion=====
     
-class StocksCreateView(CreateView):
+class StocksCreateView(LoginRequiredMixin,CreateView):
     model = Stocks
     
     template_name = 'firstapp/add_stocks.html'
@@ -233,7 +240,7 @@ class StocksDetailView(DetailView):
 #========handles stocks updates ===========
 
 
-class StocksUpdateView(UpdateView):
+class StocksUpdateView(LoginRequiredMixin,UpdateView):
     model = Stocks
     
     template_name = 'firstapp/update_stocks.html'
@@ -248,7 +255,7 @@ class StocksUpdateView(UpdateView):
 
 
 #========add stocks simple method ========
-
+@login_required
 def StocksInbound(request):
     if request.POST:
 
@@ -272,7 +279,7 @@ def StocksInbound(request):
         return JsonResponse(data,status=200)
 
 #==========Transfer bulky quantity ===========
-
+@login_required
 def StocksTransfer(request):
     if request.POST:
         from_ = request.POST.get("shop1")
@@ -335,14 +342,14 @@ def StocksTransfer(request):
     
 #=======display the shops details========
 
-class ShopsListView(ListView):
+class ShopsListView(LoginRequiredMixin,ListView):
     model =Shops
     template_name = 'firstapp/shops_list.html'
     context_object_name = 'shops'
     paginate_by = 5
     
 
-class ShopsCreateView(SuccessMessageMixin,CreateView):
+class ShopsCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     model = Shops
     
     template_name = 'firstapp/add_shops.html'
@@ -356,6 +363,7 @@ class ShopsCreateView(SuccessMessageMixin,CreateView):
 
 #==========update shop post request==
 
+@login_required
 def shopsUpdate(request):
     if request.POST:
         id = request.POST.get("id")
@@ -372,7 +380,7 @@ def shopsUpdate(request):
     
 # ---- sales view
 
-class SalesListView(ListView):
+class SalesListView(LoginRequiredMixin,ListView):
     model = Sales
     
     template = 'firstapp/sales_list.html'
@@ -388,7 +396,8 @@ class SalesListView(ListView):
         
             return queryset
         return super().get_queryset()
-    
+
+@login_required    
 def salesPostView(request):
     if request.POST:
         date1 = request.POST.get("date1")
@@ -406,6 +415,7 @@ def salesPostView(request):
 
 #==========handles return of items======//moves from sales table to stocks table
 
+@login_required
 def SalesReturn(request):
     if request.method:
         
@@ -446,9 +456,10 @@ def SalesReturn(request):
         print(mssg) 
         return JsonResponse(mssg,status=200)
             
-        
+@login_required        
 def OrdersView(request):
     return render(request, 'firstapp/orders_list.html')
+
 
 def InvoiceView(request):
     data = request.GET.get("htmlData")
@@ -464,7 +475,7 @@ def InvoiceView(request):
         
     return render(request,'firstapp/invoice.html')
 
-
+@login_required
 def financeView(request):
     
     
@@ -477,7 +488,7 @@ def financeView(request):
               
               }
     return render(request,'firstapp/financials.html',contxt)
-
+@login_required
 def financePostView(request):
    
         date = request.GET.get("date")
@@ -492,7 +503,7 @@ def financePostView(request):
         return JsonResponse({'date':date,desc:"desc","amount":amount})
     
 #==========handles post requests from expenses page ======
-   
+@login_required
 def financeUpdateView(request):
     if request.POST:
         id = request.POST.get("id_edited")
@@ -516,7 +527,7 @@ def financeUpdateView(request):
         
     
 #=============handles (location) coordinates storage and audit==
-
+@login_required
 def HandleLoc(request):
 
     if request.POST:
@@ -538,7 +549,7 @@ def HandleLoc(request):
         return JsonResponse(data,status=200)
 
 #===========displays location/attendance info
-
+@login_required
 def ShowLoc(request):
 
     location = Location.objects.all()
@@ -549,7 +560,7 @@ def ShowLoc(request):
     
     return render(request,"firstapp/location.html",contxt)
 
-
+@login_required
 def ShowTasks(request):
 
     tasks = Tasks.objects.all()
@@ -563,7 +574,7 @@ def ShowTasks(request):
 
 
 # ==========initiate mpesa transaction (stk-push)==
-
+@login_required
 def MpesaTrans(request):
     if request.POST:
         name = request.POST.get("name")

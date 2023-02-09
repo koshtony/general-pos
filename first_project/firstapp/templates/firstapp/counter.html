@@ -302,6 +302,8 @@
                         <br>
                         <label for="minus">-</label>
                         <br>
+                        <label for="vat">VAT(16%)</label>
+                        <br>
                         <label for="nettotal">Total</label>
                       </div>
                       <div class="col-8 col-sm-8 col-md-8 col-lg-8">
@@ -312,7 +314,11 @@
                           <input type="text" id="minus" name="minus" class="form-control" >
                         </div>
                         <div class="input-group input-group-sm mb-1">
-                          <input type="text" id ='nettotal' name="nettotal" class="form-control" readonly value="{{sum}}">
+                          <input type="text" id="vat" name="vat" class="form-control" >
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id ='nettotal' name="nettotal" class="form-control" 
+                          style="height:80px; font-size:80px;" readonly value="{{sum}}">
                         </div>
                       </div>
                     </div>
@@ -541,9 +547,9 @@
             
             var sum = 0;
                         $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(3)").text());
+                          sum += parseFloat($(this).find("td:eq(4)").text());
                         });
-            
+        
             tot =parseFloat($("#total").val())
             
             

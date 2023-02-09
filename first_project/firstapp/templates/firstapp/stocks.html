@@ -211,7 +211,11 @@
                 {{product.p_cost}}
               </td>
             <td>
-              <span class="badge badge-success rounded-pill d-inline">Active</span>
+              {% if product.p_qty < 5 %}
+              <span class="badge badge-danger rounded-pill d-inline">low</span>
+              {% else %}
+                 <span class="badge badge-success rounded-pill d-inline">Active</span>
+              {% endif %}
             </td>
             <td>{{product.p_shop.shop_name}}</td>
             <td>{{product.p_creator}}</td>
