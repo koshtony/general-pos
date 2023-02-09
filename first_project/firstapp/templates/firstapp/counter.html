@@ -103,7 +103,7 @@
     </ul>
     
      
-        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session | length }}</i></a>
+        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
     </nav>
     <!-- /.navbar -->
     
@@ -265,6 +265,7 @@
                           <th style="width: 10px">name</th>
                           <th>qty</th>
                           <th>price</th>
+                          <th>disc</th>
                           <th style="width: 40px">Total</th>
                           <th style="width: 60px">Remove</th>
                         </tr>
@@ -283,6 +284,7 @@
                               <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
                             </td>
                             <td>{{ val.price1 }}</td>
+                            <td>{{ val.disc }}</td>
                             <td>{{ val.price }}</td>
                             
                             <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
@@ -328,12 +330,10 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">===Mpesa Checkout======</h5>
-
+                            <h5 class="modal-title" id="exampleModalLabel">=======Mpesa Checkout==========</h5>
                             <div id="spinner-mpesa" class="spinner-border" role="status" style="margin-left:150px; display:none">
                               <span class="sr-only">Loading...</span>
                             </div>
-
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -349,10 +349,7 @@
                             <label for="bal"></label>
                             <input type="number" id="pay" value=""style="margin-left:105px" placeholder="amount">
                             </div>
-
-                            <button type="button" onclick="mpesaComplete();" class="btn btn-sm btn-info" > complete </button>
-                            
-
+                            <button type="button" onclick="" class="btn btn-sm btn-info" > complete </button>
                           </div> 
                         </div>
                       </div>
@@ -407,7 +404,7 @@
                     <div class="prods">
                     <div class="card p-0 m-0">
                       <div class="card-body p-0 m-0 b-0">
-                        <a onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
+                        <a onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}','{{product.p_disc}}');">
                         <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
                         </a>
                       </div>
@@ -421,13 +418,16 @@
                         
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <p  id="{{product.p_price}}">Ksh{{product.p_price}} </p>
-                            <input type="number" id="{{product.p_id}}" value="1" style="width:50px; height:30px">
+                            <p  id="{{product.p_price}}">Ksh {{product.p_price}} </p>
+                            off <input type="number" value="{{product.p_disc}}" style="width:50px">
+                            <br>
+                            <br>
+                            qty <input type="number" id="{{product.p_id}}" value="1" style="width:50px; height:30px">
                           </div>
                           
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
                             
-                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
+                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}','{{product.p_disc}}');">
                               
                               <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         
@@ -471,7 +471,6 @@
 
         }
 
-
         // mpesa complete payment
 
         function mpesaComplete(){
@@ -479,7 +478,7 @@
           $.ajax({
 
             type:"post",
-            url:"{% url 'firstapp-stkpush' %}",
+            url:"",
             data:{
               name:$("#names").val(),
               phone:$("#phone_no").val(),
@@ -490,30 +489,30 @@
                 $("#spinner-mpesa").show()
             },
             complete: function(){
-                $("#spinner-mpesa").hide()
-
+       
+              $("#spinner-mpesa").hide()
             },
-            success: function(data,status){
+            success: function(){
 
-                 alert(data)
+
             }
 
           })
         }
-
       // detect changes in minus value
       $("#minus").on("keyup",function(){
                $("#nettotal").val($("#total").val()-$("#minus").val())
           })
 
-      function counter(qty,names,prices){
+      function counter(qty,names,prices,disc){
           event.preventDefault()
 
           $.get("{% url 'firstapp-getcounter' %}",{
             pid: qty,
             qty: $('#'+qty).val(),
             price :prices,
-            p_name:names
+            p_name:names,
+            disc:disc,
           },
           function(data,status){
             //var data = JSON.parse(data)
@@ -529,6 +528,7 @@
                              
                   </td>
                   <td>${data[key]["price1"]}</td>
+                  <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
                   <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
               </tr>

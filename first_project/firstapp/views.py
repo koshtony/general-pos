@@ -73,6 +73,7 @@ def getCounter(request):
     pids = request.GET.get("pid")
     print(pids)
     qty = request.GET.get("qty")
+    disc = request.GET.get("disc")
     
     product = Stocks.objects.get(p_id=pids)
     
@@ -84,7 +85,8 @@ def getCounter(request):
     cost = product.p_cost
     total = float(price)*int(qty)
     total_cost = float(cost)*int(qty) 
-    profit = total-total_cost
+    profit = total-total_cost-float(disc)
+    
     
     
     pid = hash(time.time())+int(pids)
@@ -94,7 +96,7 @@ def getCounter(request):
             {
                 "key":pid,"serial":serial,"name":name,"category":cat,"shops":shops,
                 "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
-                "profit":profit
+                "profit":profit,"disc":disc
                 
             }
                 
@@ -571,11 +573,40 @@ def MpesaTrans(request):
         try:
 
             data = stk_push(phone,amount)
+            if 'sales' in request.session:
+                for key,value in request.session["sales"].items():
+                    sales= Sales(
+                        s_serial = request.session["sales"][key]["serial"],
+                        s_name = request.session["sales"][key]["name"],
+                        s_shop = Shops.objects.get(shop_id=request.session["sales"][key]["shops"] ),
+                        s_qty = request.session["sales"][key]["qty"],
+                        s_price = request.session["sales"][key]["price"],
+                        s_cost = request.session["sales"][key]["cost"],
+                        s_negatives = 0,
+                        s_type= "mpesa",
+                        s_profit = request.session["sales"][key]["profit"],
+                        
+                        s_created = datetime.now(),
+                        s_creator = request.user
+                    )
+                    sales.save()
+                    
+                del request.session["sales"]
+        
+                return redirect('firstapp-counter')
 
         except:
 
             data = {"error":"failed"}
 
         return JsonResponse(data,status=200,safe=False)
+    
+    
+    
+# mpesa confirmation url
+
+def MpesaConfirm(request):
+    
+    pass
 
 

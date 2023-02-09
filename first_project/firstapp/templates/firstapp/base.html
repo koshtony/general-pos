@@ -103,7 +103,7 @@
     </ul>
     
      
-        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session | length }}</i></a>
+        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
       
       
       <!-- Right navbar links -->
@@ -274,6 +274,7 @@
   </div>
   <!-- /.content-wrapper -->
 </div>
+
 <!-- ./wrapper -->
 
 <script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 

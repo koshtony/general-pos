@@ -170,6 +170,11 @@
           {% endif %}
         </div>
       -->
+      <footer>
+        <input type="text" id="qtysums" style="margin-left:520px; width:50px">
+        <input type="text" id="revenues" style="margin-left:120px; width:50px">
+        <input type="text" id="profits" style="margin-left:40px; width:50px">
+       </footer>
       <script>
         $(document).ready(function(){
         $("#pname").on("keyup",function(){
@@ -357,6 +362,29 @@ $(document).ready(function(){
   })
   
 })
-      </script>
+
+// columns summations
+
+function summary(){
+
+  var qtySum = 0;
+  var revSum = 0;
+  var profSum = 0;
+  $("#sales tr").each(function(){
+              qtySum += parseFloat($(this).find("td:eq(3)").text());
+              revSum += parseFloat($(this).find("td:eq(5)").text());
+              profSum += parseFloat($(this).find("td:eq(6)").text());
+          });
+    $("#qtysums").val(qtySum)
+    $("#revenues").val(revSum)
+    $("#profits").val(profSum)
+}
+
+summary()
+
+
+
+</script>
+      
 
     {% endblock mainContent %}
