@@ -355,6 +355,7 @@
                             <label for="bal"></label>
                             <input type="number" id="pay" value=""style="margin-left:105px" placeholder="amount">
                             </div>
+                            <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" %}" download><i class="fa fa-download">receipt</i></a>
                             <button type="button" onclick="" class="btn btn-sm btn-info" > complete </button>
                           </div> 
                         </div>
@@ -386,6 +387,7 @@
                              <label for="bal">Bal>>>>>>>>></label>
                              <input type="text" id="bal" value=""style="margin-left:103px">
                              </div>
+                             <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" %}" download><i class="fa fa-download">receipt</i></a>
                              <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
                            </div> 
                          </div>
@@ -565,10 +567,10 @@
       $("#countTab").on("click", "#delBtn", function() {
                   cRow = $(this).closest("tr")
               
-                  tabval = parseFloat(cRow.find("td:eq(3)").text())
-                  
-                  newtotal = parseFloat($("#total").val())- tabval
-                  newnets = parseFloat($("#nettotal").val()) - tabval
+                  tabval = parseFloat(cRow.find("td:eq(4)").text())
+                  discval = parseFloat(cRow.find("td:eq(3)").text())
+                  newtotal = parseFloat($("#total").val())- tabval - discval
+                  newnets = parseFloat($("#nettotal").val()) - tabval - discval
                   $("#total").val(newtotal)
                   $("#nettotal").val(newnets)
 

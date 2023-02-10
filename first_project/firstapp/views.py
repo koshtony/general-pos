@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
 from .mpesa import stk_push
+from .summary import sales_summ,stocks_summ
 from datetime import datetime
 import json
 import time
@@ -30,9 +31,14 @@ orders = [
 @login_required
 def home(request):
     tasks = Tasks.objects.all()
+    _,_,sales_qty = sales_summ(Sales)
+    _,_,_,stocks_qty = stocks_summ(Stocks)
     data={
         "orders":orders,
-        "tasks":tasks
+        "tasks":tasks,
+        "sales":sum(sales_qty),
+        "stocks":sum(stocks_qty),
+        
     }
     return render(request,'firstapp/home.html',data)
 
@@ -619,5 +625,20 @@ def MpesaTrans(request):
 def MpesaConfirm(request):
     
     pass
+
+def GenReceipt(request):
+    
+    sumqty = 0
+    sumtot = 0
+
+    if 'sales' in request.session:
+        for key,val in request.session["sales"].items():
+            
+            sumqty += float(request.session["sales"][key]["qty"])
+            sumtot += float(request.session["sales"][key]["price"])
+           
+    contxt = {"sumqty":sumqty,"sumtot":sumtot,"date":datetime.now(),"code":hash(datetime.now())}
+    
+    return render(request,'firstapp/receipt.html',contxt)
 
 

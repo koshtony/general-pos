@@ -41,7 +41,7 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                   <div class="inner">
-                    <h3>0</h3>
+                    <h3>{{ sales }}</h3>
                     
                     <p>Total Sales</p>
                   </div>
@@ -56,7 +56,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3>4</h3>
+                    <h3>{{ stocks }}</h3>
                     
                     <p>Stock Levels</p>
                   </div>
@@ -98,7 +98,7 @@
     <tr>
       {% if task.task_status == "pending" %}
       <th scope="row"><input type="checkbox" value="pending"></th>
-      {% else }
+      {% else %}
        <th scope="row"><input type="checkbox" value="done"></th>
        {% endif %}
       <th>{{ task.task_name }}</th>
