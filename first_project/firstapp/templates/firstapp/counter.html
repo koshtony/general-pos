@@ -327,6 +327,9 @@
                       
                       
                       <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
+
+                      <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#debtModal"><i class="fa fa-mobile">add debt</i></button>
+
                       
                     </div>
                     
@@ -362,7 +365,40 @@
                       </div>
                     </div>
 
-
+                    <!-- debt register modal -->
+                    <div class="modal fade" id="debtModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">=========Register Debt========</h5>
+                            <div id="spinner-debt" class="spinner-border" role="status" style="margin-left:150px; display:none">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label for="dname"></label>
+                             <input type="text" id="dname" value="" style="margin-left:105px" placeholder="name">
+                             <br> <br>
+                             <label for="dphone"></label>
+                             <input type="text" id="dphone" value="" style="margin-left:105px" placeholder="phone number">
+                             <br> <br>
+                             <label for="dpay"></label>
+                             <input type="number" id="dpay" value="" style="margin-left:105px" placeholder="amount">
+                             <br><br>
+                             <label for="dremks">remarks</label>
+                             <br>
+                             <textarea style="margin-left:105px" id="dremks" col="19"></textarea>
+                             </div>
+                            <button onclick="debtCounter();" type="button" class="btn btn-sm btn-info" >submit </button>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
 
 
 
@@ -507,6 +543,46 @@
 
           })
         }
+
+        // register debt
+
+        function mpesaCounter(){
+          var ntotal = $("#nettotal").val() - $("#minus").val()
+          $("#pay").val(ntotal)
+
+        }
+
+   
+        // register debt
+
+        function debtCounter(){
+
+          $.ajax({
+
+            type:"post",
+            url:"{% url 'firstapp-debt' %}",
+            data:{
+              dname:$("#dname").val(),
+              dphone:$("#dphone").val(),
+              damount:$("#dpay").val(),
+              dremks:$("#dremks").val(),
+              csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            beforeSend: function(){
+                $("#spinner-debt").show()
+            },
+            complete: function(){
+       
+              $("#spinner-debt").hide()
+            },
+            success: function(data,status){
+
+                alert(data["info"])
+            }
+
+          })
+        }
+
       // detect changes in minus value
       $("#minus").on("keyup",function(){
                $("#nettotal").val($("#total").val()-$("#minus").val())

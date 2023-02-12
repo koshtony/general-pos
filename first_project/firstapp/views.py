@@ -11,9 +11,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from .models import Stocks,Shops,Sales,Expenses,Location,Tasks
+from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts
 from .mpesa import stk_push
-from .summary import sales_summ,stocks_summ
+from .summary import sales_summ,stocks_summ,time_sales_summ
 from datetime import datetime
 import json
 import time
@@ -63,17 +63,21 @@ def counter(request):
 @login_required
 def Charts(request):
     
-    x_sales = []
-    y_sales = []
+    sales_labels,sales_profits,sales_qty = sales_summ(Sales)
     
-    sales  = Sales.objects.values('s_name').annotate(total_profit= Sum('s_profit'))
-    for sale in sales:
-        x_sales.append(sale["s_name"])
-        y_sales.append(sale["total_profit"])
-    print(x_sales)
+    stocks_labels,_,_,stocks_qty = stocks_summ(Stocks)
+    dates,qty= time_sales_summ(Sales)
+    dates = [date.month for date in dates ]
+    print(dates)
+    print(qty)
     contxt = {
-        "labels": x_sales,
-        "data":y_sales,
+        "sales_labels": sales_labels,
+        "sales_qty":sales_qty,
+        "sales_profits":sales_profits,
+        "stocks_labels":stocks_labels,
+        "stocks_qty":stocks_qty,
+        "months":dates,
+        "monthly_qty":qty
     }
     return render(request,'firstapp/reports.html',contxt)
 
@@ -82,7 +86,6 @@ def Charts(request):
 @login_required
 def getCounter(request):
     pids = request.GET.get("pid")
-    print(pids)
     qty = request.GET.get("qty")
     disc = request.GET.get("disc")
     
@@ -295,10 +298,10 @@ def StocksTransfer(request):
         
         filt_shop_1 = Shops.objects.filter(shop_name=from_).first()
         filt_stocks_1 = Stocks.objects.filter(p_name = item).filter(p_shop = filt_shop_1.shop_id).first()
-        print(filt_stocks_1)
+        
         filt_shop_2 = Shops.objects.filter(shop_name = to_).first()
         filt_stocks_2 = Stocks.objects.filter(p_name = item).filter(p_shop = filt_shop_2.shop_id).first()
-        print(filt_stocks_2)
+      
         
         try:
             
@@ -488,9 +491,9 @@ def financeView(request):
     
     contxt = {
                   "expenses":Expenses.objects.all(),
-                  "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"],
-                  "profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"],
-                  "net_profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] 
+                  "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] +  Debts.objects.aggregate(Sum('debt_rem'))["debt_rem__sum"],
+                  "profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Debts.objects.aggregate(Sum('debt_rem'))["debt_rem__sum"],
+                  "net_profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"],
               
               }
     return render(request,'firstapp/financials.html',contxt)
@@ -500,7 +503,7 @@ def financePostView(request):
         date = request.GET.get("date")
         desc = request.GET.get("desc")
         amount = request.GET.get("amount")
-        print(desc)
+    
         exp = Expenses(exp_desc = desc,exp_amount = amount , 
                        exp_date = date, exp_creator=request.user
                        )
@@ -624,7 +627,10 @@ def MpesaTrans(request):
 
 def MpesaConfirm(request):
     
-    pass
+    resp = request.body
+    
+    return HttpResponse(body)
+                    
 
 def GenReceipt(request):
     
@@ -641,4 +647,93 @@ def GenReceipt(request):
     
     return render(request,'firstapp/receipt.html',contxt)
 
+#========debt view point ====================
+
+def DebtView(request):
+    
+    debts = Debts.objects.all()
+    
+    contxt ={"debts":debts}
+    
+    return render(request,'firstapp/debts.html',contxt)
+
+
+#============handle debt register============
+
+def DebtAdd(request):
+    
+    if request.POST:
+        
+        dname = request.POST.get("dname")
+        dphone = request.POST.get("dphone")
+        damount = request.POST.get("damount")
+        dremks = request.POST.get("dremks")
+        print(damount)
+        try:
+            debts = Debts(
+                debt_cus = str(dname)+": "+str(dphone),
+                debt_amnt = float(damount),
+                debt_rem = float(damount),
+                debt_last = datetime.now(),
+                debt_remks = dremks,
+                debt_creator = request.user
+            )
+        
+            debts.save()
+            
+            mssg={"info":str(dname)+": "+str(dphone)+" "+str(damount)+" added successfully"}
+            
+        except Exception as e:
+            print(e)
+            
+            mssg={"info":"failed to add debt"}
+            
+        return JsonResponse(mssg,status=200)
+    
+#============handle debt pay=============
+
+def DebtPay(request):
+    
+    if request.POST:
+        
+        id = request.POST.get('ids')
+        amount = request.POST.get("paid")
+        
+        try:
+            
+            debts_filt = Debts.objects.get(debt_id=int(id))
+            debts_filt.debt_rem = debts_filt.debt_rem - float(amount)
+            debts_filt.debt_last = datetime.now()
+            
+            debts_filt.save()
+            
+            mssg = {"info":"successfully paid"}
+        
+        except:
+            
+            
+            mssg = {"info":"pay failed"}
+            
+        return JsonResponse(mssg,status=200)
+    
+#============== error handling =============
+
+# handle 404 error -> page not found
+
+def error_404(request,exception):
+    
+    return render(request,'firstapp/404.html',status=404)
+
+# handle 500 error -> error experiemced on server side
+
+def error_500(request,exception=None):
+    
+    return render(request,'firstapp/500.html',status=500)
+
+
+# handle 403 error -> permission denied , not authorised
+
+def error_403(request,exception=None):
+    
+    return render(request,'firstapp/403.html',status=403)
 

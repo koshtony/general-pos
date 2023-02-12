@@ -28,6 +28,10 @@ urlpatterns = [
 
 ]
 
+handler404 = "firstapp.views.error_404"
+handler500 = "firstapp.views.error_500"
+handler403 = "firstapp.views.error_403"
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

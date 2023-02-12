@@ -9,7 +9,7 @@ from .views import StocksCreateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
-                ShowTasks,SalesReturn,MpesaTrans,GenReceipt
+                ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay
             
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
@@ -42,9 +42,14 @@ urlpatterns = [
     path('location/list', views.ShowLoc,name='firstapp-locationlist'),
     path('tasks/list', views.ShowTasks,name='firstapp-taskslist'),
      path('tasks/list', views.ShowTasks,name='firstapp-taskslist'),
-      path('counter/receipt', views.GenReceipt,name='firstapp-receipt')
+      path('counter/receipt', views.GenReceipt,name='firstapp-receipt'),
+       path('counter/debt', views.DebtAdd,name='firstapp-debt'),
+       path('debtlist', views.DebtView,name='firstapp-debtlist'),
+       path('debtpay', views.DebtPay,name='firstapp-debtpay'),
+       
      
 
 
 
 ]
+

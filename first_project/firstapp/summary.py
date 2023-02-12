@@ -1,4 +1,5 @@
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 
 def sales_summ(object):
     labels,profit,qty = [],[],[]
@@ -28,3 +29,17 @@ def stocks_summ(object):
         qty.append(stock["total_qty"])
         
     return labels,cost,price,qty
+
+def time_sales_summ(object):
+    
+    dates,qty,profit = [],[],[]
+    
+    objs = object.objects.annotate(month=TruncMonth('s_created')).values('month').annotate(sum_qty=Sum('s_profit'))
+    
+    for obj in objs:
+        
+        dates.append(obj["month"])
+        qty.append(obj["sum_qty"])
+        
+    return dates,qty
+        

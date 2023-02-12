@@ -21,6 +21,7 @@ class Shops(models.Model):
     
 class Stocks(models.Model):
     p_id=models.AutoField(primary_key=True)
+    p_gen = models.IntegerField(default=hash(datetime.now()))
     p_serial = models.CharField(max_length=100,default='No serial')
     p_name=models.CharField(max_length=100)
     p_category=models.CharField(max_length=100)
@@ -111,3 +112,17 @@ class Tasks(models.Model):
 
     def __str__(self):
         return self.task_name
+    
+    
+class Debts(models.Model):
+    
+    debt_id = models.AutoField(primary_key=True)
+    debt_cus = models.CharField(max_length=1000)
+    debt_amnt = models.FloatField(default=0.0)
+    debt_rem = models.FloatField(default=0.0)
+    debt_last = models.DateTimeField(default=datetime.now())
+    debt_remks = models.TextField()
+    debt_creator = models.ForeignKey(User,on_delete=models.PROTECT)
+    
+    def __str__(self):
+        return self.debt_cus

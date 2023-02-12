@@ -1,0 +1,178 @@
+{% extends 'firstapp/base.html' %}
+{% load  crispy_forms_tags %}
+{% block mainContent %}
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="tasksModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Debts statement</h5>
+        <div id="spinner-debt" class="spinner-border" role="status" style="margin-left:150px; display:none">
+            <span class="sr-only">Loading...</span>
+          </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+         <p id="ids"></p>
+         <label for="debts"></label>
+         <input type="text" id="debts" value="" style="margin-left:105px" placeholder="name">
+         <br> <br>
+         
+         <label for="paydebt"></label>
+         <input type="number" id="paydebt" value=""style="margin-left:105px" placeholder="amount">
+       
+         <button type="button" onclick="payDebt();" class="btn btn-sm btn-info" > pay </button>       
+                    
+               
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+     
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mb-4 main-container">
+    <div class="row">
+        <div class="col-lg-4 pb-5">
+            <!-- Account Sidebar-->
+            <div class="author-card pb-3">
+                <div class="author-card-cover" style="background-color: grey;"><a class="btn btn-style-1 btn-white btn-sm" href="#" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward points to spend"><i class="fa fa-user-circle text-md">Admin</i>&nbsp;</a></div>
+                <div class="author-card-profile">
+                    <div class="author-card-avatar"><img src="" alt="{{user.username}}">
+                    </div>
+                    <div class="author-card-details">
+                        <h5 class="author-card-name text-lg">{{user.username}}</h5><span class="author-card-position"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="wizard">
+                <nav class="list-group list-group-flush">
+                    <a class="list-group-item active" href="#">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-money-bill mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">debt List</div>
+                            </div><span class="badge badge-secondary">{{ debts | length }}</span>
+                        </div>
+                    </a><a class="list-group-item" href="{% url 'posUsers-profile' %}" target="__blank"><i class="fa fa-user text-muted"></i>Profile Settings</a><a class="list-group-item" href=""><i class="fa fa-sliders text-muted"></i>Expenses</a>
+                    <a class="list-group-item" href="" tagert="__blank">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-plus mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">add debt</div>
+                            </div><span class="badge badge-secondary">{{ debts | length }}</span>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-tag mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase"># rows</div>
+                            </div><span class="badge badge-secondary">{{ debts | length }}</span>
+                        </div>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <!-- Orders Table-->
+        <div class="col-lg-8 pb-5">
+            <div class="d-flex justify-content-end pb-3">
+                <div class="form-inline">
+                    <label class="text-muted mr-3" for="order-sort">Search </label>
+                    <select class="form-control" id="order-sort">
+                        {% for debt in debts %}
+                        <option>{{ debt.debt_cus }}</option>
+                        {% endfor %}
+                      
+                       
+                    </select>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">customer</th>
+      <th scope="col">Intial Debt</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Action</th>
+      <th scope="col">Last paid</th>
+      <th scope="col">Supervisor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for debt in debts %}
+    <tr>
+      
+      <th>{{ debt.debt_id }}</th>
+      <th>{{ debt.debt_cus }}</th>
+      <th>{{ debt.debt_amnt }}</th>
+      <th>{{ debt.debt_rem }}</th>
+      <th><button type="button" onclick="view('{{debt.debt_id}}','{{debt.debt_rem}}')" class="btn btn-primary" >
+  <i class="fa fa-eye"></i>
+</button></th>
+     <th>{{ debt.debt_last }}</th>>
+     <th>{{ debt.debt_creator.username }}</th>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+// view task description in a modal
+
+     function view(id,amount){     
+        $(document).ready(function() {
+                $("#tasksModal").modal("show");
+                                    
+                });
+
+                    document.getElementById("debts").value=amount
+                    document.getElementById("ids").innerHTML=id
+                    
+                               
+            }
+
+    function payDebt(){
+          
+        $.ajax({
+
+            type:"post",
+            url:"{% url 'firstapp-debtpay' %}",
+            data:{
+            ids:$("#ids").html(),
+            paid:$("#paydebt").val(),
+          
+            csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            beforeSend: function(){
+                $("#spinner-debt").show()
+            },
+            complete: function(){
+
+            $("#spinner-debt").hide()
+            },
+            success: function(data,status){
+
+                alert(data["info"])
+            }
+
+        })
+
+    }
+
+
+</script>
+{% endblock mainContent %}
