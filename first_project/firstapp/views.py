@@ -88,7 +88,7 @@ def getCounter(request):
     pids = request.GET.get("pid")
     qty = request.GET.get("qty")
     disc = request.GET.get("disc")
-    
+    print(disc)
     product = Stocks.objects.get(p_id=pids)
     
     name  = product.p_name
@@ -97,9 +97,9 @@ def getCounter(request):
     shops = product.p_shop.shop_id
     price = product.p_price
     cost = product.p_cost
-    total = float(price)*int(qty)
+    total = (float(price)*int(qty))-float(disc)
     total_cost = float(cost)*int(qty) 
-    profit = total-total_cost-float(disc)
+    profit = total-total_cost
     
     
     

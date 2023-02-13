@@ -448,10 +448,11 @@
                     <div class="prods">
                     <div class="card p-0 m-0">
                       <div class="card-body p-0 m-0 b-0">
-                        <a onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}','{{product.p_disc}}');">
+                        <a onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
                         <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
                         </a>
                       </div>
+                      
                       
                       
                     
@@ -463,7 +464,7 @@
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                             <p  id="{{product.p_price}}">Ksh {{product.p_price}} </p>
-                            off <input type="number" value="{{product.p_disc}}" style="width:50px">
+                            off <input type="number" id="p{{product.p_id}}" value="{{product.p_disc}}" style="width:50px">
                             <br>
                             <br>
                             qty <input type="number" id="{{product.p_id}}" value="1" style="width:50px; height:30px">
@@ -471,7 +472,7 @@
                           
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
                             
-                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}','{{product.p_disc}}');">
+                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
                               
                               <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         
@@ -588,7 +589,7 @@
                $("#nettotal").val($("#total").val()-$("#minus").val())
           })
 
-      function counter(qty,names,prices,disc){
+      function counter(qty,names,prices){
           event.preventDefault()
 
           $.get("{% url 'firstapp-getcounter' %}",{
@@ -596,7 +597,7 @@
             qty: $('#'+qty).val(),
             price :prices,
             p_name:names,
-            disc:disc,
+            disc:$('#p'+qty).val(),
           },
           function(data,status){
             //var data = JSON.parse(data)
@@ -627,7 +628,7 @@
                         $("#countBody tr").each(function(){
                           sum += parseFloat($(this).find("td:eq(4)").text());
                         });
-        
+            
             tot =parseFloat($("#total").val())
             
             
@@ -680,11 +681,11 @@
 
                   
 
-                  cRow.find("td:eq(3)").text(cRow.find("input[type=number]").val()*row2Val) 
+                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
 
                   var sum = 0;
                         $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(3)").text());
+                          sum += parseFloat($(this).find("td:eq(4)").text());
                         });
                         $('#total').val(sum);
                         $("#nettotal").val(sum-$("#minus").val())
@@ -714,11 +715,11 @@
 
                   
 
-                  cRow.find("td:eq(3)").text(cRow.find("input[type=number]").val()*row2Val) 
+                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
 
                   var sum = 0;
                         $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(3)").text());
+                          sum += parseFloat($(this).find("td:eq(4)").text());
                         });
                         $('#total').val(sum);
                         $("#nettotal").val(sum-$("#minus").val())
