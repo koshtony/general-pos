@@ -88,7 +88,7 @@
   <thead class="thead-light">
     <tr>
       <th scope="col">#</th>
-      <th scope="col">task</th>
+      
       <th scope="col">assigned_by</th>
       <th scope="col">status</th>
     </tr>
@@ -101,7 +101,7 @@
       {% else %}
        <th scope="row"><input type="checkbox" value="done"></th>
        {% endif %}
-      <th>{{ task.task_name }}</th>
+     
       <th>{{ task.task_creator }}</th>
       <th>{{ task.task_status }}</th>
 
@@ -109,6 +109,10 @@
     {% endfor %}
   </tbody>
 </table>
+<a href="{% url 'firstapp-taskslist' %}" class="small-box-footer">view tasks <i class="fas fa-arrow-circle-right"></i></a>
+
+
+
               </div>
                 
               </div>
@@ -140,7 +144,7 @@
             border-radius: 35px;
             font-size: 12px;
             text-align: center;
-            margin-left: 100px;
+            margin-left: 50px;
             margin-top:20px;
             margin-bottom: 40px;
             vertical-align: middle;
