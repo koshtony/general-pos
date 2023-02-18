@@ -1,421 +1,158 @@
 {% extends 'firstapp/base.html' %}
-
+{% load  crispy_forms_tags %}
 {% block mainContent %}
-<style>
-    div {
-  box-sizing: border-box; 
-  -webkit-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
 
-input {
-  background-color: #383a47;
-  border: none;
-  box-sizing: border-box; 
-  -webkit-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  height: 40px;
-}
-
-#container {
-  margin: 0 auto;
-  width: 500px;
-}
-
-#overview {
-  background-color: #383a47;
-  height: 100px;
-  width: 100%;
-}
-
-#overview div {
-  background-color: rgba( 255, 255, 255, 0.2);
-  float: left;
-  height: 100px;
-  padding: 15px 0 0 0 ;
-  width: 33.33%;
-}
-
-#overview p {
-  color: rgba( 255, 255, 255, 0.9 );
-  font: 20px/10px sans-serif;
-  text-align: center;
-}
-
-#overview .balance {
-  border-top: 6px solid aqua;
-}
-
-#overview .spending {
-  border-top: 6px solid #E74C3C;
-}
-
-#overview .income {
-  border-top: 6px solid aqua;
-}
-
-.entry {
-  background-color: #383a47;
-  border-bottom: 1px solid rgba( 255, 255, 255, 0.1);
-  height: 40px;
-  padding: 0 0 0 0;
-  width: 1000px;
-}
-
-.entry.new{
-  background-color: #383a47;
-  border-bottom: 1px solid rgba( 255, 255, 255, 0.1);
-  height: 40px;
-  padding: 0 0 0 0;
-  width: 800px;
-}
-
-.entry div {
-  color: rgba( 255, 255, 255, 0.6 );
-  font: 14px/40px sans-serif;
-  float: left;
-  padding: 0 10px 0 10px;
-  
-}
-
-.entry input {
-  border-bottom: 5px solid aqua;
-  border-top: 5px solid aqua;
-  color: rgba( 255, 255, 255, 0.6 );
-  font: 14px/40px sans-serif;
-  float: left;
-  margin: 0 0 0 0;
-  padding: 0 10px 0 10px;
-  width:250px;
-}
-
-input.date {
-  border-left: 5px solid aqua;
-}
-
-input.amount{
-  border-left: none;
-}
-
-.date {
-  width: 115px;
-}
-
-.note {
-  background-color: rgba( 255, 255, 255, 0.2);
-  width: 240px;
-}
-
-.income .amount {
-  border-left: 4px solid aqua;
-}
-
-.spending .amount {
-  border-left: 4px solid #E74C3C;
-}
-
-.amount {
-  border-left: 4px solid aqua;
-  width: 105px;
-}
-
-.remove-button,
-.add-button {
-  background-color: rgba( 255, 255, 255, 0.2);
-  color: #fff !important;
-  font: 20px/40px sans-serif !important;
-  height: 40px;
-  text-align: center;
-  width: 40px;
-  webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.remove-button:hover{
-  background-color: rgba( 255, 255, 255, 0.3);
-}
-
-.add-button {
-  background-color: orange;
-}
-
-.add-button:hover {
-  background-color: aqua;
-}
-
-
-h1 {
-  color: rgba(0, 0, 0, .4);
-  font: 40px/25px sans-serif;
-  margin: 0;
-  padding:0;
-}
-
-h2 {
-  color: rgba( 255, 255, 255, 0.9 );
-  font: 30px/25px sans-serif;
-  margin: 0;
-  padding:0;
-  text-align: center;
-}
-</style>
-
-<div class="modal fade" id="updateExp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
+<!-- Button trigger modal -->
+<!-- add expenses modal -->
+<div class="modal fade" id="addexpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 style="color:green" class="modal-title" id="exampleModalLabel">================Edit expenses===============</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Expenses</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <table  id="shopsTab" class="table table-striped" style="margin-left:10px">
-          <div id="spins" class="d-flex justify-content-center">
-
-          </div>
-          <tbody >
-            <tr>
-              <form>
-                <tr style="background-color:white">
-                  <input type="hidden" id="id_edit">
-                  date &nbsp;<input style="background-color:white" type="date" id="date_edit" >
-                  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
-                  amnt &nbsp;<input style="background-color:white" type="number" id="amount_edit" >
-                  <input style="background-color:black; color:white; width:460px" type="text" id="desc_edit" >
-                  
-              </tr>
-               
-                <td><button type="button" id="upBtn" class="btn btn-success">Update</button></td>
-               
-                </form>
-            </tr>  
-          </tbody>
-        </table>
-       
-      </div> 
+         <h5 id="dealer" style="color:orange" class="modal-title">description</h5>
+                    <textarea  style="background-color:white;" class="form-control" style="color:red" id="desc" rows="5"></textarea>
+                    
+                </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+     
+      </div>
     </div>
   </div>
-</div>
-<div id="container" style="background-color:aqua; width:800px">
-  <p id="datas"></p>
-    <div id="overview">
-      <div class="balance">
-        <h2> Balance </h2>
-        <h5 style="margin-top:30px;color:white">Ksh {{net_profit}}</h5>
+
+<!-- Modal -->
+<div class="modal fade" id="tasksModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Expenses</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
-      
-      
-      <div class="spending" style="background-color:red">
-        <h2> Spending + debt </h2>
-        
-        <h5 style="margin-top:30px">Ksh {{sum}}</h5>
-
-        
+      <div class="modal-body">
+         <h5 id="dealer" style="color:orange" class="modal-title">description</h5>
+                    <textarea  style="background-color:white;" class="form-control" style="color:red" id="desc" rows="5"></textarea>
+                    
+                </div>
       </div>
-      
-      <div class="income"  style="background-color:#008000">
-        <h2> Profit </h2>
-        <h5 style="margin-top:30px; color:white">Ksh {{profit}}</h5>
-      </div>
-      
-    </div>
-    
-    <div class="entry new" style="width:800px" >
-
-      <input type="date" id="date" class="date" placeholder="10/16/1986" />
-      <input type="text" id="desc" class="note" placeholder="Desc"/>
-      <input type="number" id="amount" class="amount" placeholder="Ksh 800"/>
-      <div id="add-transaction" class="add-button">+</div>
-      
-    </div>
-    {% for expense in expenses %}
-  
-    <div class="entry new" style="width:800px"  >
-
-      <input type="text" id="date" class="date" value="{{expense.exp_date}}"  />
-      <input type="text" id="desc" class="note" value="{{expense.exp_desc}}" />
-      <input type="number" id="amount" class="amount" value="{{expense.exp_amount}}" />
-      <button type="button" onclick="updateModal('{{expense.exp_id}}','{{expense.exp_date}}','{{expense.exp_desc}}','{{expense.exp_amount}}');"><i class="fa fa-wrench"></i></button>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
      
-      
+      </div>
     </div>
-    {% endfor %}
-    
-    
-    <div id="sheet">
-      
-    </div>
-</div>
-  
-
-  <script>
-    "use strict";
-
-var $balance = $('#overview .balance p'),
-    $spending = $('#overview .spending p'),
-    $income = $('#overview .income p'),
-    $sheet = $('#sheet'),
-    sheet = [],
-    transaction = {
-      date: '',
-      description: '',
-      amount: 0
-    },
-    transactionHTML = '<div style="width:800px" id=" {id} " class="entry {class} "><div class="date"> {date} </div><div class="note"> {description} </div><div class="amount"> {amount} </div><div class="remove-button">-</div></div>',
-    spendingClass = 'spending',
-    incomeClass = 'income';
-
-// Sum
-//This would ordinarily be provided by ajax so that the whole ledger is accounted for rather than just the current page.
-function UpdateSums () {
-  var spending = 0,
-      income = 0;
-  
-  for(var i =0; i < sheet.length; i += 1){
-    if(sheet[i].amount >= 0) {
-      income += sheet[i].amount;
-    } else {
-      spending += sheet[i].amount;
-    }
-  }
-
-  $balance.text((income + spending).toFixed(2));
-  $income.text(income.toFixed(2));
-  $spending.text(spending.toFixed(2));
-}
-
-//RenderTable
-function RenderTable() {
-  ClearRenderSpace();
-  
-  for(var i = (sheet.length - 1); i >= 0; i -= 1) {
-    var thisTrans = transactionHTML;
-
-    if(sheet[i].amount >= 0) {
-      thisTrans = thisTrans.replace('{class}', incomeClass);
-    } else {
-      thisTrans = thisTrans.replace('{class}', spendingClass);
-    }
-        
-    thisTrans = thisTrans.replace('{id}', i.toString())
-    .replace('{date}', sheet[i].date)
-    .replace('{description}', sheet[i].description)
-    .replace('{amount}', sheet[i].amount.toFixed(2));
-    
-    $sheet.append(thisTrans);
-  }
-  
-  $('.remove-button').on('click', function () {
-    console.log(this);
-    RemoveTransaction($(this).parent().attr('id'));
-  });
-}
-
-
-
-
-
-function ClearRenderSpace() {
-  $('.remove-button').unbind('on', RemoveTransaction);
-  $sheet.html('');
-}
-
-function Add(date, description, amount){
-  if(date && description && amount){
-    var trans = Object.create(Object.getPrototypeOf(transaction));
-    trans.date = date;
-    trans.description = description;
-    trans.amount = parseFloat(amount);
-    trans.id = sheet.length;
-    
-    sheet.push(trans);
-    console.log(trans);
-    UpdateSums();
-    RenderTable();
-  } else {
-    alert('You fill all fields to add to the ledger');
-  }
-}
-
-function RemoveTransaction(id) {
-  sheet.splice(parseInt(id), 1);
-  UpdateSums();
-  RenderTable();
-}
-
-function Init(){
-  UpdateSums();
-  RenderTable();
-  $('#add-transaction').on('click', function () {
-    Add(
-      $('.new .date').val(),
-      $('.new .note').val(),
-      $('.new .amount').val()
-    );
+  </div>
+<div class="container mb-4 main-container">
+    <div class="row">
+        <div class="col-lg-4 pb-5">
+            <!-- Account Sidebar-->
+            <div class="author-card pb-3">
+                <div class="author-card-cover" style="background-color: grey;"><a class="btn btn-style-1 btn-white btn-sm" href="#" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward points to spend"><i class="fa fa-user-circle text-md">Admin</i>&nbsp;</a></div>
+                <div class="author-card-profile">
+                    <div class="author-card-avatar"><img src="" alt="{{user.username}}">
+                    </div>
+                    <div class="author-card-details">
+                        <h5 class="author-card-name text-lg">{{user.username}}</h5><span class="author-card-position"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="wizard">
+                <nav class="list-group list-group-flush">
+                    <a class="list-group-item active" href="#">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-map-plus mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">Exp + Debt</div>
+                            </div><span class="badge badge-secondary">{{ sum }}</span>
+                        </div>
+                    </a><a class="list-group-item" href="{% url 'posUsers-profile' %}" target="__blank"><i class="fa fa-money text-muted"></i>Profit </a> >>>> Ksh {{profit}}
+                    <a class="list-group-item" href="" tagert="__blank">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-plus mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase">add Expense </div>
+                            </div><span class="badge badge-secondary">{{ expenses | length }}</span>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><i class="fa fa-tag mr-1 text-muted"></i>
+                                <div class="d-inline-block font-weight-medium text-uppercase"># Net Profit</div>
+                            </div><span class="badge badge-secondary">{{ net_profit }}</span>
+                        </div>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <!-- Orders Table-->
+        <div class="col-lg-8 pb-5">
+            <div class="d-flex justify-content-end pb-3">
+                <div class="form-inline">
+                    <label class="text-muted mr-3" for="order-sort">filter Net</label>
+                    <select class="form-control" id="order-sort">
+                        {% for exp in expenses %}
+                        <option>{{ exp.exp_shop }}</option>
+                        {% endfor %}
+                      
+                       
+                    </select>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Description</th>
+      <th scope="col">shop name</th>
+      <th scope="col">Creator</th>
+      <th scope="col">date</th>
    
-   $.get("{% url 'firstapp-financeadd' %}",{
-      date:$('#date').val(),
-      desc:$('#desc').val(),
-      amount:$('#amount').val()
-     
+    </tr>
+  </thead>
+  <tbody>
+    {% for exp in expenses %}
+    <tr>
+      
+      <th>{{ exp.exp_id }}</th>
+      <th>{{ exp.exp_amount }}</th>
+      <th><button type="button" onclick="view('{{exp.exp_desc}}')" class="btn btn-primary" >
+  <i class="fa fa-eye"></i>
+</button></th>
+      <th>{{ exp.exp_shop }}</th>
+      <th>{{ exp.exp_creator }}</th>
+      <th>{{ exp.exp_date }}</th>
 
-   },
-   function(data,status){
-      alert("confirmed added")
-   }
 
-   )
-  });
-}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+</div>
 
-Init();
-
-// update modal function, updates expenses in the ledger
-
-function updateModal(id,date,desc,amount){
-
-  $("#updateExp").modal("show");
-
-  $("#id_edit").val(id)
-  $("#date_edit").val(date)
-  $("#desc_edit").val(desc)
-  $("#amount_edit").val(amount)
-
-  $(document).ready(function(){
-
-$("#upBtn").click(function(){
-
-  $.ajax({
-
-  type: "POST",
-  url: "{% url 'firstapp-financeupdate' %}",
-  data:{
-
-    id_edited:$("#id_edit").val(),
-    date_edited: $("#date_edit").val(),
-    desc_edited:$("#desc_edit").val(),
-    amount_edited: $("#amount_edit").val(),
-    csrfmiddlewaretoken:'{{ csrf_token }}'
+<script>
     
-  },
-  success:function(data,status){
+// view task description in a modal
 
-    alert(data["date"])
-  }
-  })
-})
-})
+     function view(desc){     
+        $(document).ready(function() {
+                $("#tasksModal").modal("show");
+                                    
+                });
 
-}
-  </script>
+                    document.getElementById("desc").innerHTML=desc
+                    
+                               
+            }
 
 
+</script>
 {% endblock mainContent %}

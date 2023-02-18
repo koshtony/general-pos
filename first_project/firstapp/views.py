@@ -412,7 +412,7 @@ def salesPostView(request):
         date1 = request.POST.get("date1")
         date2 = request.POST.get("date2")
         if date1!='' or date1!='':
-            sales = Sales.objects.filter(s_created__gte=date1,s_created__lte=date2)
+            sales = Sales.objects.filter(s_created__gte=date1).filter(s_created__lte=date2)
             sales = serializers.serialize('json',sales)
            
             

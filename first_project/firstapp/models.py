@@ -52,7 +52,7 @@ class Sales(models.Model):
     s_serial = models.CharField(max_length=100)
     s_name = models.CharField(max_length=100)
     s_shop = models.CharField(max_length=100)
-    s_qty = models.FloatField(null=True,default=None)
+    s_qty = models.FloatField()
     s_price = models.FloatField()
     s_cost = models.FloatField()
     s_negatives = models.FloatField()
@@ -71,6 +71,7 @@ class Expenses(models.Model):
     exp_desc = models.TextField()
     exp_amount= models.FloatField()
     exp_creator = models.ForeignKey(User,on_delete=models.PROTECT)
+    exp_shop = models.CharField(max_length=100,default=" ")
     exp_date = models.DateTimeField(default= datetime.now())
     
     def __str__(self):
