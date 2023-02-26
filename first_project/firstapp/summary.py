@@ -43,3 +43,57 @@ def time_sales_summ(object):
         
     return dates,qty
         
+
+def sales_summary(object):
+    all_sales = []
+    sales = object.objects.all()
+    
+    for sale in sales:
+        
+        all_sales.append(
+            
+            {
+                "shop":sale.s_shop.shop_name,
+                "product":sale.s_name,
+                "qty": sale.s_qty,
+                "revenue": sale.s_price,
+                "profit":sale.s_profit,
+                "expense":0,
+                "Date": sale.s_created,
+                
+                
+                
+                
+            }
+            
+            
+        )
+    return all_sales
+
+def exp_summary(object):
+    
+    all_exp = []
+    
+    exps = object.objects.all()
+    
+    for exp in exps:
+        
+        all_exp.append({
+            
+            "shop":exp.exp_shop,
+            "product":"expense",
+            "qty": 0,
+            "revenue":0,
+            "profit":0,
+             "expense":exp.exp_amount,
+            "Date": exp.exp_date,
+            
+        })
+        
+    return all_exp
+    
+    
+
+    
+        
+        

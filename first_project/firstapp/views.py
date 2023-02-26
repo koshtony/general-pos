@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts
 from .mpesa import stk_push
-from .summary import sales_summ,stocks_summ,time_sales_summ
+from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary
 from datetime import datetime
 import json
 import time
@@ -479,8 +479,7 @@ def InvoiceView(request):
         with open(html_path,"w+") as file:
         
             file.write(data)
-            
-        
+
         
     return render(request,'firstapp/invoice.html')
 
@@ -494,22 +493,25 @@ def financeView(request):
                   "sum": Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] +  Debts.objects.aggregate(Sum('debt_rem'))["debt_rem__sum"],
                   "profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Debts.objects.aggregate(Sum('debt_rem'))["debt_rem__sum"],
                   "net_profit": Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]-Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"],
+                  "shops": Shops.objects.all(),
               
               }
     return render(request,'firstapp/financials.html',contxt)
 @login_required
 def financePostView(request):
    
-        date = request.GET.get("date")
-        desc = request.GET.get("desc")
-        amount = request.GET.get("amount")
+    if request.POST:
+        date = request.POST.get("date")
+        desc = request.POST.get("desc")
+        amount = request.POST.get("amount")
+        shop = request.POST.get("shop")
     
         exp = Expenses(exp_desc = desc,exp_amount = amount , 
-                       exp_date = date, exp_creator=request.user
+                       exp_date = date, exp_shop=shop,exp_creator=request.user
                        )
         exp.save()
         
-        return JsonResponse({'date':date,desc:"desc","amount":amount})
+        return JsonResponse({'msg':"added successfully"})
     
 #==========handles post requests from expenses page ======
 @login_required
@@ -533,7 +535,16 @@ def financeUpdateView(request):
         
         return JsonResponse(data,status=200)
         
+@login_required
+def financeSummary(request):
+    
+    contxt = {
         
+        "summary": json.dumps(sales_summary(Sales)+exp_summary(Expenses),default=str)
+    }
+    print(contxt)
+    print(exp_summary(Expenses))
+    return render(request,'firstapp/summary.html',contxt)
     
 #=============handles (location) coordinates storage and audit==
 @login_required

@@ -14,17 +14,36 @@
         </button>
       </div>
       <div class="modal-body">
-         <h5 id="dealer" style="color:orange" class="modal-title">description</h5>
-                    <textarea  style="background-color:white;" class="form-control" style="color:red" id="desc" rows="5"></textarea>
-                    
-                </div>
+         <h5 id="dealer" style="color:orange" class="modal-title"></h5>
+         <div class="form-group">
+          <label for="paid"></label>
+        <select id="shops" style="margin-left:105px">
+
+              {% for shop in shops %}
+
+                    <option value="{{shop.shop_name}}">{{shop.shop_name}}</option>
+              {% endfor %}
+        </select>
+
+         <br> <br>
+         <label for="all"></label>
+         <input type="text" id="amount" value="" style="margin-left:105px" placeholder="amount">
+         <br> <br>
+         <input type="date" id="date" value="" style="margin-left:105px" >
+         <br> <br>
+         <textarea  style="background-color:white;" class="form-control" style="color:red" id="expdesc" rows="5"></textarea>
+        
+         </div>
+                  
       </div>
       <div class="modal-footer">
+        <button type="button" onclick="addExpenses();" class="btn btn-danger" data-dismiss="modal">submit</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
      
       </div>
     </div>
   </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="tasksModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,13 +90,7 @@
                             </div><span class="badge badge-secondary">{{ sum }}</span>
                         </div>
                     </a><a class="list-group-item" href="{% url 'posUsers-profile' %}" target="__blank"><i class="fa fa-money text-muted"></i>Profit </a> >>>> Ksh {{profit}}
-                    <a class="list-group-item" href="" tagert="__blank">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div><i class="fa fa-plus mr-1 text-muted"></i>
-                                <div class="d-inline-block font-weight-medium text-uppercase">add Expense </div>
-                            </div><span class="badge badge-secondary">{{ expenses | length }}</span>
-                        </div>
-                    </a>
+                    
                     <a class="list-group-item" href="#">
                         <div class="d-flex justify-content-between align-items-center">
                             <div><i class="fa fa-tag mr-1 text-muted"></i>
@@ -92,6 +105,8 @@
         <div class="col-lg-8 pb-5">
             <div class="d-flex justify-content-end pb-3">
                 <div class="form-inline">
+                    <a onclick="loadExpModal();"><i class="fa fa-plus"></i> add Expenses</a>
+                    &nbsp; &nbsp;
                     <label class="text-muted mr-3" for="order-sort">filter Net</label>
                     <select class="form-control" id="order-sort">
                         {% for exp in expenses %}
@@ -152,6 +167,51 @@
                     
                                
             }
+
+      function loadExpModal(){
+         
+
+        $(document).ready(function() {
+          $("#addexpenseModal").modal("show");
+                              
+          });
+      
+      }
+
+      function addExpenses(){
+
+        $.ajax({
+
+
+                type:"POST",
+                url : "{% url 'firstapp-financeadd' %}",
+
+                data:{
+
+                    shop: $("#shops").val(),
+                    amount: $("#amount").val(),
+                    date: $("#date").val(),
+                    desc: $("#expdesc").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}'
+
+                },
+
+                beforeSend:function(){
+
+
+                },
+
+                complete: function(){
+
+
+                },
+
+                success:function(data,status){
+
+                    alert(data["msg"])
+                }
+        })
+      }
 
 
 </script>

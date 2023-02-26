@@ -9,7 +9,7 @@ from .views import StocksCreateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
-                ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay
+                ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary
             
 urlpatterns = [
     path('', views.home,name='firstapp-home'),
@@ -34,6 +34,7 @@ urlpatterns = [
     path('finance',views.financeView,name="firstapp-finance"),
     path('finance-add',views.financePostView,name="firstapp-financeadd"),
     path('finance-update',views.financeUpdateView,name="firstapp-financeupdate"),
+    path('finance-summary',views.financeSummary,name="firstapp-financesummary"),
     path('shops/update',views.shopsUpdate,name="firstapp-updateshops"),
     path('stocks/addstocks/',StocksCreateView.as_view(),name="firstapp-addstocks"),
     path('stocks/<int:pk>/updates',StocksUpdateView.as_view(),name="firstapp-updatestocks"),
