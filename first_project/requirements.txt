@@ -3,5 +3,7 @@ Django==4.1.6
 django-admin-interface==0.24.2
 django-colorfield==0.8.0
 django-crispy-forms==1.14.0
+django-pwa==1.1.0
 Pillow==9.4.0
 sqlparse==0.4.3
+tzdata==2023.3

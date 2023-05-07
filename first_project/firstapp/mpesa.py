@@ -2,6 +2,7 @@ import requests
 from requests.auth import *
 import json
 import os 
+import datetime
 
 os.environ["key"] = "HP9NKPmw9tC8y5d8T7XrOPEF46xQDNE2"
 os.environ["secret"] = "8StFF1RCXyVqgqxA"
@@ -28,9 +29,12 @@ def stk_push(phone,amount):
     "PartyA": phone,
     "PartyB": 174379,
     "PhoneNumber": phone,
-    "CallBackURL": "https://mydomain.com/path",
+    "CallBackURL": 'https://koshtechdemossys.pythonanywhere.com/conf_pay',
     "AccountReference": "CompanyXLTD",
     "TransactionDesc": "Payment of X" 
     }
     resp=requests.post(url,json=req,headers=headers)
     return {"info":json.loads(resp.text)},200
+
+stk_push(254712110972,1)
+

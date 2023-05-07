@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pwa',
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
@@ -141,3 +142,5 @@ LOGIN_URL = 'login'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'firstapp/static/js', 'serviceworker.js')

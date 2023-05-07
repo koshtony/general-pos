@@ -727,6 +727,11 @@ def DebtPay(request):
             
         return JsonResponse(mssg,status=200)
     
+    
+def offline(request):
+    
+    return render(request,'firstapp/base.html')
+    
 #============== error handling =============
 
 # handle 404 error -> page not found

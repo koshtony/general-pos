@@ -9,10 +9,11 @@ from .views import StocksCreateView,\
             stocksPostView,salesPostView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
-                ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary
+                ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
+                    offline
             
 urlpatterns = [
-    path('', views.home,name='firstapp-home'),
+    path('home', views.home,name='firstapp-home'),
     path('counter/', views.counter,name='firstapp-counter'),
     path('getcounter', views.getCounter,name='firstapp-getcounter'),
     path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
@@ -47,6 +48,7 @@ urlpatterns = [
        path('counter/debt', views.DebtAdd,name='firstapp-debt'),
        path('debtlist', views.DebtView,name='firstapp-debtlist'),
        path('debtpay', views.DebtPay,name='firstapp-debtpay'),
+       path('offline', views.offline,name='firstapp-offline'),
        
      
 
