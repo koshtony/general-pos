@@ -14,7 +14,7 @@ self.addEventListener('fetch', function(event) {
   var requestUrl = new URL(event.request.url);
     if (requestUrl.origin === location.origin) {
       if ((requestUrl.pathname === '/')) {
-        event.respondWith(caches.match('/offfline'));
+        event.respondWith(caches.match('/offline'));
         return;
       }
     }

@@ -36,5 +36,5 @@ def stk_push(phone,amount):
     resp=requests.post(url,json=req,headers=headers)
     return {"info":json.loads(resp.text)},200
 
-stk_push(254712110972,1)
+
 

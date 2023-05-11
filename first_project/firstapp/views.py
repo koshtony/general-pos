@@ -727,10 +727,18 @@ def DebtPay(request):
             
         return JsonResponse(mssg,status=200)
     
-    
+# handles offline counter
 def offline(request):
     
-    return render(request,'firstapp/base.html')
+    return render(request,'firstapp/offline.html')
+
+# 
+def feeds_indexDB(request):
+
+    products = Stocks.objects.all()
+    products_json = serializers.serialize('json',products)
+    return HttpResponse(products_json)
+
     
 #============== error handling =============
 

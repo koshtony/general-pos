@@ -10,22 +10,22 @@ from .views import StocksCreateView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
-                    offline
+                    offline,feeds_indexDB
             
 urlpatterns = [
     path('home', views.home,name='firstapp-home'),
     path('counter/', views.counter,name='firstapp-counter'),
-    path('getcounter', views.getCounter,name='firstapp-getcounter'),
-    path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
-    path('counter/minus', views.counterMinusSess,name='firstapp-counterminus'),
-    path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
-    path('counter/mpesa', views.MpesaTrans,name='firstapp-stkpush'),
-    path('addsales', views.addSales,name='firstapp-addsales'),
-    path('reports/charts', views.Charts,name='firstapp-charts'),
-    path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
-    path('sales/post',views.salesPostView,name="firstapp-salespost"),
-    path('sales/return',views.SalesReturn,name="firstapp-salesreturn"),
-    path('stocks/list',views.stocksView,name="firstapp-stocks"),
+          path('getcounter', views.getCounter,name='firstapp-getcounter'),
+            path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
+              path('counter/minus', views.counterMinusSess,name='firstapp-counterminus'),
+                path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
+                   path('counter/mpesa', views.MpesaTrans,name='firstapp-stkpush'),
+                      path('addsales', views.addSales,name='firstapp-addsales'),
+                        path('reports/charts', views.Charts,name='firstapp-charts'),
+                        path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
+                       path('sales/post',views.salesPostView,name="firstapp-salespost"),
+                      path('sales/return',views.SalesReturn,name="firstapp-salesreturn"),
+                    path('stocks/list',views.stocksView,name="firstapp-stocks"),
     path('stocks/post',views.stocksPostView,name="firstapp-stockspost"),
     path('stocks/inbound',views.StocksInbound,name="firstapp-stocksinbound"),
     path('stocks/transfer',views.StocksTransfer,name="firstapp-stockstransfer"),
@@ -49,6 +49,7 @@ urlpatterns = [
        path('debtlist', views.DebtView,name='firstapp-debtlist'),
        path('debtpay', views.DebtPay,name='firstapp-debtpay'),
        path('offline', views.offline,name='firstapp-offline'),
+       path('feeds_indexDB',views.feeds_indexDB,name="feeds-indexDB")
        
      
 

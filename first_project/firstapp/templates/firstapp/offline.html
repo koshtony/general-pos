@@ -1,0 +1,718 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  
+  {% load pwa %}
+  {% progressive_web_app_meta %}
+
+
+
+</head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>POS</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'firstapp/dist/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'firstapp/dist/css/custom_style.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{% static 'firstapp/plugins/summernote/summernote-bs4.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
+
+
+
+<body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
+  <div class="spinner-grow" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="wrapper" >
+    
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light" >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+      </ul>
+      &nbsp; &nbsp;
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button"><i class="fas fa-plus">products</i></a>
+        </li>
+        &nbsp; &nbsp;
+        
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-plus">shops</i></a>
+        </li>
+    
+        &nbsp; &nbsp;
+      <li class="nav-item">
+        <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button"><i class="fas fa-list">shops</i></a>
+        
+        </li>
+        &nbsp; &nbsp;
+      <li class="nav-item">
+        <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
+      </li>
+      &nbsp; &nbsp;
+     <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-desktop">Manage</i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}">Add Expenses</a></li>
+          <li><a style="margin-left:30px" type="button" href="">Tasks</a></li>
+          
+        </ul>
+      </div>
+      &nbsp; &nbsp;
+      <li class="nav-item">
+        <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
+      </li>
+       &nbsp; &nbsp;
+      <li class="nav-item">
+        <a class="btn btn-primary" href="" role="button"><i class="fas fa-phone">contacts</i></a>
+      </li>
+      
+      &nbsp; &nbsp;
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-wrench">generator</i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'firstapp-invoice' %}">Invoice</a></li>
+          <li><a href="#">PO</a></li>
+          
+        </ul>
+      </div>
+    </ul>
+    
+     
+        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
+    </nav>
+    <!-- /.navbar -->
+    
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-link">
+        <img src="{{user.profile.image.url}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        style="opacity: .8">
+        <span class="brand-text font-weight-light">POS</span>
+      </a>
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          {% if user.is_superuser %}
+          <div class="image">
+            <img src="{{user.profile.image.url}}" class="img-circle elevation-2" alt="User Image">
+          </div>
+         
+          <div class="info">
+            <a href="/admin" class="d-block">Admin</a>
+          </div>
+         {% endif %}
+        </div>
+        
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          {% if user.is_authenticated %}
+              <li class="nav-item has-treeview menu-open">
+                <a href="/" class="nav-link active">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                 dashboard
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'firstapp-counter' %}" class="nav-link">
+                  <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
+                  <p>
+                     counter
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+                  <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
+                  <p>
+                     Stocks
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'firstapp-sales' %}" class="nav-link">
+                  <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
+                  <p>
+                    sales
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'firstapp-orders' %}" class="nav-link">
+                  <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
+                  <p>
+                  orders
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'firstapp-charts' %}" class="nav-link">
+                  <i class="nav-icon fas fa-chart-line"></i>
+                  <p>visuals</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link">
+                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+                  <p>
+                     logout
+                  </p>
+                </a>
+              </li>
+              
+              <li class="line"></li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
+                  <p>
+              
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="nav-icon fas fa-chart-line"></i>
+                      <p>reports</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'posUsers-profile' %}" class="nav-link">
+                      <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
+                      <p>User Profile</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="nav-icon fa fa-sitemap" aria-hidden="true"></i>
+                      <p></p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              
+            
+           
+            </ul>
+            {% else %}
+              <li class="nav-item">
+                <a href="{% url 'login' %}" class="nav-link">
+                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+                  <p>
+                     login
+                  </p>
+                </a>
+              </li>
+              {% endif %}
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+      
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          
+        </div>
+
+
+        <section class="content">
+          <div class="alert alert-primary" role="alert" id="plusAlerts" style="display:none">
+            <i style="margin-left:400px">product changed</i>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                <div class="card">
+                  <div class="card-body p-0">
+                    <table class="table table-striped"  id="countTab">
+                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
+                      <thead style="background-color:orange">
+                        <tr>
+                          
+                          <th style="width: 10px">name</th>
+                          <th>qty</th>
+                          <th>price</th>
+                          <th>disc</th>
+                          <th style="width: 40px">Total</th>
+                          <th style="width: 60px">Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody  style="background-color:grey" id="countBody">
+                        
+                        {% if "sales" in request.session %} 
+                           {% for key,val in request.session.sales.items %}
+                           <tr>
+                            
+                            <td>{{ val.name }}</td>
+                            <td>
+                              <input type="hidden" value="{{ key }}">
+                              <a class="btn btn-sm btn-info" id="plusBtn">+</a>
+                              <input type="number" value="{{ val.qty }}" style="width:40px">
+                              <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
+                            </td>
+                            <td>{{ val.price1 }}</td>
+                            <td>{{ val.disc }}</td>
+                            <td>{{ val.price }}</td>
+                            
+                            <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                           {% endfor %}
+                           {% endif %}
+                      
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row" >
+                      <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="total">Sub Total</label>
+                        <br>
+                        <label for="minus">-</label>
+                        <br>
+                        <label for="vat">VAT(16%)</label>
+                        <br>
+                        <label for="nettotal">Total</label>
+                      </div>
+                      <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" class="form-control" id="total" name="total" readonly value="{{sum}}">
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id="minus" name="minus" class="form-control" >
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id="vat" name="vat" class="form-control" >
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id ='nettotal' name="nettotal" class="form-control" 
+                          style="height:80px; font-size:80px;" readonly value="{{sum}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button onclick="balCounter()" style="margin-left:0px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
+                      
+                      
+                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
+
+                      <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#debtModal"><i class="fa fa-mobile">add debt</i></button>
+
+                      
+                    </div>
+                    
+                    <!---      mpesa modal-->
+                    
+                    <div class="modal fade" id="mpesaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">=======Mpesa Checkout==========</h5>
+                            <div id="spinner-mpesa" class="spinner-border" role="status" style="margin-left:150px; display:none">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body" style="background-color:green">
+                           <div class="form-group">
+                             <label for="paid"></label>
+                            <input type="text" id="names" value="" style="margin-left:105px" placeholder="name">
+                            <br> <br>
+                            <label for="all"></label>
+                            <input type="text" id="phone_no" value="" style="margin-left:105px" placeholder="phone number">
+                            <br> <br>
+                            <label for="bal"></label>
+                            <input type="number" id="pay" value=""style="margin-left:105px" placeholder="amount">
+                            </div>
+                            <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
+                            <button type="button" onclick="" class="btn btn-sm btn-info" > complete </button>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- debt register modal -->
+                    <div class="modal fade" id="debtModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">=========Register Debt========</h5>
+                            <div id="spinner-debt" class="spinner-border" role="status" style="margin-left:150px; display:none">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            
+                          </div>
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label for="dname"></label>
+                             <input type="text" id="dname" value="" style="margin-left:105px" placeholder="name">
+                             <br> <br>
+                             <label for="dphone"></label>
+                             <input type="text" id="dphone" value="" style="margin-left:105px" placeholder="phone number">
+                             <br> <br>
+                             <label for="dpay"></label>
+                             <input type="number" id="dpay" value="" style="margin-left:105px" placeholder="amount">
+                             <br><br>
+                             <label for="dremks">remarks</label>
+                             <br>
+                             <textarea style="margin-left:105px" id="dremks" col="19"></textarea>
+                             </div>
+                            <button onclick="debtCounter();" type="button" class="btn btn-sm btn-info" >submit </button>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                     <!-- Modal -->
+                     <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                           <div class="modal-header">
+                             <h5 class="modal-title" id="exampleModalLabel">===================Bal Counter==============</h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                             </button>
+                           </div>
+                           <div class="modal-body">
+                            <div class="form-group">
+                              <label for="paid">paid>>>>>>>></label>
+                             <input type="text" id="paid" value="" style="margin-left:100px">
+                             <br> <br>
+                             <label for="all">Total>>>>>>></label>
+                             <input type="text" id="all" value="" style="margin-left:105px">
+                             <br> <br>
+                             <label for="bal">Bal>>>>>>>>></label>
+                             <input type="text" id="bal" value=""style="margin-left:103px">
+                             </div>
+                             <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" %}" download><i class="fa fa-download">receipt</i></a>
+                             <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
+                           </div> 
+                         </div>
+                       </div>
+                     </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-7 col-lg-7" id = "stocksDiv">
+                <div class="input-group">
+                  
+                </div>
+                <div class="row" id="prodDiv">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+
+        function balCounter(){
+          var ntotal = $("#nettotal").val() - $("#minus").val()
+          $("#all").val(ntotal)
+          $("#paid").on("keyup",function(){
+            var paid = parseFloat($(this).val())
+            var newtot = paid - parseFloat($("#all").val())
+            $("#bal").val(newtot)
+          })
+        }
+       
+        // mpesa 
+
+        function mpesaCounter(){
+          var ntotal = $("#nettotal").val() - $("#minus").val()
+          $("#pay").val(ntotal)
+
+        }
+
+        // mpesa complete payment
+
+        function mpesaComplete(){
+
+          $.ajax({
+
+            type:"post",
+            url:"",
+            data:{
+              name:$("#names").val(),
+              phone:$("#phone_no").val(),
+              amount:$("#pay").val(),
+              csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            beforeSend: function(){
+                $("#spinner-mpesa").show()
+            },
+            complete: function(){
+       
+              $("#spinner-mpesa").hide()
+            },
+            success: function(){
+
+
+            }
+
+          })
+        }
+
+        // register debt
+
+        function mpesaCounter(){
+          var ntotal = $("#nettotal").val() - $("#minus").val()
+          $("#pay").val(ntotal)
+
+        }
+
+   
+        // register debt
+
+        function debtCounter(){
+
+          $.ajax({
+
+            type:"post",
+            url:"{% url 'firstapp-debt' %}",
+            data:{
+              dname:$("#dname").val(),
+              dphone:$("#dphone").val(),
+              damount:$("#dpay").val(),
+              dremks:$("#dremks").val(),
+              csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            beforeSend: function(){
+                $("#spinner-debt").show()
+            },
+            complete: function(){
+       
+              $("#spinner-debt").hide()
+            },
+            success: function(data,status){
+
+                alert(data["info"])
+            }
+
+          })
+        }
+
+      // detect changes in minus value
+      $("#minus").on("keyup",function(){
+               $("#nettotal").val($("#total").val()-$("#minus").val())
+          })
+
+      function counter(qty,names,prices){
+          event.preventDefault()
+
+          $.get("{% url 'firstapp-getcounter' %}",{
+            pid: qty,
+            qty: $('#'+qty).val(),
+            price :prices,
+            p_name:names,
+            disc:$('#p'+qty).val(),
+          },
+          function(data,status){
+            //var data = JSON.parse(data)
+        var sum = 0;
+         for (var key in data){
+            $("#countTab tbody").prepend(
+              `
+              <tr>
+                  <td>${data[key]["name"]}</td>
+                  <td>
+                              
+                            ${data[key]["qty"]}
+                             
+                  </td>
+                  <td>${data[key]["price1"]}</td>
+                  <td>${data[key]["disc"]}</td>
+                  <td>${data[key]["price"]}</td>
+                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+              </tr>
+
+              `
+            
+            )
+            
+         }
+            
+            var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(4)").text());
+                        });
+            
+            tot =parseFloat($("#total").val())
+            
+            
+            $("#total").val(sum)
+            minuses = $("#minus").val()
+            nettot = sum - minuses
+            $("#nettotal").val(nettot)
+
+            
+          }
+          )
+      }
+      $("#countTab").on("click", "#delBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("td:eq(4)").text())
+                  discval = parseFloat(cRow.find("td:eq(3)").text())
+                  newtotal = parseFloat($("#total").val())- tabval - discval
+                  newnets = parseFloat($("#nettotal").val()) - tabval - discval
+                  $("#total").val(newtotal)
+                  $("#nettotal").val(newnets)
+
+                  // send unique key 
+                  $.get("{% url 'firstapp-counterremove' %}",{
+                     key: cRow.find("input[type=hidden]").val()
+                  },
+                    function(data,status){
+                       document.getElementById("plusAlerts").style.display = "block"
+                    }
+                  )
+        
+                  cRow.remove()
+                });
+
+       function clears(){
+          
+        $("#countTab tbody").empty()
+        $("#total").val(0)
+        $("#nettotal").val(0)
+       }
+      // clicking plus button adding items
+       $("#countTab").on("click", "#plusBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("input[type=number]").val())
+                  
+                  cRow.find("input[type=number]").val(tabval+1)
+
+                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
+
+                  
+
+                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
+
+                  var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(4)").text());
+                        });
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
+                        $.get("{% url 'firstapp-counterplus' %}",{
+
+                            key: cRow.find("input[type=hidden]").val(),
+                            qty: cRow.find("input[type=number]").val(),
+
+                            },
+                            function(data,status){
+                              document.getElementById("plusAlerts").style.display = "block"
+                              
+                            }
+                          )
+
+        }); 
+
+      // clicking minus button 
+      $("#countTab").on("click", "#minusBtn", function() {
+                  cRow = $(this).closest("tr")
+              
+                  tabval = parseFloat(cRow.find("input[type=number]").val())
+                  
+                  cRow.find("input[type=number]").val(tabval-1)
+
+                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
+
+                  
+
+                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
+
+                  var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(4)").text());
+                        });
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
+                  $.get("{% url 'firstapp-counterplus' %}",{
+
+                     key: cRow.find("input[type=hidden]").val(),
+                     qty: cRow.find("input[type=number]").val(),
+
+                  },
+                   function(data,status){
+                    document.getElementById("plusAlerts").style.display = "block"
+                   }
+                  )
+
+        }); 
+
+        $(document).ready(function(){
+          $("#pname").on("keyup",function(){
+              var value=$(this).val().toLowerCase();
+             $('.prods').hide()
+      
+            $('.prods:contains("'+value+'")').show()
+      
+          });
+      });
+           
+
+
+      </script>
+      
+    </section>
+    
+    <script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>  
+    <script src="{% static 'firstapp/dist/js/adminlte.js' %}"></script>
+</html>
+
+
+  
