@@ -19,7 +19,7 @@
 
  }).then(function(data){
 
-  console.log(data)
+
 
   dbPromise.then(function(db){
 
@@ -53,14 +53,17 @@
       return;
   }
 for (var value in cursor.value){
+
+  if(value == "fields"){
      
 
          
-          for(var key in cursor.value[value]) {
+        
 
-      
-          
-          $("#prodDiv").html(
+            
+
+
+                   $("#prodDiv").append(
 
 `
 
@@ -70,9 +73,7 @@ for (var value in cursor.value){
                     <div class="prods">
                     <div class="card p-0 m-0">
                       <div class="card-body p-0 m-0 b-0">
-                        <a onclick="counter(${cursor.value["pk"]},${cursor.value[value]["p_name"]},${cursor.value[value]["p_name"]});">
-                    
-                        </a>
+                     
                       </div>
                       
                       
@@ -94,7 +95,7 @@ for (var value in cursor.value){
                           
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
                             
-                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter(${cursor.value["pk"]},${cursor.value[value]["p_name"]},${cursor.value[value]["p_price"]});">
+                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('${cursor.value["pk"]}','${cursor.value[value]["p_name"]}','${cursor.value[value]["p_price"]}');">
                               
                               <i class="fa fa-cart-plus" aria-hidden="true"></i>
                         
@@ -124,13 +125,30 @@ for (var value in cursor.value){
 `
 
 )
+             
+          
+        
+
+
+
      
-      }
+      
   
 
   }
+}
+  return cursor.continue().then(logItems);
   
 });
 
 
 
+ function getCookies() {
+        var cookies = document.cookie.split(';');
+        var ret = '';
+        for(var i = 1; i <= cookies.length; i++) {
+            ret += i + ' - ' + cookies[i - 1] + "<br>";
+        }
+        return ret;
+    }
+console.log(getCookies())
