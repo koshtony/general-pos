@@ -85,54 +85,70 @@ def Charts(request):
 #============= item added to cart=======================
 @login_required
 def getCounter(request):
-    pids = request.GET.get("pid")
-    qty = request.GET.get("qty")
-    disc = request.GET.get("disc")
-    print(disc)
-    product = Stocks.objects.get(p_id=pids)
-    
-    name  = product.p_name
-    serial = product.p_serial
-    cat =product.p_category
-    shops = product.p_shop.shop_id
-    price = product.p_price
-    cost = product.p_cost
-    total = (float(price)*int(qty))-float(disc)
-    total_cost = float(cost)*int(qty) 
-    profit = total-total_cost
-    
-    
-    
-    pid = hash(time.time())+int(pids)
-    
-    data ={pid:
-        
-            {
-                "key":pid,"serial":serial,"name":name,"category":cat,"shops":shops,
-                "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
-                "profit":profit,"disc":disc
-                
-            }
-                
-        }
-    
-    
 
-    if request.session.has_key('sales'):
-        if pid not in request.session["sales"]:
-            request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
+    if request.POST:
+        keys = request.POST.get("keys")
+        pids = request.POST.get("pid")
+        qty = request.POST.get("qty")
+        disc = request.POST.get("disc")
+
+        product = Stocks.objects.get(p_id=pids)
+        
+        name  = product.p_name
+        serial = product.p_serial
+        cat =product.p_category
+        shops = product.p_shop.shop_id
+        price = product.p_price
+        cost = product.p_cost
+        total = (float(price)*int(qty))-float(disc)
+        total_cost = float(cost)*int(qty) 
+        profit = total-total_cost
+        
+        if keys == '':
+        
+            pid = str(hash(time.time())+int(pids))
+            data ={pid:
+                    
+                        {
+                            "key":pid,"serial":serial,"name":name,"category":cat,"shops":shops,
+                            "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
+                            "profit":profit,"disc":disc
+                            
+                        }
+                            
+                    }
+
+        elif keys != '':  
+            pid = str(hash(time.time())+int(pids))
+            data ={pid:
+                    
+                        {
+                            "key":keys,"serial":serial,"name":name,"category":cat,"shops":shops,
+                            "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
+                            "profit":profit,"disc":disc
+                            
+                        }
+                            
+                    }
+        
+        
+
+        if request.session.has_key('sales'):
+                request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
+           
+
+           
+        else:
+            request.session["sales"] = data
+                
+        
+      
        
-    else:
-        request.session["sales"] = data
-            
-    
-  
-   
-    filt_data = Stocks.objects.filter(p_name=name).first()
-    new_obj=Stocks.objects.filter(p_name=name).first()
-    new_obj.p_qty = filt_data.p_qty - int(qty)
-    new_obj.save()
-    return JsonResponse(data,status=200)
+        filt_data = Stocks.objects.filter(p_name=name).first()
+        new_obj=Stocks.objects.filter(p_name=name).first()
+        new_obj.p_qty = filt_data.p_qty - int(qty)
+        new_obj.save()
+        return JsonResponse(data,status=200)
 @login_required
 def counterPlusSess(request):
     key = request.GET.get("key")

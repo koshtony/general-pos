@@ -260,15 +260,20 @@
                   <div class="card-body p-0">
                     <table class="table table-striped"  id="countTab">
                       <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
+                      <br><br>
+                      receipt #<input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:20px">
+                      <br>
                       <thead style="background-color:orange">
                         <tr>
-                          
+                    
                           <th style="width: 10px">name</th>
+                          
                           <th>qty</th>
                           <th>price</th>
                           <th>disc</th>
                           <th style="width: 40px">Total</th>
                           <th style="width: 60px">Remove</th>
+                          <th style="width: 10px">#</th>
                         </tr>
                       </thead>
                       <tbody  style="background-color:grey" id="countBody">
@@ -276,10 +281,11 @@
                         {% if "sales" in request.session %} 
                            {% for key,val in request.session.sales.items %}
                            <tr>
-                            
+                          
                             <td>{{ val.name }}</td>
+                             <input type="hidden" value="{{ key }}">
                             <td>
-                              <input type="hidden" value="{{ key }}">
+                             
                               <a class="btn btn-sm btn-info" id="plusBtn">+</a>
                               <input type="number" value="{{ val.qty }}" style="width:40px">
                               <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
@@ -289,9 +295,10 @@
                             <td>{{ val.price }}</td>
                             
                             <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                            <td class="recpt">{{val.key}}</td>
                         </tr>
                            {% endfor %}
-                           {% endif %}
+                        {% endif %}
                       
                       </tbody>
                     </table>
@@ -593,13 +600,16 @@
 
       function counter(qty,names,prices){
           event.preventDefault()
+         
+          $.post("{% url 'firstapp-getcounter' %}",{
 
-          $.get("{% url 'firstapp-getcounter' %}",{
+            keys: $("#receipt-no").val(),
             pid: qty,
             qty: $('#'+qty).val(),
             price :prices,
             p_name:names,
             disc:$('#p'+qty).val(),
+            csrfmiddlewaretoken:'{{ csrf_token }}',
           },
           function(data,status){
             //var data = JSON.parse(data)
@@ -618,6 +628,7 @@
                   <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
                   <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td class="recpt">${data[key]["key"]}</td>
               </tr>
 
               `
@@ -747,6 +758,26 @@
       
           });
       });
+
+        $(document).ready(function(){
+        $("#receipt-no").on("keyup",function(){
+            $("#countBody td.recpt:contains('" + $(this).val() + "')").parent().show();
+            $("#countBody td.recpt:not(:contains('" + $(this).val() + "'))").parent().hide();
+
+            var sum = 0;
+                        $("#countBody tr").each(function(){
+                          sum += parseFloat($(this).find("td:eq(4)").text());
+                        });
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
+
+            });
+
+          
+        });
+
+
+  
       </script>
       
     </section>
