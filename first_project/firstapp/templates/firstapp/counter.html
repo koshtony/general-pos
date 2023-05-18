@@ -35,6 +35,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="{% static 'js/JsBarcode.all.min.js' %}"></script>
 
 
 
@@ -137,7 +138,7 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
               <li class="nav-item has-treeview menu-open">
-                <a href="/" class="nav-link active">
+                <a href="{% url 'firstapp-home' %}" class="nav-link active">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                  dashboard
@@ -257,6 +258,50 @@
             <div class="row">
               <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                 <div class="card">
+                  <div class="card-footer">
+                    <div class="row" >
+                      <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+                        <label for="total">Sub Total</label>
+                        <br>
+                        <label for="minus">-</label>
+                        <br>
+                        <label for="vat">VAT(16%)</label>
+                        <br>
+                        <label for="nettotal">Total</label>
+                      </div>
+                      <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" class="form-control" id="total" name="total" readonly value="{{sum}}">
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id="minus" name="minus" class="form-control" >
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id="vat" name="vat" class="form-control" >
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                          <input type="text" id ='nettotal' name="nettotal" class="form-control" 
+                          style="height:80px; font-size:80px;"  readonly value="{{sum}}">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center" style="margin-left:50px">
+                      <button onclick="balCounter()" style="margin-left:50px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
+                      
+                      
+                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
+
+                      
+
+                      <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
+
+                      
+                    </div>
+                    
+                    <!---      mpesa modal-->
+                    
+                   
+                  </div>
                   <div class="card-body p-0">
                     <table class="table table-striped"  id="countTab">
                       <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
@@ -303,50 +348,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="card-footer">
-                    <div class="row" >
-                      <div class="col-4 col-sm-4 col-md-4 col-lg-4">
-                        <label for="total">Sub Total</label>
-                        <br>
-                        <label for="minus">-</label>
-                        <br>
-                        <label for="vat">VAT(16%)</label>
-                        <br>
-                        <label for="nettotal">Total</label>
-                      </div>
-                      <div class="col-8 col-sm-8 col-md-8 col-lg-8">
-                        <div class="input-group input-group-sm mb-1">
-                          <input type="text" class="form-control" id="total" name="total" readonly value="{{sum}}">
-                        </div>
-                        <div class="input-group input-group-sm mb-1">
-                          <input type="text" id="minus" name="minus" class="form-control" >
-                        </div>
-                        <div class="input-group input-group-sm mb-1">
-                          <input type="text" id="vat" name="vat" class="form-control" >
-                        </div>
-                        <div class="input-group input-group-sm mb-1">
-                          <input type="text" id ='nettotal' name="nettotal" class="form-control" 
-                          style="height:80px; font-size:80px;" readonly value="{{sum}}">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="text-center">
-                      <button onclick="balCounter()" style="margin-left:0px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
-                      
-                      
-                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
-
-                      <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#debtModal"><i class="fa fa-mobile">add debt</i></button>
-
-                      <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
-
-                      
-                    </div>
-                    
-                    <!---      mpesa modal-->
-                    
-                   
-                  </div>
+                  
                 </div>
               </div>
               <div class="modal fade" id="mpesaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
@@ -630,7 +632,7 @@
                   <td>${data[key]["price1"]}</td>
                   <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
-                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td><button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
                   <td class="recpt">${data[key]["key"]}</td>
               </tr>
 
@@ -640,10 +642,26 @@
             
          }
             
-            var sum = 0;
-                        $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(4)").text());
-                        });
+            var input, filter, table, tr, td, i, txtValue,sum;
+          input = document.getElementById("receipt-no");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("countBody");
+          tr = table.getElementsByTagName("tr");
+          sum = 0;
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[6];
+            
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                sum += parseFloat(tr[i].getElementsByTagName("td")[4].innerText)
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
             
             tot =parseFloat($("#total").val())
             
@@ -703,7 +721,8 @@
                         $("#countBody tr").each(function(){
                           sum += parseFloat($(this).find("td:eq(4)").text());
                         });
-                        
+                        $('#total').val(sum);
+                        $("#nettotal").val(sum-$("#minus").val())
                         $.get("{% url 'firstapp-counterplus' %}",{
 
                             key: cRow.find("input[type=hidden]").val(),
@@ -784,213 +803,105 @@
           }
           $('#total').val(sum);
           $("#nettotal").val(sum-$("#minus").val())
+           $("#totsum").val(sum-$("#minus").val())
         }
+
+
 
        function printRect(){
       
-        var a = window.open('', 'PRINT', 'height=500, width=500');
-        a.document.write(`
-        
-        
-        <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Receipt</title>
-    <link rel="shortcut icon" type="image/png" href="" />
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+        var a = window.open('', 'PRINT', 'height=1000, width=1000');
 
-      .table-bordered td,
-      .table-bordered th {
-        border: 1px solid #ddd;
-        padding: 10px;
-        word-break: break-all;
-      }
+        var sum = 0;
+        var tabDiv = `<style>
+        th, td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size:10px;
+}  
 
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        margin: 0;
-        padding: 0;
-        font-size: 12px;
-        zoom: 40%;
-      }
-      .h4-14 h4 {
-        font-size: 12px;
-        margin-top: 0;
-        margin-bottom: 5px;
-      }
-      .img {
-        margin-left: "auto";
-        margin-top: "auto";
-        height: 30px;
-      }
-      pre,
-      p {
-        /* width: 99%; */
-        /* overflow: auto; */
-        /* bpicklist: 1px solid #aaa; */
-        padding: 0;
-        margin: 0;
-      }
-      table {
-        font-family: arial, sans-serif;
-        width: 100%;
-        border-collapse: collapse;
-        padding: 1px;
-      }
-      .hm-p p {
-        text-align: left;
-        padding: 1px;
-        padding: 5px 4px;
-      }
-      td,
-      th {
-        text-align: left;
-        padding: 8px 6px;
-      }
-      .table-b td,
-      .table-b th {
-        border: 1px solid #ddd;
-      }
-      th {
-        /* background-color: #ddd; */
-      }
-      .hm-p td,
-      .hm-p th {
-        padding: 3px 0px;
-      }
-      .cropped {
-        float: right;
-        margin-bottom: 20px;
-        height: 100px; /* height of container */
-        overflow: hidden;
-      }
-      .cropped img {
-        width: 400px;
-        margin: 8px 0px 0px 80px;
-      }
-      .main-pd-wrapper {
-        box-shadow: 0 0 10px #ddd;
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 15px;
-      }
-      .table-bordered td,
-      .table-bordered th {
-        border: 1px solid #ddd;
-        padding: 10px;
-        font-size: 14px;
-      }
-      .invoice-items {
-        font-size: 14px;
-        border-top: 1px dashed #ddd;
-      }
-      .invoice-items td{
-        padding: 14px 0;
-       
-      }
-    </style>
-  </head>
-  <body>
-    <section class="main-pd-wrapper" style="width: 450px; margin: auto">
-      <div style="
-                  text-align: center;
-                  margin: auto;
-                  line-height: 1.5;
-                  font-size: 14px;
-                  color: #4a4a4a;
-                ">
-              
+p{
+  font-size:12px;
+}
+        </style>`
 
-                <p style="font-weight: bold; color: #000; margin-top: 15px; font-size: 18px;">
-                  Pambo Holdings<br> Private Limited
-                </p>
-                <p style="margin: 15px auto;">
-                  Thika <br>
-                Town area
-                </p>
-                <p>
-                  <b>SALE ID: {{code}}</b> 
-                </p>
-                <p>
-                  <b>GEN CODE: {{code}}</b> 
-                </p>
-                <p>
-                  <b>DATE : {{date}}</b> 
-                </p>
-                <hr style="border: 1px dashed rgb(131, 131, 131); margin: 25px auto">
-              </div>
-              <table style="width: 100%; table-layout: fixed">
-                <thead>
-                  <tr>
-                    <th style="width: 50px; padding-left: 0;">Sn.</th>
-                    <th style="width: 220px;">Item Name</th>
-                    <th>QTY</th>
-                    <th style="text-align: right; padding-right: 0;">Price</th>
-                  </tr>
-                </thead>
-                <tbody id="sumTab">
+        var code = []
+        $("#countBody tr").each(function(){
+           if($(this).find("td:eq(6)").text() == $("#receipt-no").val()){
+            code.push($("#receipt-no").val())
+           tabDiv +=  `
 
-                    {% if "sales" in request.session %} 
-                           {% for key,val in request.session.sales.items %}
+           <table class="table table-striped">
+           <tr>
+           <td>${$(this).find("td:eq(0)").text()}</td>
+           <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(4)").text()}</td>
+           </tr>
+           </table>
+         
+           `
+           sum+=parseFloat($(this).find("td:eq(4)").text())
+         }else if( $("#receipt-no").val()== ''){
+            code.push($(this).find("td:eq(6)").text())
+            tabDiv +=  `
 
-                  <tr class="invoice-items">
-                    <td>{{val.serial}}</td>
-                    <td >{{val.name}}</td>
-                    <td>{{val.qty}}</td>
-                    <td style="text-align: right;">Ksh {{val.price}}</td>
-                  </tr>
-                       {% endfor %} 
-                    {% endif %}
-                </tbody>
-              </table>
+           <table class="table table-striped">
+           <tr>
+           <td>${$(this).find("td:eq(0)").text()}</td>
+           <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(4)").text()}</td>
+           </tr>
+           </table>
+         
+           `
+           sum+=parseFloat($(this).find("td:eq(4)").text())
 
-              <table style="width: 100%;
-              background: #fcbd024f;
-              border-radius: 4px;">
-                <thead>
-                  <tr>
-                    <th>Total</th>
-                    
-                    <th style="text-align: right;">{{sumqty}}</th>
-                    
-                    <th style="text-align: right;" id="totsum">Ksh {{sumtot}}</th>
-                    
-                  </tr>
-                </thead>
+
+         }
              
-              </table>
 
-              <table style="width: 100%;
-              margin-top: 15px;
-              border: 1px dashed #00cd00;
-              border-radius: 3px;">
-                <thead>
-                  <tr>
-                    <td>Total: </td>
-                    <td style="text-align: right;">Ksh {{sum}}</td>
-                  </tr>
-                  <tr>
-                    <td>Total VAT In : </td>Ksh {{sum}}</td>
-                  </tr>
-                </thead>
-             
-              </table>
+        })
 
-    </section>
+        var headDiv = `
+         <p>==========================</p>
+          <p><strong>BOMA PLACE</strong></p> # `+code[code.length-1]+`
 
-  </body>
+          <p>=========================</p>
 
- 
-</html>
+
+         
+
+        <table class="table table-striped"><thead>
+
+           <th>item</th>
+           <th>qty</th>
+           <th>amount</th>
+         
+           </thead>
+         
+            
+           </table>`
+        var bndDiv = '<table><tr><p>=========================</p>'
+        var subDiv = '<p> subtotal:=======Ksh  '+sum+ '.00</p>' 
+        var vatDiv = '<p> VAT=============:      Ksh  '+0.00+ '.00</p>'
+        var allDiv = '<p> Total:========== Ksh     '+sum+ '.00</p>'
+        var bnd2Div = '<p>=======================</p></tr></table>'
+
 
         
+
+          tabDiv = headDiv+tabDiv+bndDiv+subDiv+vatDiv+allDiv+bnd2Div
+  
+        a.document.write(
         
         
-        `)
+
+        tabDiv
+        
+        
+        )
 
         
         a.print()
