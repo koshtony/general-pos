@@ -75,7 +75,7 @@
           {% endfor %}
     </datalist>
     
-    <table class="table align-middle mb-0 bg-white" style="margin-left:10px">
+    <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="sales">
         <thead class="bg-light">
           <tr>
             
@@ -83,7 +83,7 @@
             <th>Name</th>
             <th>shop</th>
             <th>Qty</th>
-            <th>Cost</th>
+           
             <th>price</th>
             <th>profit</th>
             <th>Status</th>
@@ -108,9 +108,7 @@
               <td>
                    {{sale.s_qty}}
               </td>
-              <td>
-                {{sale.s_cost}}
-              </td>
+              
               <td>
                 {{sale.s_price}}
               </td>

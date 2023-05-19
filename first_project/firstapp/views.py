@@ -45,6 +45,7 @@ def home(request):
 #==============render counter page =================
 @login_required
 def counter(request):
+    
     sums = 0
     
     if 'sales' in request.session:
@@ -197,26 +198,37 @@ def counterRemvSess(request):
 
 @login_required
 def addSales(request):
-    if 'sales' in request.session:
-        for key,value in request.session["sales"].items():
-            sales= Sales(
-                s_serial = request.session["sales"][key]["serial"],
-                s_name = request.session["sales"][key]["name"],
-                s_shop = Shops.objects.get(shop_id=request.session["sales"][key]["shops"] ),
-                s_qty = request.session["sales"][key]["qty"],
-                s_price = request.session["sales"][key]["price"],
-                s_cost = request.session["sales"][key]["cost"],
-                s_negatives = 0,
-                s_profit = request.session["sales"][key]["profit"],
-                s_created = datetime.now(),
-                s_creator = request.user
-            )
-            sales.save()
-            
-        del request.session["sales"]
+    if request.POST:
+        code = request.POST.get("code")
+        print(len(code))
+        if 'sales' in request.session and len(code)>0:
+            keys_to_del = []
+            for key,value in request.session["sales"].items():
+                    if request.session["sales"][key]["key"] == code:
+
+                        sales= Sales(
+                            s_serial = code,
+                            s_name = request.session["sales"][key]["name"],
+                            s_shop = Shops.objects.get(shop_id=request.session["sales"][key]["shops"] ),
+                            s_qty = request.session["sales"][key]["qty"],
+                            s_price = request.session["sales"][key]["price"],
+                            s_cost = request.session["sales"][key]["cost"],
+                            s_negatives = 0,
+                            s_profit = request.session["sales"][key]["profit"],
+                            s_created = datetime.now(),
+                            s_creator = request.user
+                        )
+                        sales.save()
+
+                        keys_to_del.append(key)
         
-        return redirect('firstapp-counter')
-        
+            for i in keys_to_del:
+                del request.session["sales"][i]
+            request.session["sales"] = request.session["sales"]
+
+            return JsonResponse("Transaction for recipt no: "+code+" complete",safe=False)
+    
+        return JsonResponse("no sale to submit",safe=False)   
 @login_required
 def stocksView(request): 
     

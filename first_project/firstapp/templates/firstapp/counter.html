@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="{% static 'firstapp/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="{% static 'firstapp/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
   <!-- JQVMap -->
@@ -37,7 +40,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="{% static 'js/JsBarcode.all.min.js' %}"></script>
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
   <div class="spinner-grow" role="status">
@@ -294,6 +299,7 @@
                       
 
                       <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
+                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
 
                       
                     </div>
@@ -304,9 +310,12 @@
                   </div>
                   <div class="card-body p-0">
                     <table class="table table-striped"  id="countTab">
-                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
+                      
+                       <a style="margin-left:5px;"><i class="fa fa-times"></i></a>
                       <br><br>
-                      receipt #<input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:20px" onkeyup="receiptFilt()">
+                      <div>
+                     <input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
+
                       <br>
                       <thead style="background-color:orange">
                         <tr>
@@ -317,8 +326,8 @@
                           <th>price</th>
                           <th>disc</th>
                           <th style="width: 40px">Total</th>
-                          <th style="width: 60px">Remove</th>
-                          <th style="width: 10px">#</th>
+                          <th style="width: 60px"><a onclick="location.reload()">Remove</a></th>
+                          <th style="width: 10px">#Receipt</th>
                         </tr>
                       </thead>
                       <tbody  style="background-color:grey" id="countBody">
@@ -440,7 +449,7 @@
                        <input type="text" id="bal" value=""style="margin-left:103px">
                        </div>
                        <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
-                       <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
+                       <button type="button" class="btn btn-sm btn-info" onclick="compSale();"> complete </button>
                      </div> 
                    </div>
                  </div>
@@ -910,7 +919,33 @@ p{
        }
 
 
-  
+   
+
+       // ===================complete payment ================================
+
+
+       function compSale(){
+
+          
+           document.getElementById("receipt-no").required = true;
+           
+           var receipt_no = $("#receipt-no").val()
+
+           $.post("{% url 'firstapp-addsales' %}",{
+
+            code: $("#receipt-no").val(),
+             csrfmiddlewaretoken:'{{ csrf_token }}',
+           },
+           function(data,status){
+
+                alert(data)
+                location.reload()
+           }
+
+
+           )
+
+       }
       </script>
       
     </section>

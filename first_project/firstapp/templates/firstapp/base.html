@@ -26,6 +26,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'firstapp/dist/css/adminlte.min.css' %}">
   <link rel="stylesheet" href="{% static 'firstapp/dist/css/custom_style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'firstapp/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
   <!-- Daterange picker -->
@@ -38,6 +41,13 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+
+
 
 <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
@@ -280,7 +290,17 @@
 </div>
 
 <!-- ./wrapper -->
+<script>
+  
 
+  $(document).ready(function () {
+    $('#sales').DataTable();
+});
+
+  $(document).ready(function () {
+    $('#stocks').DataTable();
+});
+</script>
 <script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 
 <script src="{% static 'firstapp/dist/js/adminlte.js' %}"></script>
 </body>
