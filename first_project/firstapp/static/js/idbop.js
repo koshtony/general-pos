@@ -61,7 +61,7 @@ for (var value in cursor.value){
         
 
             
-
+               
 
                    $("#prodDiv").append(
 
@@ -86,7 +86,7 @@ for (var value in cursor.value){
                         
                         <div class="row">
                           <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <p  id="${cursor.value[value]["p_price"]}">Ksh ${cursor.value[value]["p_name"]} </p>
+                            <p>Ksh ${cursor.value[value]["p_price"]} </p>
                             off <input type="number" id="p${cursor.value["pk"]}" value="${cursor.value[value]["p_disc"]}" style="width:50px">
                             <br>
                             <br>
@@ -143,12 +143,3 @@ for (var value in cursor.value){
 
 
 
- function getCookies() {
-        var cookies = document.cookie.split(';');
-        var ret = '';
-        for(var i = 1; i <= cookies.length; i++) {
-            ret += i + ' - ' + cookies[i - 1] + "<br>";
-        }
-        return ret;
-    }
-console.log(getCookies())

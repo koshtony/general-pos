@@ -284,25 +284,7 @@
                       </thead>
                       <tbody  style="background-color:grey" id="countBody">
                         
-                        {% if "sales" in request.session %} 
-                           {% for key,val in request.session.sales.items %}
-                           <tr>
-                            
-                            <td>{{ val.name }}</td>
-                            <td>
-                              <input type="hidden" value="{{ key }}">
-                              <a class="btn btn-sm btn-info" id="plusBtn">+</a>
-                              <input type="number" value="{{ val.qty }}" style="width:40px">
-                              <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
-                            </td>
-                            <td>{{ val.price1 }}</td>
-                            <td>{{ val.disc }}</td>
-                            <td>{{ val.price }}</td>
-                            
-                            <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                           {% endfor %}
-                           {% endif %}
+                      
                       
                       </tbody>
                     </table>
@@ -435,7 +417,7 @@
                              <label for="bal">Bal>>>>>>>>></label>
                              <input type="text" id="bal" value=""style="margin-left:103px">
                              </div>
-                             <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" %}" download><i class="fa fa-download">receipt</i></a>
+                             <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
                              <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
                            </div> 
                          </div>
@@ -551,58 +533,6 @@
                $("#nettotal").val($("#total").val()-$("#minus").val())
           })
 
-      function counter(qty,names,prices){
-          event.preventDefault()
-
-          $.get("{% url 'firstapp-getcounter' %}",{
-            pid: qty,
-            qty: $('#'+qty).val(),
-            price :prices,
-            p_name:names,
-            disc:$('#p'+qty).val(),
-          },
-          function(data,status){
-            //var data = JSON.parse(data)
-        var sum = 0;
-         for (var key in data){
-            $("#countTab tbody").prepend(
-              `
-              <tr>
-                  <td>${data[key]["name"]}</td>
-                  <td>
-                              
-                            ${data[key]["qty"]}
-                             
-                  </td>
-                  <td>${data[key]["price1"]}</td>
-                  <td>${data[key]["disc"]}</td>
-                  <td>${data[key]["price"]}</td>
-                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
-              </tr>
-
-              `
-            
-            )
-            
-         }
-            
-            var sum = 0;
-                        $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(4)").text());
-                        });
-            
-            tot =parseFloat($("#total").val())
-            
-            
-            $("#total").val(sum)
-            minuses = $("#minus").val()
-            nettot = sum - minuses
-            $("#nettotal").val(nettot)
-
-            
-          }
-          )
-      }
       $("#countTab").on("click", "#delBtn", function() {
                   cRow = $(this).closest("tr")
               
@@ -709,6 +639,70 @@
       });
            
 
+      function counter(pid,names,prices){
+
+        
+ dbPromise.then( function(db){
+
+  var tx = db.transaction('stocks','readonly');
+  var stocksStore = tx.objectStore('stocks');
+  return stocksStore.openCursor();
+ 
+  }).then(function logItems(cursor){
+ 
+   if (!cursor){
+ 
+       return;
+   }
+
+
+
+        for(value in cursor.value){
+      
+          if (value=="fields"){
+      
+              if(cursor.value["pk"] == pid){
+
+                
+                 
+                $("#countBody").append(
+                  
+                  `
+                  <tr>
+                  <td>${cursor.value[value]["p_name"]}</td>
+                  <td>
+                              
+                            ${$("#"+pid).val()}
+                             
+                  </td>
+                  <td>${cursor.value[value]["p_price"]}</td>
+                  <td>${cursor.value[value]["p_disc"]}</td>
+                  <td>${parseFloat(cursor.value[value]["p_price"])*parseFloat($("#"+pid).val())}</td>
+                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+              </tr>
+                  
+                  
+                  `
+      
+                )
+      
+              }
+          }
+        }
+      
+        var sum = 0;
+        $("#countBody tr").each(function(){
+          sum += parseFloat($(this).find("td:eq(4)").text());
+        });
+        $('#total').val(sum);
+        $("#nettotal").val(sum-$("#minus").val())
+ 
+        return cursor.continue().then(logItems);
+       
+       });
+       
+    
+      }
 
       </script>
       
