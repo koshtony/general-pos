@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
+    'offline_pos.apps.OfflinePosConfig',
     'crispy_forms',
     'admin_interface', 
     'colorfield', 
@@ -158,4 +159,4 @@ LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'firstapp/static/js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'offline_pos/static/js', 'serviceworker.js')

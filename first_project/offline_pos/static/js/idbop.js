@@ -11,7 +11,7 @@
 
 // fetch data from actual database -> populate to indexDB
 
- var data_url = 'http://127.0.0.1:8000/feeds_indexDB'
+ var data_url = 'http://127.0.0.1:8000/feeds_stocksDB'
 
  fetch(data_url).then(function(response){
 

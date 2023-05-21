@@ -142,105 +142,123 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
-              <li class="nav-item has-treeview menu-open">
-                <a href="{% url 'firstapp-home' %}" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                 dashboard
-                  </p>
+          <li class="nav-item has-treeview menu-open">
+            <a href="{% url 'firstapp-home' %}" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+             dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-counter' %}" class="nav-link">
+              <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
+              <p>
+                 counter
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+              <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
+              <p>
+                 Stocks
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-sales' %}" class="nav-link">
+              <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
+              <p>
+              Sales
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-orders' %}" class="nav-link">
+              <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
+              <p>
+              orders
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-financesummary' %}" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>reports</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-charts' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 Visuals
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a href="{% url 'posUsers-profile' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                User Profile
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 logout
+              </p>
+            </a>
+          </li>
+          
+          <li class="line"></li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
+              <p>
+                      Offline 
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'offline-counter' %}" class="nav-link">
+                  <i class="nav-icon fa fa-shopping-basket"></i>
+                  <p>Counter</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'firstapp-counter' %}" class="nav-link">
-                  <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
-                  <p>
-                     counter
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+                <a href="" class="nav-link">
                   <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
-                  <p>
-                     Stocks
-                  </p>
+                  <p>Stocks</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'firstapp-sales' %}" class="nav-link">
+                <a href="" class="nav-link">
                   <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
-                  <p>
-                    sales
-                  </p>
+                  <p>sales</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-orders' %}" class="nav-link">
-                  <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
-                  <p>
-                  orders
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-charts' %}" class="nav-link">
-                  <i class="nav-icon fas fa-chart-line"></i>
-                  <p>visuals</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'logout' %}" class="nav-link">
-                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-                  <p>
-                     logout
-                  </p>
-                </a>
-              </li>
-              
-              <li class="line"></li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
-                  <p>
-              
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="nav-icon fas fa-chart-line"></i>
-                      <p>reports</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{% url 'posUsers-profile' %}" class="nav-link">
-                      <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
-                      <p>User Profile</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="nav-icon fa fa-sitemap" aria-hidden="true"></i>
-                      <p></p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              
-            
-           
             </ul>
-            {% else %}
-              <li class="nav-item">
-                <a href="{% url 'login' %}" class="nav-link">
-                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-                  <p>
-                     login
-                  </p>
-                </a>
-              </li>
-              {% endif %}
+          </li>
+          
+        
+       
+        </ul>
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'login' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 login
+              </p>
+            </a>
+          </li>
+          {% endif %}
           </nav>
           <!-- /.sidebar-menu -->
         </div>
@@ -726,12 +744,7 @@
 
                   cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
 
-                  var sum = 0;
-                        $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(4)").text());
-                        });
-                        $('#total').val(sum);
-                        $("#nettotal").val(sum-$("#minus").val())
+                
                         $.get("{% url 'firstapp-counterplus' %}",{
 
                             key: cRow.find("input[type=hidden]").val(),

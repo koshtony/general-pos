@@ -203,6 +203,24 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{% url 'firstapp-charts' %}" class="nav-link">
+                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+                  <p>
+                     Visuals
+                  </p>
+                </a>
+              </li> 
+
+              <li class="nav-item">
+                <a href="{% url 'posUsers-profile' %}" class="nav-link">
+                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+                  <p>
+                    User Profile
+                  </p>
+                </a>
+              </li> 
+
+              <li class="nav-item">
                 <a href="{% url 'logout' %}" class="nav-link">
                   <i class="nav-icon fa fa-user" aria-hidden="true"></i>
                   <p>
@@ -216,27 +234,27 @@
                 <a href="#" class="nav-link">
                   <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
                   <p>
-              
+                          Offline 
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{% url 'firstapp-charts' %}" class="nav-link">
-                      <i class="nav-icon fas fa-chart-line"></i>
-                      <p>Visuals</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{% url 'posUsers-profile' %}" class="nav-link">
-                      <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
-                      <p>User Profile</p>
+                    <a href="{% url 'offline-counter' %}" class="nav-link">
+                      <i class="nav-icon fa fa-shopping-basket"></i>
+                      <p>Counter</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="" class="nav-link">
-                      <i class="nav-icon fa fa-sitemap" aria-hidden="true"></i>
-                      <p>structure</p>
+                      <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
+                      <p>Stocks</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
+                      <p>sales</p>
                     </a>
                   </li>
                 </ul>

@@ -25,6 +25,7 @@ urlpatterns = [
     path('logout/',auth_view.LoginView.as_view(template_name='posUsers/logout.html'),name="logout"),
     path('',include('firstapp.urls')),
     path('',include('posUsers.urls')),
+    path('',include('offline_pos.urls')),
     path('', include('pwa.urls')),
 
 ]

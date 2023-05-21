@@ -4,7 +4,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
-        '/offline'
+        '/offline-counter'
       ]);
     })
   );
@@ -13,8 +13,8 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   var requestUrl = new URL(event.request.url);
     if (requestUrl.origin === location.origin) {
-      if ((requestUrl.pathname === '/offline')) {
-        event.respondWith(caches.match('/offline'));
+      if ((requestUrl.pathname === '/offline-counter')) {
+        event.respondWith(caches.match('/offline-counter'));
         return;
       }
     }

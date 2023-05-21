@@ -147,105 +147,123 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
-              <li class="nav-item has-treeview menu-open">
-                <a href="/" class="nav-link active">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                 dashboard
-                  </p>
+          <li class="nav-item has-treeview menu-open">
+            <a href="{% url 'firstapp-home' %}" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+             dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-counter' %}" class="nav-link">
+              <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
+              <p>
+                 counter
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+              <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
+              <p>
+                 Stocks
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-sales' %}" class="nav-link">
+              <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
+              <p>
+              Sales
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-orders' %}" class="nav-link">
+              <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
+              <p>
+              orders
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-financesummary' %}" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>reports</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'firstapp-charts' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 Visuals
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a href="{% url 'posUsers-profile' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                User Profile
+              </p>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 logout
+              </p>
+            </a>
+          </li>
+          
+          <li class="line"></li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
+              <p>
+                      Offline 
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'offline-counter' %}" class="nav-link">
+                  <i class="nav-icon fa fa-shopping-basket"></i>
+                  <p>Counter</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'firstapp-counter' %}" class="nav-link">
-                  <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
-                  <p>
-                     counter
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+                <a href="" class="nav-link">
                   <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
-                  <p>
-                     Stocks
-                  </p>
+                  <p>Stocks</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'firstapp-sales' %}" class="nav-link">
+                <a href="" class="nav-link">
                   <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
-                  <p>
-                    sales
-                  </p>
+                  <p>sales</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-orders' %}" class="nav-link">
-                  <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
-                  <p>
-                  orders
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'firstapp-charts' %}" class="nav-link">
-                  <i class="nav-icon fas fa-chart-line"></i>
-                  <p>visuals</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'logout' %}" class="nav-link">
-                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-                  <p>
-                     logout
-                  </p>
-                </a>
-              </li>
-              
-              <li class="line"></li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
-                  <p>
-              
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="nav-icon fas fa-chart-line"></i>
-                      <p>reports</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{% url 'posUsers-profile' %}" class="nav-link">
-                      <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
-                      <p>User Profile</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="nav-icon fa fa-sitemap" aria-hidden="true"></i>
-                      <p></p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              
-            
-           
             </ul>
-            {% else %}
-              <li class="nav-item">
-                <a href="{% url 'login' %}" class="nav-link">
-                  <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-                  <p>
-                     login
-                  </p>
-                </a>
-              </li>
-              {% endif %}
+          </li>
+          
+        
+       
+        </ul>
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'login' %}" class="nav-link">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <p>
+                 login
+              </p>
+            </a>
+          </li>
+          {% endif %}
           </nav>
           <!-- /.sidebar-menu -->
         </div>
@@ -270,7 +288,9 @@
                 <div class="card">
                   <div class="card-body p-0">
                     <table class="table table-striped"  id="countTab">
-                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
+                      
+                      <div>
+                        <input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
                       <thead style="background-color:orange">
                         <tr>
                           
@@ -317,12 +337,9 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <button onclick="balCounter()" style="margin-left:0px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
-                      
-                      
-                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
-
-                      <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#debtModal"><i class="fa fa-mobile">add debt</i></button>
+                        <button onclick="balCounter()" style="margin-left:50px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
+                
+                      <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
 
                       
                     </div>
@@ -544,13 +561,7 @@
                   $("#nettotal").val(newnets)
 
                   // send unique key 
-                  $.get("{% url 'firstapp-counterremove' %}",{
-                     key: cRow.find("input[type=hidden]").val()
-                  },
-                    function(data,status){
-                       document.getElementById("plusAlerts").style.display = "block"
-                    }
-                  )
+                  
         
                   cRow.remove()
                 });
@@ -581,17 +592,7 @@
                         });
                         $('#total').val(sum);
                         $("#nettotal").val(sum-$("#minus").val())
-                        $.get("{% url 'firstapp-counterplus' %}",{
-
-                            key: cRow.find("input[type=hidden]").val(),
-                            qty: cRow.find("input[type=number]").val(),
-
-                            },
-                            function(data,status){
-                              document.getElementById("plusAlerts").style.display = "block"
-                              
-                            }
-                          )
+                        
 
         }); 
 
@@ -615,16 +616,7 @@
                         });
                         $('#total').val(sum);
                         $("#nettotal").val(sum-$("#minus").val())
-                  $.get("{% url 'firstapp-counterplus' %}",{
-
-                     key: cRow.find("input[type=hidden]").val(),
-                     qty: cRow.find("input[type=number]").val(),
-
-                  },
-                   function(data,status){
-                    document.getElementById("plusAlerts").style.display = "block"
-                   }
-                  )
+                 
 
         }); 
 
@@ -671,8 +663,10 @@
                   <tr>
                   <td>${cursor.value[value]["p_name"]}</td>
                   <td>
-                              
-                            ${$("#"+pid).val()}
+
+                    <a class="btn btn-sm btn-info" id="plusBtn">+</a>
+                    <input type="number" value="${$("#"+pid).val()}" style="width:40px">
+                    <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
                              
                   </td>
                   <td>${cursor.value[value]["p_price"]}</td>
@@ -702,6 +696,133 @@
        });
        
     
+      }
+
+      function printRect(){
+      
+        var a = window.open('', 'PRINT', 'height=1000, width=1000');
+
+        var sum = 0;
+        var tabDiv = `<style>
+        th, td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size:10px;
+}  
+
+p{
+  font-size:12px;
+}
+        </style>`
+
+        var code = []
+        $("#countBody tr").each(function(){
+           if($(this).find("td:eq(6)").text() == $("#receipt-no").val()){
+            code.push($("#receipt-no").val())
+           tabDiv +=  `
+
+           <table class="table table-striped">
+           <tr>
+           <td>${$(this).find("td:eq(0)").text()}</td>
+           <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(4)").text()}</td>
+           </tr>
+           </table>
+         
+           `
+           sum+=parseFloat($(this).find("td:eq(4)").text())
+         }else if( $("#receipt-no").val()== ''){
+            code.push($(this).find("td:eq(6)").text())
+            tabDiv +=  `
+
+           <table class="table table-striped">
+           <tr>
+           <td>${$(this).find("td:eq(0)").text()}</td>
+           <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(4)").text()}</td>
+           </tr>
+           </table>
+         
+           `
+           sum+=parseFloat($(this).find("td:eq(4)").text())
+
+
+         }
+             
+
+        })
+
+        var headDiv = `
+         <p>==========================</p>
+          <p><strong>BOMA PLACE</strong></p> # `+code[code.length-1]+`
+
+          <p>=========================</p>
+
+
+         
+
+        <table class="table table-striped"><thead>
+
+           <th>item</th>
+           <th>qty</th>
+           <th>amount</th>
+         
+           </thead>
+         
+            
+           </table>`
+        var bndDiv = '<table><tr><p>=========================</p>'
+        var subDiv = '<p> subtotal:=======Ksh  '+sum+ '.00</p>' 
+        var vatDiv = '<p> VAT=============:      Ksh  '+0.00+ '.00</p>'
+        var allDiv = '<p> Total:========== Ksh     '+sum+ '.00</p>'
+        var bnd2Div = '<p>=======================</p></tr></table>'
+
+
+        
+
+          tabDiv = headDiv+tabDiv+bndDiv+subDiv+vatDiv+allDiv+bnd2Div
+  
+        a.document.write(
+        
+        
+
+        tabDiv
+        
+        
+        )
+
+        
+        a.print()
+        
+      
+       }
+
+       function receiptFilt(){
+        var input, filter, table, tr, td, i, txtValue,sum;
+        input = document.getElementById("receipt-no");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("countBody");
+        tr = table.getElementsByTagName("tr");
+        sum = 0;
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[6];
+          
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+              sum += parseFloat(tr[i].getElementsByTagName("td")[4].innerText)
+            } else {
+              tr[i].style.display = "none";
+            }
+          }       
+        }
+        $('#total').val(sum);
+        $("#nettotal").val(sum-$("#minus").val())
+         $("#totsum").val(sum-$("#minus").val())
       }
 
       </script>
