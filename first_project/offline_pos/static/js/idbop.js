@@ -1,6 +1,8 @@
 
  //  initiate connection to  indexDB
 
+// create stocks db 
+
  var dbPromise = idb.open('stocks-db', 1, function(upgradeDb) {
 
 
@@ -8,6 +10,27 @@
 
 });
 
+// create sales db
+
+var dbPromise2 = idb.open('sales-db', 1, function(upgradeDb) {
+
+
+ upgradeDb.createObjectStore('sales',{keyPath:'pk',autoIncrement: true});
+
+});
+
+function addSale(dicts){
+
+    dbPromise2.then(function(db){
+
+   var trans = db.transaction('sales', 'readwrite');
+     var salesStore = trans.objectStore('sales');
+     salesStore.add(dicts);
+
+        
+  });
+
+}
 
 // fetch data from actual database -> populate to indexDB
 

@@ -629,13 +629,14 @@
       
           });
       });
-           
+
+  
 
       function counter(pid,names,prices){
-
+ var s_dict = []
         
  dbPromise.then( function(db){
-
+    
   var tx = db.transaction('stocks','readonly');
   var stocksStore = tx.objectStore('stocks');
   return stocksStore.openCursor();
@@ -647,7 +648,7 @@
        return;
    }
 
-
+ 
 
         for(value in cursor.value){
       
@@ -655,7 +656,18 @@
       
               if(cursor.value["pk"] == pid){
 
-                
+                var sale_dict = {"pk":cursor.value["pk"],"fields":
+                  {
+
+                      "p_name":cursor.value[value]["p_name"],
+                      
+                }
+
+              }
+              s_dict.push(sale_dict)
+
+              
+
                  
                 $("#countBody").append(
                   
@@ -694,6 +706,16 @@
         return cursor.continue().then(logItems);
        
        });
+
+  console.log(s_dict)
+    dbPromise2.then(function(db){
+
+   var trans = db.transaction('sales', 'readwrite');
+     var salesStore = trans.objectStore('sales');
+     salesStore.put(s_dict);
+
+        
+  });
        
     
       }
