@@ -633,7 +633,7 @@
   
 
       function counter(pid,names,prices){
- var s_dict = []
+ var s_dict = new Array()
         
  dbPromise.then( function(db){
     
@@ -656,15 +656,10 @@
       
               if(cursor.value["pk"] == pid){
 
-                var sale_dict = {"pk":cursor.value["pk"],"fields":
-                  {
-
-                      "p_name":cursor.value[value]["p_name"],
-                      
-                }
-
-              }
-              s_dict.push(sale_dict)
+                cursor.value["pk"]
+                  
+              
+              s_dict.push(cursor.value["pk"]+" "+cursor.value[value]["p_name"])
 
               
 
@@ -707,15 +702,10 @@
        
        });
 
-  console.log(s_dict)
-    dbPromise2.then(function(db){
-
-   var trans = db.transaction('sales', 'readwrite');
-     var salesStore = trans.objectStore('sales');
-     salesStore.put(s_dict);
-
-        
-  });
+      console.log(s_dict[0][0])
+      var ent = s_dict.split(" ")
+      addSale({"pk":ent[0],"fields":{"name":ent[1]}})
+    
        
     
       }
