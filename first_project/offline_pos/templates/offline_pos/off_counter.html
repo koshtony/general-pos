@@ -286,29 +286,6 @@
             <div class="row">
               <div class="col-12 col-sm-12 col-md-5 col-lg-5">
                 <div class="card">
-                  <div class="card-body p-0">
-                    <table class="table table-striped"  id="countTab">
-                      
-                      <div>
-                        <input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
-                      <thead style="background-color:orange">
-                        <tr>
-                          
-                          <th style="width: 10px">name</th>
-                          <th>qty</th>
-                          <th>price</th>
-                          <th>disc</th>
-                          <th style="width: 40px">Total</th>
-                          <th style="width: 60px">Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody  style="background-color:grey" id="countBody">
-                        
-                      
-                      
-                      </tbody>
-                    </table>
-                  </div>
                   <div class="card-footer">
                     <div class="row" >
                       <div class="col-4 col-sm-4 col-md-4 col-lg-4">
@@ -441,6 +418,37 @@
                        </div>
                      </div>
                   </div>
+                  <div class="card-body p-0">
+                    <table class="table table-striped"  id="countTab">
+                      
+                      <div>
+
+                           <div class="input-group">
+                     <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
+                     <button class="btn btn-success" onclick="newReceipt()">new receipt</button>
+                     <button class="btn btn-danger" onclick="clearReceipt()">clear receipt</button>
+                   </div>
+                        <br>
+                      <thead style="background-color:orange">
+                        <tr>
+                          
+                          <th style="width: 10px">name</th>
+                          <th>qty</th>
+                          <th>price</th>
+                          <th>disc</th>
+                          <th style="width: 40px">Total</th>
+                          <th style="width: 60px">Remove</th>
+                          <th style="width: 60px">#</th>
+                        </tr>
+                      </thead>
+                      <tbody  style="background-color:grey" id="countBody">
+                        
+                      
+                      
+                      </tbody>
+                    </table>
+                  </div>
+                  
                 </div>
               </div>
               <div class="col-12 col-sm-12 col-md-7 col-lg-7" id = "stocksDiv">
@@ -561,9 +569,13 @@
                   $("#nettotal").val(newnets)
 
                   // send unique key 
+
+                  var key = cRow.find("input[type=hidden").val()
                   
-        
+                  localStorage.removeItem(key)
                   cRow.remove()
+
+
                 });
 
        function clears(){
@@ -579,6 +591,14 @@
                   tabval = parseFloat(cRow.find("input[type=number]").val())
                   
                   cRow.find("input[type=number]").val(tabval+1)
+
+                  var key_plus = cRow.find("input[type=hidden").val()
+
+                  var old_info = JSON.parse(localStorage.getItem(key_plus))
+
+                  old_info["qty"] = parseFloat(old_info["qty"])+parseFloat(1)
+
+                  localStorage[key_plus] = JSON.stringify(old_info)
 
                   row2Val = parseFloat(cRow.find("td:eq(2)").text())
 
@@ -603,6 +623,14 @@
                   tabval = parseFloat(cRow.find("input[type=number]").val())
                   
                   cRow.find("input[type=number]").val(tabval-1)
+
+                  var key_minus = cRow.find("input[type=hidden").val()
+
+                  var old_info = JSON.parse(localStorage.getItem(key_minus))
+
+                  old_info["qty"] = parseFloat(old_info["qty"])-parseFloat(1)
+
+                  localStorage[key_minus] = JSON.stringify(old_info)
 
                   row2Val = parseFloat(cRow.find("td:eq(2)").text())
 
@@ -633,6 +661,13 @@
   
 
       function counter(pid,names,prices){
+
+
+        if($("#receipt-no").val() == ''){
+
+              alert("No receipt number ---> refreshing")
+              location.reload()
+          }else{
  var s_dict = new Array()
         
  dbPromise.then( function(db){
@@ -656,10 +691,31 @@
       
               if(cursor.value["pk"] == pid){
 
-                cursor.value["pk"]
+                if ($("#receipt-no").val() == ''){
+
+                  var receipt_no = Date.now()
+                }else{
+
+                  var receipt_no = $("#receipt-no").val()
+                }
+
+                sale_dict = {
+                   
+                   "name": cursor.value[value]["p_name"],
+                   "price":cursor.value[value]["p_price"],
+                   "disc":cursor.value[value]["p_disc"],
+                   "qty":$("#"+pid).val(),
+                   "total": parseFloat(cursor.value[value]["p_price"])*parseFloat($("#"+pid).val()),
+                   "receipt": receipt_no
+
+
+                }
+                
+                var key_val = Math.floor(Math.random() * 100)
+                localStorage.setItem(key_val,JSON.stringify(sale_dict))
                   
               
-              s_dict.push(cursor.value["pk"]+" "+cursor.value[value]["p_name"])
+              s_dict.push(sale_dict)
 
               
 
@@ -669,6 +725,7 @@
                   `
                   <tr>
                   <td>${cursor.value[value]["p_name"]}</td>
+                  <input type="hidden" value="${key_val}">
                   <td>
 
                     <a class="btn btn-sm btn-info" id="plusBtn">+</a>
@@ -680,6 +737,7 @@
                   <td>${cursor.value[value]["p_disc"]}</td>
                   <td>${parseFloat(cursor.value[value]["p_price"])*parseFloat($("#"+pid).val())}</td>
                   <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td>${receipt_no}</td>
               </tr>
                   
                   
@@ -702,13 +760,11 @@
        
        });
 
-      console.log(s_dict[0][0])
-      var ent = s_dict.split(" ")
-      addSale({"pk":ent[0],"fields":{"name":ent[1]}})
-    
+      console.log(s_dict)
        
     
       }
+    }
 
       function printRect(){
       
@@ -836,6 +892,49 @@ p{
         $("#nettotal").val(sum-$("#minus").val())
          $("#totsum").val(sum-$("#minus").val())
       }
+
+   
+      for(key in localStorage){
+
+         $("#countBody").append(
+                  
+                  `
+                  <tr>
+                  <td>${JSON.parse(localStorage.getItem(key))["name"]}</td>
+                  <input type="hidden" value="${key}">
+                  <td>
+
+                    <a class="btn btn-sm btn-info" id="plusBtn">+</a>
+                    <input type="number" value="${JSON.parse(localStorage.getItem(key))["qty"]}" style="width:40px">
+                    <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
+                             
+                  </td>
+                  <td>${JSON.parse(localStorage.getItem(key))["price"]}</td>
+                  <td>${JSON.parse(localStorage.getItem(key))["disc"]}</td>
+                  <td>${parseFloat(JSON.parse(localStorage.getItem(key))["price"])*parseFloat(JSON.parse(localStorage.getItem(key))["qty"])}</td>
+                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td>${JSON.parse(localStorage.getItem(key))["receipt"]}</td>
+              </tr>
+                  
+                  
+                  `
+      
+                )
+
+        
+      }
+
+    function newReceipt(){
+
+           $("#receipt-no").val(Date.now())
+       }
+
+       function clearReceipt(){
+
+        $("#receipt-no").val('')
+
+       }
+      
 
       </script>
       

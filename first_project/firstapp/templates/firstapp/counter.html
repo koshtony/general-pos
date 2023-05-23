@@ -332,7 +332,11 @@
                        <a style="margin-left:5px;"><i class="fa fa-times"></i></a>
                       <br><br>
                       <div>
-                     <input type="text" id="receipt-no" class="form-control" size="1" style="width: 500px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
+                        <div class="input-group">
+                     <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
+                     <button class="btn btn-success" onclick="newReceipt()">new receipt</button>
+                     <button class="btn btn-danger" onclick="clearReceipt()">clear receipt</button>
+                   </div>
 
                       <br>
                       <thead style="background-color:orange">
@@ -632,6 +636,12 @@
 
       function counter(qty,names,prices){
           event.preventDefault()
+
+          if($("#receipt-no").val() == ''){
+
+              alert("No receipt number ---> refreshing")
+              location.reload()
+          }else{
          
           $.post("{% url 'firstapp-getcounter' %}",{
 
@@ -702,6 +712,7 @@
           }
           )
       }
+    }
       $("#countTab").on("click", "#delBtn", function() {
                   cRow = $(this).closest("tr")
               
@@ -959,6 +970,19 @@ p{
            )
 
        }
+
+       function newReceipt(){
+
+           $("#receipt-no").val(Date.now())
+       }
+
+       function clearReceipt(){
+
+        $("#receipt-no").val('')
+
+       }
+
+      
       </script>
       
     </section>
