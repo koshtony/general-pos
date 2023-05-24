@@ -309,7 +309,12 @@
 
 <!-- ./wrapper -->
 <script>
-  
+  if(navigator.offLine){
+
+     alert("offline")
+  }else{
+    alert("online")
+  }
 
   $(document).ready(function () {
     $('#sales').DataTable();

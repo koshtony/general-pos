@@ -15,7 +15,7 @@
 var dbPromise2 = idb.open('sales-db', 1, function(upgradeDb) {
 
 
- upgradeDb.createObjectStore('sales',{keyPath:'pk',autoIncrement: true});
+ upgradeDb.createObjectStore('sales',{keyPath:'pk'});
 
 });
 
@@ -25,7 +25,10 @@ function addSale(dicts){
 
    var trans = db.transaction('sales', 'readwrite');
      var salesStore = trans.objectStore('sales');
-     salesStore.add(dicts);
+     
+
+            salesStore.add(dicts)
+     
 
         
   });

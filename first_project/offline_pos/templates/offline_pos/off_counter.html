@@ -411,8 +411,8 @@
                              <label for="bal">Bal>>>>>>>>></label>
                              <input type="text" id="bal" value=""style="margin-left:103px">
                              </div>
-                             <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
-                             <a href="{% url 'firstapp-addsales' %}"><button type="button" class="btn btn-sm btn-info" > complete </button></a>
+                            
+                            <button type="button" class="btn btn-sm btn-info" onclick="toSale();" > complete </button>
                            </div> 
                          </div>
                        </div>
@@ -935,9 +935,61 @@ p{
 
        }
       
+// =========================submit to sales ==========================================
+
+       function toSale(){
+
+          
+              
+           dbPromise2.then(function(db){
+
+   var trans = db.transaction('sales', 'readwrite');
+     var salesStore = trans.objectStore('sales');
+     
+     
+        for(key in localStorage){
+
+         if(key == "clear" || key == "getItem" || key=="key" || key=="length" || key=="removeItem" || key=="setItem"){
+
+
+             continue;
+
+         }else{
+
+              if(JSON.parse(localStorage.getItem(key))["receipt"] == $("#receipt-no").val()){
+
+               salesStore.put({"pk":key,"fields":JSON.parse(localStorage.getItem(key))})
+
+               localStorage.removeItem(key)
+
+             }
+
+
+
+        }
+
+             
+      
+
+     }
+     
+
+        
+  });       
+
+       }
+
+
+  if(navigator.offLine){
+
+     alert("offline")
+  }else{
+    alert("online")
+  }
 
       </script>
       
+
 
 
 </html>

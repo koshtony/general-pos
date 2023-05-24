@@ -642,6 +642,22 @@
               alert("No receipt number ---> refreshing")
               location.reload()
           }else{
+
+            var receipt_no = $("#receipt-no").val()
+            sale_dict = {
+                   
+                   "name": names,
+                   "price":prices,
+                   "disc":$('#p'+qty).val(),
+                   "qty":$("#"+qty).val(),
+                   "total": parseFloat(prices)*parseFloat($("#"+qty).val()),
+                   "receipt": receipt_no
+
+
+                }
+                
+                var key_val = Math.floor(Math.random() * 10000)
+                localStorage.setItem(key_val,JSON.stringify(sale_dict))
          
           $.post("{% url 'firstapp-getcounter' %}",{
 
