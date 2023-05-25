@@ -19,21 +19,7 @@ var dbPromise2 = idb.open('sales-db', 1, function(upgradeDb) {
 
 });
 
-function addSale(dicts){
 
-    dbPromise2.then(function(db){
-
-   var trans = db.transaction('sales', 'readwrite');
-     var salesStore = trans.objectStore('sales');
-     
-
-            salesStore.add(dicts)
-     
-
-        
-  });
-
-}
 
 // fetch data from actual database -> populate to indexDB
 

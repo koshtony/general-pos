@@ -1,0 +1,178 @@
+{% extends 'firstapp/base.html' %}      
+        <!-- Main content -->
+    {% block mainContent %}
+    
+    <!-- Button trigger modal -->
+
+
+
+<!--===============================return item modal===========================-->
+
+
+  <!-- ============================================================================================================-->
+
+
+    <input style="margin-left:620px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
+    <br><br>
+    <datalist id="stocksList">
+          {% for sale in sales %}
+          <option value="{{sale.s_name}}">{{sale.s_name}}</option>
+          {% endfor %}
+    </datalist>
+    
+    <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="sales">
+        <thead class="bg-light">
+          <tr>
+            
+            <th>Serial</th>
+            <th>Name</th>
+            <th>shop</th>
+            <th>Qty</th>
+           
+            <th>price</th>
+            <th>profit</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+            <th>Person</th>
+          </tr>
+        </thead>
+        <tbody id="sales">
+          
+        </tbody>
+       
+
+            
+      </table>
+
+      
+      <script>
+        $(document).ready(function(){
+        $("#pname").on("keyup",function(){
+            var value=$(this).val().toLowerCase();
+            $("#sales tr").filter(function(){
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+ dbPromise2.then( function(db){
+    
+  var tx = db.transaction('sales','readonly');
+  var stocksStore = tx.objectStore('sales');
+  return stocksStore.openCursor();
+ 
+  }).then(function logItems(cursor){
+ 
+   if (!cursor){
+ 
+       return;
+   }
+
+ 
+
+        for(value in cursor.value){
+      
+          if (value=="fields"){
+
+
+              
+
+              
+
+                 
+                $("#sales").prepend(
+                  
+                  `
+                  <tr>
+                  <td>${cursor.value[value]["receipt"]} -- ${cursor.value["pk"]}</td>
+                   <td>${cursor.value[value]["name"]}</td>
+                    <td></td>
+                     <td> ${cursor.value[value]["qty"]}</td>
+                      <td> ${cursor.value[value]["total"]}</td>
+                      <td> </td>
+                      <td>offline</td>
+                      <td> </td>
+                      <td><button class="btn btn-success" onclick="sendRow('${cursor.value["pk"]}','${cursor.value[value]["pid"]}','${cursor.value[value]["receipt"]}','${cursor.value[value]["qty"]}')"><i class="fa fa-plane"></i></button><button class="btn btn-danger" onclick="remRow('${cursor.value["pk"]}')"><i class="fa fa-times"></i></button></td>
+                      <td></td>
+                 
+                  
+                 
+              </tr>
+                  
+                  
+                  `
+      
+                )
+      
+              
+          }
+        }
+      
+   
+ 
+        return cursor.continue().then(logItems);
+       
+       });
+
+
+  function remRow(pk){
+
+
+  	   dbPromise2.then(function(db){
+
+   var tx = db.transaction('sales', 'readwrite');
+     var salesStore = tx.objectStore('sales');
+     salesStore.delete(pk)
+    
+     alert(pk+" successfully removed")
+   
+  });
+  }
+
+
+function sendRow(pk,id,receipt,qty){
+
+  if(navigator.onLine){
+
+ $.post("{% url 'commit-sales' %}",{
+    id:id,
+    receipt:receipt,
+    qty:qty,
+    csrfmiddlewaretoken:'{{ csrf_token }}',
+
+ },
+ 
+ function(data,status){
+
+  dbPromise2.then(function(db){
+
+   var tx = db.transaction('sales', 'readwrite');
+     var salesStore = tx.objectStore('sales');
+     salesStore.delete(pk)
+    
+     alert(pk+" successfully removed")
+   
+  });
+  alert(data)
+
+
+
+ }
+   
+
+ )
+ }else{
+
+    alert("offline!! sale cannot be posted")
+ }
+
+}
+
+
+
+
+</script>
+      
+
+    {% endblock mainContent %}

@@ -236,14 +236,9 @@
                   <p>Counter</p>
                 </a>
               </li>
+              
               <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
-                  <p>Stocks</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'offline-sales' %}" class="nav-link">
                   <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
                   <p>sales</p>
                 </a>
@@ -701,6 +696,7 @@
 
                 sale_dict = {
                    
+                   "pid": pid,
                    "name": cursor.value[value]["p_name"],
                    "price":cursor.value[value]["p_price"],
                    "disc":cursor.value[value]["p_disc"],
@@ -711,7 +707,7 @@
 
                 }
                 
-                var key_val = Math.floor(Math.random() * 100)
+                var key_val = Math.floor(Math.random() * 10000)
                 localStorage.setItem(key_val,JSON.stringify(sale_dict))
                   
               
@@ -946,7 +942,7 @@ p{
    var trans = db.transaction('sales', 'readwrite');
      var salesStore = trans.objectStore('sales');
      
-     
+        var msg = ''
         for(key in localStorage){
 
          if(key == "clear" || key == "getItem" || key=="key" || key=="length" || key=="removeItem" || key=="setItem"){
@@ -962,6 +958,8 @@ p{
 
                localStorage.removeItem(key)
 
+               msg+=$("#receipt-no").val()
+
              }
 
 
@@ -973,6 +971,9 @@ p{
 
      }
      
+ 
+     alert(msg+" saved to offline sale")
+     
 
         
   });       
@@ -980,12 +981,7 @@ p{
        }
 
 
-  if(navigator.offLine){
-
-     alert("offline")
-  }else{
-    alert("online")
-  }
+  
 
       </script>
       
