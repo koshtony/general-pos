@@ -11,7 +11,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts
+from posUsers.models import Profile
 from .mpesa import stk_push
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary
 from datetime import datetime
@@ -54,7 +56,7 @@ def counter(request):
             
   
     stocks = {
-        'products': Stocks.objects.all(),
+        'products': Stocks.objects.all(),"users":Profile.objects.all(),
         'sum':sums
         
     }
@@ -92,6 +94,7 @@ def getCounter(request):
         pids = request.POST.get("pid")
         qty = request.POST.get("qty")
         disc = request.POST.get("disc")
+        waiter = request.POST.get("waiter")
 
         product = Stocks.objects.get(p_id=pids)
         
@@ -113,7 +116,7 @@ def getCounter(request):
                         {
                             "key":pid,"serial":serial,"name":name,"category":cat,"shops":shops,
                             "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
-                            "profit":profit,"disc":disc
+                            "profit":profit,"disc":disc,"waiter":waiter
                             
                         }
                             
@@ -126,7 +129,7 @@ def getCounter(request):
                         {
                             "key":keys,"serial":serial,"name":name,"category":cat,"shops":shops,
                             "qty":qty,"price1":price,"price":total,"cost1":cost, "cost":total_cost,
-                            "profit":profit,"disc":disc
+                            "profit":profit,"disc":disc,"waiter":waiter
                             
                         }
                             
@@ -200,6 +203,7 @@ def counterRemvSess(request):
 def addSales(request):
     if request.POST:
         code = request.POST.get("code")
+        waiter = request.POST.get("waiter")
         print(len(code))
         if 'sales' in request.session and len(code)>0:
             keys_to_del = []
@@ -216,7 +220,7 @@ def addSales(request):
                             s_negatives = 0,
                             s_profit = request.session["sales"][key]["profit"],
                             s_created = datetime.now(),
-                            s_creator = request.user
+                            s_creator = User.objects.get(username=waiter)
                         )
                         sales.save()
 

@@ -311,7 +311,7 @@
 
                       
 
-                      <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
+                      <button type="button" class="btn btn-sm btn-secondary" onclick="showPrint()"><i class="fa fa-print">print receipt</i></button>
                       <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
 
                       
@@ -329,7 +329,13 @@
                       <div>
                         <div class="input-group">
                      <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
-                     <button class="btn btn-success" onclick="newReceipt()">new receipt</button>
+                     <select class="form-control" size="1" style="width: 100px; margin-left:5px" id="waiter">
+                      {% for user in users %}
+
+                          <option value="{{user.user.username}}">{{user.user.username}}</option>
+                      {% endfor %}
+                     </select>
+                     <button style="margin-left:5px" class="btn btn-success" onclick="newReceipt()">new receipt</button>
                      <button class="btn btn-danger" onclick="clearReceipt()">clear receipt</button>
                    </div>
 
@@ -365,7 +371,8 @@
                             <td>{{ val.disc }}</td>
                             <td>{{ val.price }}</td>
                             
-                            <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                            <td><p style="color:yellowgreen;">{{ val.waiter }}</p>
+                              <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
                             <td class="recpt">{{val.key}}</td>
                         </tr>
                            {% endfor %}
@@ -651,9 +658,7 @@
 
                 }
                 
-                var key_val = Math.floor(Math.random() * 10000)
-                localStorage.setItem(key_val,JSON.stringify(sale_dict))
-         
+                         
           $.post("{% url 'firstapp-getcounter' %}",{
 
             keys: $("#receipt-no").val(),
@@ -662,6 +667,7 @@
             price :prices,
             p_name:names,
             disc:$('#p'+qty).val(),
+            waiter: $("#waiter").val(),
             csrfmiddlewaretoken:'{{ csrf_token }}',
           },
           function(data,status){
@@ -680,7 +686,8 @@
                   <td>${data[key]["price1"]}</td>
                   <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
-                  <td><button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
+                  <td><p style="color:yellowgreen">${data[key]["waiter"]}</p>
+                  <button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
                   <td class="recpt">${data[key]["key"]}</td>
               </tr>
 
@@ -742,7 +749,8 @@
                        document.getElementById("plusAlerts").style.display = "block"
                     }
                   )
-        
+                  
+
                   cRow.remove()
                 });
 
@@ -881,7 +889,9 @@ p{
            <tr>
            <td>${$(this).find("td:eq(0)").text()}</td>
            <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(2)").text()}</td>
            <td>${$(this).find("td:eq(4)").text()}</td>
+           <td>${$(this).find("td:eq(5)").find("p").text()}</td>
            </tr>
            </table>
          
@@ -895,7 +905,9 @@ p{
            <tr>
            <td>${$(this).find("td:eq(0)").text()}</td>
            <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(2)").text()}</td>
            <td>${$(this).find("td:eq(4)").text()}</td>
+           <td>${$(this).find("td:eq(5)").find("p").text()}</td>
            </tr>
            </table>
          
@@ -921,7 +933,9 @@ p{
 
            <th>item</th>
            <th>qty</th>
+           <th>@</th>
            <th>amount</th>
+           <th>waiter</th>
          
            </thead>
          
@@ -954,7 +968,19 @@ p{
        }
 
 
-   
+      function showPrint(){
+
+         if($("#receipt-no").val() == ''){
+
+              alert("No receipt number ---> refreshing")
+              location.reload()
+          }else{
+                
+                printRect()
+
+          }
+
+      }
 
        // ===================complete payment ================================
 
@@ -965,10 +991,12 @@ p{
            document.getElementById("receipt-no").required = true;
            
            var receipt_no = $("#receipt-no").val()
+           var waiter = $("#waiter").val()
 
            $.post("{% url 'firstapp-addsales' %}",{
 
             code: $("#receipt-no").val(),
+            waiter: waiter,
              csrfmiddlewaretoken:'{{ csrf_token }}',
            },
            function(data,status){

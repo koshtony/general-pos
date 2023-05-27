@@ -311,7 +311,7 @@
                     <div class="text-center">
                         <button onclick="balCounter()" style="margin-left:50px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
                 
-                      <button type="button" class="btn btn-sm btn-secondary" onclick="printRect()"><i class="fa fa-print">print receipt</i></button>
+                      <button type="button" class="btn btn-sm btn-secondary" onclick="showPrint()"><i class="fa fa-print">print receipt</i></button>
 
                       
                     </div>
@@ -420,7 +420,8 @@
 
                            <div class="input-group">
                      <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
-                     <button class="btn btn-success" onclick="newReceipt()">new receipt</button>
+                     <input type="text" id="waiter" class="form-control" size="1" style="width: 100px; margin-left:5px" placeholder="waiter id"> 
+                     <button class="btn btn-success" onclick="newReceipt()" style="margin-left:5px">new receipt</button>
                      <button class="btn btn-danger" onclick="clearReceipt()">clear receipt</button>
                      <button class="btn btn-secondary" onclick="location.reload()">load stocks</button>
                    </div>
@@ -687,13 +688,11 @@
       
               if(cursor.value["pk"] == pid){
 
-                if ($("#receipt-no").val() == ''){
+               
 
-                  var receipt_no = Date.now()
-                }else{
-
-                  var receipt_no = $("#receipt-no").val()
-                }
+                var receipt_no = $("#receipt-no").val()
+                var waiter_id = $("#waiter").val()
+                
 
                 sale_dict = {
                    
@@ -703,7 +702,8 @@
                    "disc":cursor.value[value]["p_disc"],
                    "qty":$("#"+pid).val(),
                    "total": parseFloat(cursor.value[value]["p_price"])*parseFloat($("#"+pid).val()),
-                   "receipt": receipt_no
+                   "receipt": receipt_no,
+                   "waiter": waiter_id
 
 
                 }
@@ -733,7 +733,8 @@
                   <td>${cursor.value[value]["p_price"]}</td>
                   <td>${cursor.value[value]["p_disc"]}</td>
                   <td>${parseFloat(cursor.value[value]["p_price"])*parseFloat($("#"+pid).val())}</td>
-                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td><p>${waiter_id}</p>
+                  <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
                   <td>${receipt_no}</td>
               </tr>
                   
@@ -792,7 +793,9 @@ p{
            <tr>
            <td>${$(this).find("td:eq(0)").text()}</td>
            <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+            <td>${$(this).find("td:eq(2)").text()}</td>
            <td>${$(this).find("td:eq(4)").text()}</td>
+           <td>${$(this).find("td:eq(5)").find("p").text()}</td>
            </tr>
            </table>
          
@@ -806,7 +809,9 @@ p{
            <tr>
            <td>${$(this).find("td:eq(0)").text()}</td>
            <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
+           <td>${$(this).find("td:eq(2)").text()}</td>
            <td>${$(this).find("td:eq(4)").text()}</td>
+           <td>${$(this).find("td:eq(5)").find("p").text()}</td>
            </tr>
            </table>
          
@@ -832,7 +837,9 @@ p{
 
            <th>item</th>
            <th>qty</th>
+           <th>@</th>
            <th>amount</th>
+           <th>waiter</th>
          
            </thead>
          
@@ -863,6 +870,22 @@ p{
         
       
        }
+
+
+
+      function showPrint(){
+
+         if($("#receipt-no").val() == ''){
+
+              alert("No receipt number ---> refreshing")
+              location.reload()
+          }else{
+                
+                printRect()
+
+          }
+
+      }
 
        function receiptFilt(){
         var input, filter, table, tr, td, i, txtValue,sum;
@@ -909,7 +932,9 @@ p{
                   <td>${JSON.parse(localStorage.getItem(key))["price"]}</td>
                   <td>${JSON.parse(localStorage.getItem(key))["disc"]}</td>
                   <td>${parseFloat(JSON.parse(localStorage.getItem(key))["price"])*parseFloat(JSON.parse(localStorage.getItem(key))["qty"])}</td>
-                  <td><button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                  <td>
+                      <p>${JSON.parse(localStorage.getItem(key))["waiter"]}</p>
+                  <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
                   <td>${JSON.parse(localStorage.getItem(key))["receipt"]}</td>
               </tr>
                   
