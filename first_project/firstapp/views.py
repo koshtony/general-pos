@@ -14,7 +14,7 @@ from django.core import serializers
 from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts
 from posUsers.models import Profile
-from .mpesa import stk_push
+from .mpesa import stk_push,c_2_b_reg_url
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary
 from datetime import datetime
 import json
@@ -664,7 +664,17 @@ def MpesaTrans(request):
 
         return JsonResponse(data,status=200,safe=False)
     
-    
+ # ======== C 2 B register URL -- Daraja Api============
+
+def mpesa_reg_url(request):
+
+    resp = c_2_b_reg_url()
+
+    return resp
+
+
+
+
     
 # mpesa confirmation url
 
@@ -758,6 +768,8 @@ def DebtPay(request):
             mssg = {"info":"pay failed"}
             
         return JsonResponse(mssg,status=200)
+
+
     
 # handles offline counter
 def offline(request):

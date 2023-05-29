@@ -4,15 +4,17 @@ import json
 import os 
 import datetime
 
-os.environ["key"] = "HP9NKPmw9tC8y5d8T7XrOPEF46xQDNE2"
-os.environ["secret"] = "8StFF1RCXyVqgqxA"
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 
 # getting the credentials
 def get_token():
-    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-    key="HP9NKPmw9tC8y5d8T7XrOPEF46xQDNE2"
-    secret="8StFF1RCXyVqgqxA"
+    url = os.getenv("url")
+    key=os.getenv("key")
+    secret=os.getenv("secret")
     res=requests.get(url,auth=HTTPBasicAuth(key,secret))
     return json.loads(res.text)["access_token"]
 
@@ -22,19 +24,35 @@ def stk_push(phone,amount):
     headers={"Authorization":f"Bearer {get_token()}","Content-type":"application/json"}
     req={
         "BusinessShortCode": 174379,
-    "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIwOTEzMTE0MjQ5",
+    "Password": os.getenv("password"),
     "Timestamp": "20220913114249",
     "TransactionType": "CustomerPayBillOnline",
     "Amount": amount,
     "PartyA": phone,
     "PartyB": 174379,
     "PhoneNumber": phone,
-    "CallBackURL": 'https://koshtechdemossys.pythonanywhere.com/conf_pay',
+    "CallBackURL": os.getenv("CallBackURL"),
     "AccountReference": "CompanyXLTD",
     "TransactionDesc": "Payment of X" 
     }
     resp=requests.post(url,json=req,headers=headers)
     return {"info":json.loads(resp.text)},200
 
+def c_2_b_reg_url():
 
+
+    url = os.getenv("reg_url")
+    headers = {"Authorization":f"Bearer {get_token()}","Content-type":"application/json"}
+
+    req_body = {    
+                   "ShortCode": "601426",
+                   "ResponseType":"Completed",
+                   "ConfirmationURL":"[confirmation URL]",
+                   "ValidationURL":"[validation URL]"
+    }
+    
+
+    resp = requests.post(url,json=req_body,headers=headers)
+
+    return resp
 
