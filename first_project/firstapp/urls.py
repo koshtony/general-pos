@@ -10,7 +10,7 @@ from .views import StocksCreateView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
-                    offline,feeds_indexDB
+                    offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url
             
 urlpatterns = [
     path('home', views.home,name='firstapp-home'),
@@ -49,7 +49,11 @@ urlpatterns = [
        path('debtlist', views.DebtView,name='firstapp-debtlist'),
        path('debtpay', views.DebtPay,name='firstapp-debtpay'),
        path('offline', views.offline,name='firstapp-offline'),
-       path('feeds_indexDB',views.feeds_indexDB,name="feeds-indexDB")
+       path('feeds_indexDB',views.feeds_indexDB,name="feeds-indexDB"),
+       path('register_url',views.mpesa_reg_url,name="register-url"),
+       path('conf_url',views.c_2_b_conf_url,name="conf-url"),
+       path('validate_url',views.c_2_b_val_url,name="validate-url")
+
        
      
 

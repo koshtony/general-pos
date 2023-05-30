@@ -670,7 +670,29 @@ def mpesa_reg_url(request):
 
     resp = c_2_b_reg_url()
 
-    return resp
+    return resp 
+
+def c_2_b_conf_url(request):
+
+    if request.method == "POST":
+
+        resp = request.body
+
+        print(resp)
+
+        return HttpResponse(resp)
+
+    
+
+def c_2_b_val_url(request):
+
+    if request.method == "POST":
+
+        resp = request.body
+
+        print(resp)
+
+        return HttpResponse(resp)
 
 
 
