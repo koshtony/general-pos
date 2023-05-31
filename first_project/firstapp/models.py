@@ -65,6 +65,21 @@ class Sales(models.Model):
     
     def __str__(self):
         return self.s_name
+
+class Paid(models.Model):
+
+    sn = models.CharField(max_length=100)
+    product = models.CharField(max_length=100)
+    qty = models.FloatField()
+    amount = models.FloatField()
+    profit = models.FloatField()
+    pay_type = models.CharField(max_length=100)
+    waiter = models.ForeignKey(User,on_delete=models.PROTECT)
+    date = models.DateTimeField(default= datetime.now())
+
+    def __str__(self):
+
+        return self.product
     
 class Expenses(models.Model):
     exp_id = models.AutoField(primary_key=True)

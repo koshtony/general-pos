@@ -62,6 +62,19 @@ def counter(request):
     }
     return render(request,'firstapp/counter.html',stocks)
 
+#===========render cashier page ======================
+@login_required
+def cashier(request):
+    
+    contxt = {
+        "users":Profile.objects.all(),
+        "sales":Sales.objects.all()
+      
+    }
+    return render(request,'firstapp/cashier.html',contxt)
+
+
+
 # =============renders visuals page =================
 @login_required
 def Charts(request):

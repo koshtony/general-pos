@@ -321,7 +321,7 @@
                     
                    
                   </div>
-                  <div class="card-body p-0" style="overflow-y: scroll; height:700px;">
+                  <div class="card-body p-0" style="overflow-y: scroll;height:700px;">
                     <table class="table table-striped"  id="countTab">
                       
                        <a style="margin-left:5px;"><i class="fa fa-times"></i></a>
@@ -347,7 +347,7 @@
                           
                           <th>qty</th>
                           <th>price</th>
-                          <th>disc</th>
+                          <th style="display:none">disc</th>
                           <th style="width: 40px">Total</th>
                           <th style="width: 60px"><a onclick="location.reload()">Remove</a></th>
                           <th style="width: 10px">#Receipt</th>
@@ -355,28 +355,27 @@
                       </thead>
                       <tbody  style="background-color:grey" id="countBody">
                         
-                        {% if "sales" in request.session %} 
-                           {% for key,val in request.session.sales.items %}
+                       {% for sale in sales %}
                            <tr>
                           
-                            <td>{{ val.name }}</td>
-                             <input type="hidden" value="{{ key }}">
+                            <td>{{ sale.s_name }}</td>
+                             <input type="hidden" value="{{ sale.s_serial }}">
                             <td>
                              
                               <a class="btn btn-sm btn-info" id="plusBtn">+</a>
-                              <input type="number" value="{{ val.qty }}" style="width:40px">
+                              <input type="number" value="{{ sale.s_qty }}" style="width:40px">
                               <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
                             </td>
-                            <td>{{ val.price1 }}</td>
-                            <td>{{ val.disc }}</td>
-                            <td>{{ val.price }}</td>
+                            <td style="display:none">{{ sale.s_qty }}</td>
+                            <td>{{ sale.s_negatives }}</td>
+                            <td>{{ sale.s_price }}</td>
                             
-                            <td><p style="color:yellowgreen;">{{ val.waiter }}</p>
+                            <td><p style="color:yellowgreen;">{{ sale.s_creator.username }}</p>
                               <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
-                            <td class="recpt">{{val.key}}</td>
+                            <td class="recpt">{{sale.s_serial}}</td>
                         </tr>
                            {% endfor %}
-                        {% endif %}
+                    
                       
                       </tbody>
                     </table>
@@ -488,54 +487,8 @@
               </datalist>
                 </div>
                 <div class="row" id="prodDiv">
-                  {% for product in products %}
+                 
                   
-                  <div class="col-6 col-sm-6 col-md-3 col-lg-3 mt-2" >
-                    <div class="prods">
-                    <div class="card p-0 m-0">
-                      <div class="card-body p-0 m-0 b-0">
-                        <a onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
-                        <img src="{{product.p_image.url}}" alt="" class="img-thumbnail">
-                        </a>
-                      </div>
-                      
-                      
-                      
-                    
-                     <span id="{{product.p_name}}">{{product.p_name}}</span>
-                      
-                      <div class="card-footer cf">
-
-                        
-                        <div class="row">
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                            <p  id="{{product.p_price}}">Ksh {{product.p_price}} </p>
-                            off <input type="number" id="p{{product.p_id}}" value="{{product.p_disc}}" style="width:50px">
-                            <br>
-                            <br>
-                            qty <input type="number" id="{{product.p_id}}" value="1" style="width:50px; height:30px">
-                          </div>
-                          
-                          <div class="col-6 col-sm-6 col-md-6 col-lg-6 text-right">
-                            
-                            <button type="button" class="btn-sm btn btn-info" id="subLink" onclick="counter('{{product.p_id}}','{{product.p_name}}','{{product.p_price}}');">
-                              
-                              <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                        
-                            
-                              
-                            </button>
-                            
-                            
-                            
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-                
-                 {% endfor %}
                 </div>
               </div>
             </div>
