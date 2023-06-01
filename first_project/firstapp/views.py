@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
-from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts
+from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid
 from posUsers.models import Profile
 from .mpesa import stk_push,c_2_b_reg_url
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary
@@ -211,7 +211,7 @@ def counterRemvSess(request):
     data ={"key":key}
     
     return JsonResponse(data)
-
+# ==== add unpaid sales =====
 @login_required
 def addSales(request):
     if request.POST:
@@ -246,6 +246,44 @@ def addSales(request):
             return JsonResponse("Transaction for recipt no: "+code+" complete",safe=False)
     
         return JsonResponse("no sale to submit",safe=False)   
+    
+@login_required
+def addPaid(request):
+    
+    if request.POST:
+        receipt = request.POST.get("receipt")
+        waiter = request.POST.get("waiter")
+        print(receipt)
+        try:
+            if receipt != '':
+                sales = Sales.objects.filter(s_serial=receipt)
+                for sale in sales:
+                    
+                    paid = Paid(
+                    
+                        sn = sale.s_serial,
+                        product = sale.s_name,
+                        qty = sale.s_qty,
+                        amount = sale.s_price,
+                        profit = sale.s_profit,
+                        pay_type = "paid",
+                        waiter = User.objects.get(username=waiter),
+                        date = datetime.now()
+                            
+                        
+                    )
+                    paid.save()
+                    sale.delete()
+                msg = receipt+" paid successfully"
+            else:
+                
+                msg = "no receipt to transact"
+        except:
+            msg = "failed ensure receipt is correct"
+        return JsonResponse(msg,safe=False)
+            
+             
+    
 @login_required
 def stocksView(request): 
     

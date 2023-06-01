@@ -362,16 +362,16 @@
                              <input type="hidden" value="{{ sale.s_serial }}">
                             <td>
                              
-                              <a class="btn btn-sm btn-info" id="plusBtn">+</a>
+                      
                               <input type="number" value="{{ sale.s_qty }}" style="width:40px">
-                              <a class="btn btn-sm btn-danger" id="minusBtn">-</a>
+                             
                             </td>
                             <td style="display:none">{{ sale.s_qty }}</td>
                             <td>{{ sale.s_negatives }}</td>
                             <td>{{ sale.s_price }}</td>
                             
                             <td><p style="color:yellowgreen;">{{ sale.s_creator.username }}</p>
-                              <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
+                              
                             <td class="recpt">{{sale.s_serial}}</td>
                         </tr>
                            {% endfor %}
@@ -684,96 +684,11 @@
           )
       }
     }
-      $("#countTab").on("click", "#delBtn", function() {
-                  cRow = $(this).closest("tr")
-              
-                  tabval = parseFloat(cRow.find("td:eq(4)").text())
-                  discval = parseFloat(cRow.find("td:eq(3)").text())
-                  newtotal = parseFloat($("#total").val())- tabval - discval
-                  newnets = parseFloat($("#nettotal").val()) - tabval - discval
-                  $("#total").val(newtotal)
-                  $("#nettotal").val(newnets)
+    
 
-                  // send unique key 
-                  $.get("{% url 'firstapp-counterremove' %}",{
-                     key: cRow.find("input[type=hidden]").val()
-                  },
-                    function(data,status){
-                       document.getElementById("plusAlerts").style.display = "block"
-                    }
-                  )
-                  
+    
 
-                  cRow.remove()
-                });
-
-       function clears(){
-          
-        $("#countTab tbody").empty()
-        $("#total").val(0)
-        $("#nettotal").val(0)
-       }
-      // clicking plus button adding items
-       $("#countTab").on("click", "#plusBtn", function() {
-                  cRow = $(this).closest("tr")
-              
-                  tabval = parseFloat(cRow.find("input[type=number]").val())
-                  
-                  cRow.find("input[type=number]").val(tabval+1)
-
-                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
-
-                  
-
-                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
-
-                
-                        $.get("{% url 'firstapp-counterplus' %}",{
-
-                            key: cRow.find("input[type=hidden]").val(),
-                            qty: cRow.find("input[type=number]").val(),
-
-                            },
-                            function(data,status){
-                              document.getElementById("plusAlerts").style.display = "block"
-                              
-                            }
-                          )
-
-        }); 
-
-      // clicking minus button 
-      $("#countTab").on("click", "#minusBtn", function() {
-                  cRow = $(this).closest("tr")
-              
-                  tabval = parseFloat(cRow.find("input[type=number]").val())
-                  
-                  cRow.find("input[type=number]").val(tabval-1)
-
-                  row2Val = parseFloat(cRow.find("td:eq(2)").text())
-
-                  
-
-                  cRow.find("td:eq(4)").text(cRow.find("input[type=number]").val()*row2Val) 
-
-                  var sum = 0;
-                        $("#countBody tr").each(function(){
-                          sum += parseFloat($(this).find("td:eq(4)").text());
-                        });
-                        $('#total').val(sum);
-                        $("#nettotal").val(sum-$("#minus").val())
-                  $.get("{% url 'firstapp-counterplus' %}",{
-
-                     key: cRow.find("input[type=hidden]").val(),
-                     qty: cRow.find("input[type=number]").val(),
-
-                  },
-                   function(data,status){
-                    document.getElementById("plusAlerts").style.display = "block"
-                   }
-                  )
-
-        }); 
+       
 
         $(document).ready(function(){
           $("#pname").on("keyup",function(){
@@ -946,9 +861,9 @@ p{
            var receipt_no = $("#receipt-no").val()
            var waiter = $("#waiter").val()
 
-           $.post("{% url 'firstapp-addsales' %}",{
+           $.post("{% url 'firstapp-addpaid' %}",{
 
-            code: $("#receipt-no").val(),
+            receipt: $("#receipt-no").val(),
             waiter: waiter,
              csrfmiddlewaretoken:'{{ csrf_token }}',
            },

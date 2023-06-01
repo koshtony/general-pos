@@ -31,28 +31,30 @@ def stk_push(phone,amount):
     "PartyA": phone,
     "PartyB": 174379,
     "PhoneNumber": phone,
-    "CallBackURL": os.getenv("CallBackURL"),
+    "CallBackURL":os.getenv("CallBackURLS"),
     "AccountReference": "CompanyXLTD",
     "TransactionDesc": "Payment of X" 
     }
     resp=requests.post(url,json=req,headers=headers)
+    print({"info":json.loads(resp.text)})
     return {"info":json.loads(resp.text)},200
 
 def c_2_b_reg_url():
 
 
-    url = os.getenv("reg_url")
-    headers = {"Authorization":f"Bearer {get_token()}","Content-type":"application/json"}
+    url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl'
+    headers = {"Authorization":"Bearer %s" % get_token()}
 
     req_body = {    
-                   "ShortCode": "601426",
+                   "ShortCode": "600986",
                    "ResponseType":"Completed",
-                   "ConfirmationURL":"[confirmation URL]",
-                   "ValidationURL":"[validation URL]"
+                   "ConfirmationURL":os.getenv("CallBackURL"),
+                   "ValidationURL":os.getenv("CallBackURLS")
     }
     
 
     resp = requests.post(url,json=req_body,headers=headers)
+    
+    return resp.json()
 
-    return resp
-
+print(c_2_b_reg_url())

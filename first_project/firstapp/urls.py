@@ -10,11 +10,11 @@ from .views import StocksCreateView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
-                    offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,cashier
+                    offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,cashier,addPaid
             
 urlpatterns = [
 
-                    path('home', views.home,name='firstapp-home'),
+                    path('', views.home,name='firstapp-home'),
                     path('counter/', views.counter,name='firstapp-counter'),
                     path('cashier/', views.cashier,name='firstapp-cashier'),
                     path('getcounter', views.getCounter,name='firstapp-getcounter'),
@@ -23,6 +23,7 @@ urlpatterns = [
                     path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
                     path('counter/mpesa', views.MpesaTrans,name='firstapp-stkpush'),
                     path('addsales', views.addSales,name='firstapp-addsales'),
+                    path('addpaid', views.addPaid,name='firstapp-addpaid'),
                     path('reports/charts', views.Charts,name='firstapp-charts'),
                     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
                     path('sales/post',views.salesPostView,name="firstapp-salespost"),
