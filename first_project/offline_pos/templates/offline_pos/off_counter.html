@@ -179,6 +179,14 @@
               </p>
             </a>
           </li>
+           <li class="nav-item">
+            <a href="{% url 'firstapp-cashier' %}" class="nav-link">
+              <i class="nav-icon fa fa-credit-card" aria-hidden="true"></i>
+              <p>
+              Cashier
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{% url 'firstapp-orders' %}" class="nav-link">
               <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
@@ -195,7 +203,7 @@
           </li>
           <li class="nav-item">
             <a href="{% url 'firstapp-charts' %}" class="nav-link">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <i class="nav-icon fa fa-eye" aria-hidden="true"></i>
               <p>
                  Visuals
               </p>
@@ -213,7 +221,7 @@
 
           <li class="nav-item">
             <a href="{% url 'logout' %}" class="nav-link">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
               <p>
                  logout
               </p>
@@ -766,13 +774,13 @@
 
       function printRect(){
       
-        var a = window.open('', 'PRINT', 'height=1000, width=1000');
+           var a = window.open('', 'PRINT', 'height=1000, width=1000');
 
         var sum = 0;
         var tabDiv = `<style>
         th, td {
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   padding-left: 10px;
   padding-right: 10px;
   font-size:10px;
@@ -784,6 +792,7 @@ p{
         </style>`
 
         var code = []
+       
         $("#countBody tr").each(function(){
            if($(this).find("td:eq(6)").text() == $("#receipt-no").val()){
             code.push($("#receipt-no").val())
@@ -793,7 +802,7 @@ p{
            <tr>
            <td>${$(this).find("td:eq(0)").text()}</td>
            <td>${$(this).find("td:eq(1)").find("input[type=number]").val() || $(this).find("td:eq(1)").text() }</td>
-            <td>${$(this).find("td:eq(2)").text()}</td>
+           <td>${$(this).find("td:eq(2)").text()}</td>
            <td>${$(this).find("td:eq(4)").text()}</td>
            <td>${$(this).find("td:eq(5)").find("p").text()}</td>
            </tr>
@@ -828,6 +837,8 @@ p{
          <p>==========================</p>
           <p><strong>BOMA PLACE</strong></p> # `+code[code.length-1]+`
 
+          <div id="qrcode" style="width:20px;height:20px"><img style="width:50px" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${code[code.length-1]}"></div><br>
+
           <p>=========================</p>
 
 
@@ -850,11 +861,15 @@ p{
         var vatDiv = '<p> VAT=============:      Ksh  '+0.00+ '.00</p>'
         var allDiv = '<p> Total:========== Ksh     '+sum+ '.00</p>'
         var bnd2Div = '<p>=======================</p></tr></table>'
+       
 
 
         
-
+          
           tabDiv = headDiv+tabDiv+bndDiv+subDiv+vatDiv+allDiv+bnd2Div
+
+        
+       
   
         a.document.write(
         
@@ -865,6 +880,8 @@ p{
         
         )
 
+          
+        
         
         a.print()
         

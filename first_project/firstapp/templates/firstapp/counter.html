@@ -43,6 +43,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
   <div class="spinner-grow" role="status">
@@ -116,7 +118,7 @@
     
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
+     <!-- Brand Logo -->
       <a href="index.html" class="brand-link">
         <img src="{{user.profile.image.url}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
@@ -174,6 +176,14 @@
               </p>
             </a>
           </li>
+           <li class="nav-item">
+            <a href="{% url 'firstapp-cashier' %}" class="nav-link">
+              <i class="nav-icon fa fa-credit-card" aria-hidden="true"></i>
+              <p>
+              Cashier
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{% url 'firstapp-orders' %}" class="nav-link">
               <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
@@ -190,7 +200,7 @@
           </li>
           <li class="nav-item">
             <a href="{% url 'firstapp-charts' %}" class="nav-link">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <i class="nav-icon fa fa-eye" aria-hidden="true"></i>
               <p>
                  Visuals
               </p>
@@ -208,7 +218,7 @@
 
           <li class="nav-item">
             <a href="{% url 'logout' %}" class="nav-link">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
+              <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
               <p>
                  logout
               </p>
@@ -868,7 +878,7 @@
         var tabDiv = `<style>
         th, td {
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   padding-left: 10px;
   padding-right: 10px;
   font-size:10px;
@@ -880,6 +890,7 @@ p{
         </style>`
 
         var code = []
+       
         $("#countBody tr").each(function(){
            if($(this).find("td:eq(6)").text() == $("#receipt-no").val()){
             code.push($("#receipt-no").val())
@@ -924,6 +935,8 @@ p{
          <p>==========================</p>
           <p><strong>BOMA PLACE</strong></p> # `+code[code.length-1]+`
 
+          <div id="qrcode" style="width:20px;height:20px"><img style="width:50px" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=${code[code.length-1]}"></div><br>
+
           <p>=========================</p>
 
 
@@ -946,11 +959,15 @@ p{
         var vatDiv = '<p> VAT=============:      Ksh  '+0.00+ '.00</p>'
         var allDiv = '<p> Total:========== Ksh     '+sum+ '.00</p>'
         var bnd2Div = '<p>=======================</p></tr></table>'
+       
 
 
         
-
+          
           tabDiv = headDiv+tabDiv+bndDiv+subDiv+vatDiv+allDiv+bnd2Div
+
+        
+       
   
         a.document.write(
         
@@ -961,6 +978,8 @@ p{
         
         )
 
+          
+        
         
         a.print()
         

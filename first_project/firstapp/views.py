@@ -253,12 +253,15 @@ def addPaid(request):
     if request.POST:
         receipt = request.POST.get("receipt")
         waiter = request.POST.get("waiter")
-        print(receipt)
+    
+        msg = ''
         try:
             if receipt != '':
-                sales = Sales.objects.filter(s_serial=receipt)
+                sales = Sales.objects.filter(s_serial=str(receipt)).all()
+                print(receipt)
+                receipts = []
                 for sale in sales:
-                    
+                    print(sale)
                     paid = Paid(
                     
                         sn = sale.s_serial,
@@ -272,14 +275,16 @@ def addPaid(request):
                             
                         
                     )
+                    receipts.append(sale.s_serial)
                     paid.save()
                     sale.delete()
-                msg = receipt+" paid successfully"
+                msg += receipts[0]+" paid successfully"
             else:
                 
-                msg = "no receipt to transact"
-        except:
-            msg = "failed ensure receipt is correct"
+                msg += "no receipt to transact"
+        except Exception as e:
+            print(e)
+            msg += "failed ensure receipt is correct"
         return JsonResponse(msg,safe=False)
             
              

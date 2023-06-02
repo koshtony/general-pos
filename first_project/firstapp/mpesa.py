@@ -57,4 +57,3 @@ def c_2_b_reg_url():
     
     return resp.json()
 
-print(c_2_b_reg_url())
