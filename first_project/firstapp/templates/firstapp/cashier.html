@@ -53,74 +53,83 @@
     <!-- Navbar -->
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="uphead">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-      </ul>
-      &nbsp; &nbsp;
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button"><i class="fas fa-plus">products</i></a>
-        </li>
-        &nbsp; &nbsp;
-        
-        <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-plus">shops</i></a>
-        </li>
-    
-        &nbsp; &nbsp;
-      <li class="nav-item">
-        <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button"><i class="fas fa-list">shops</i></a>
-        
-        </li>
-        &nbsp; &nbsp;
-      <li class="nav-item">
-        <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
-      </li>
-      &nbsp; &nbsp;
-     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-desktop">Manage</i>
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}">Add Expenses</a></li>
-          <li><a style="margin-left:30px" type="button" href="">Tasks</a></li>
-          
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          </li>
         </ul>
-      </div>
-      &nbsp; &nbsp;
-      <li class="nav-item">
-        <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
-      </li>
-       &nbsp; &nbsp;
-      <li class="nav-item">
-        <a class="btn btn-primary" href="" role="button"><i class="fas fa-phone">contacts</i></a>
-      </li>
+        &nbsp; &nbsp;
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button"><i class="fas fa-plus">products</i></a>
+          </li>
+          &nbsp; &nbsp;
+          
+          <li class="nav-item">
+            <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-plus">shops</i></a>
+          </li>
       
-      &nbsp; &nbsp;
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-wrench">generator</i>
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="{% url 'firstapp-invoice' %}">Invoice</a></li>
-          <li><a href="#">PO</a></li>
+          &nbsp; &nbsp;
+        <li class="nav-item">
+          <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button"><i class="fas fa-list">shops</i></a>
           
-        </ul>
-      </div>
-    </ul>
-    
-     
-        <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
+          </li>
+          &nbsp; &nbsp;
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
+        </li>
+        &nbsp; &nbsp;
+       <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-desktop">Manage</i>
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}"><i class="fa fa-money-bill"> Add Expenses</i></a></li>
+            <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-taskslist' %}"><i class="fa fa-file"> Tasks</i></a></li>
+             <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-locationlist' %}"><i class="fa fa-clock"> Attendance </i></a></li>
+             <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-debtlist' %}"><i class="fa fa-clock"> Debts </i></a></li>
+            
+          </ul>
+        </div>
+        &nbsp; &nbsp;
+        <li class="nav-item">
+          <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
+        </li>
+         &nbsp; &nbsp;
+        <li class="nav-item">
+          <a class="btn btn-primary" href="" role="button"><i class="fas fa-phone">contacts</i></a>
+        </li>
+        
+        &nbsp; &nbsp;
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-wrench">generator</i>
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a style="margin-left:30px" href="{% url 'firstapp-invoice' %}"><i class="fa fa-file-invoice"> invoice </i></a></li>
+            <li><a style="margin-left:30px" href="#"><i class="fa fa-money-check">PO</i></a></li>
+            
+          </ul>
+        </div>
+      </ul>
+      
+       
+          <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
+        
+        
+        <!-- Right navbar links -->
+        <!-- <ul class="navbar-nav ml-auto">
+          
+        </ul> -->
     </nav>
     <!-- /.navbar -->
     
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-      <a href="index.html" class="brand-link">
+      <a href="" class="brand-link">
         <img src="{{user.profile.image.url}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
-        <span class="brand-text font-weight-light">POS</span>
+        <span class="brand-text font-weight-light">sales sys</span>
       </a>
       
       <!-- Sidebar -->
@@ -142,8 +151,8 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
-          <li class="nav-item has-treeview menu-open">
-            <a href="{% url 'firstapp-home' %}" class="nav-link active">
+          <li class="nav-item">
+            <a href="{% url 'firstapp-home' %}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
              dashboard
@@ -170,7 +179,7 @@
             <a href="{% url 'firstapp-sales' %}" class="nav-link">
               <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
               <p>
-              Sales
+              Orders
               </p>
             </a>
           </li>
@@ -186,7 +195,7 @@
             <a href="{% url 'firstapp-orders' %}" class="nav-link">
               <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
               <p>
-              orders
+              Ecommerce
               </p>
             </a>
           </li>
@@ -945,7 +954,7 @@ p{
       }
       
 
-      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
   // true for mobile device
         document.getElementById("prodDiv").style.overflow = "scroll"
         document.getElementById("prodDiv").style.width = "400px"
@@ -954,8 +963,15 @@ p{
         document.getElementById("uphead").style.width = "400px"
       }else{
   // false for not mobile device
-        alert("pc")
+         console.log("pc")
       }
+
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        if (link.href === window.location.href) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+        }
+    });
       </script>
       
     </section>

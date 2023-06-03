@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid
 from posUsers.models import Profile
 from .mpesa import stk_push,c_2_b_reg_url
-from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary
+from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
 from datetime import datetime
 import json
 import time
@@ -35,10 +35,13 @@ def home(request):
     tasks = Tasks.objects.all()
     _,_,sales_qty = sales_summ(Sales)
     _,_,_,stocks_qty = stocks_summ(Stocks)
+    profit,qty,amount= today_summary(Paid,Sales)
+    
     data={
-        "orders":orders,
+        "orders":profit,
         "tasks":tasks,
-        "sales":sum(sales_qty),
+        "sales":qty,
+        "amount":amount,
         "stocks":sum(stocks_qty),
         
     }

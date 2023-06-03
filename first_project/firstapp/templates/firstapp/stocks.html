@@ -7,9 +7,8 @@
  <i class="fa fa-filter"></i>by date
 </button>
 
-<!-- dlate filter Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
-  <div cass="modal-dialog" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#24a0ed">
         <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
@@ -20,10 +19,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="modalBdy">
+      <div class="modal-body">
         
-      
-          
+        
            <label>from</label>
            <input type="date" name="date1" id="date1">
            <label>To</label>
@@ -267,14 +265,6 @@
       -->
       
       <script>
-
-        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-  // true for mobile device
-  document.write("mobile device");
-}else{
-  // false for not mobile device
-  document.write("not mobile device");
-}
 
         $(document).ready(function(){
         $("#pname").on("keyup",function(){
