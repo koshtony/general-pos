@@ -82,14 +82,13 @@
             </li>
             &nbsp; &nbsp;
           <li class="nav-item">
-            <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
+            <a class="btn btn-primary" href="{% url 'offline-sales' %}" role="button"><i class="fas fa-ship">orders</i></a>
           </li>
           
           
         </ul>
         
          
-            <a style="margin-left:150px" class="nav-link" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-shopping-cart">{{ request.session.sales | length }}</i></a>
           
           
           <!-- Right navbar links -->
@@ -410,11 +409,11 @@
                      <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
                      <input type="text" id="waiter" class="form-control" size="1" style="width: 100px; margin-left:5px" placeholder="waiter id"> 
                      <button class="btn btn-success" onclick="newReceipt()" style="margin-left:5px"><i class="fa fa-plus"></i></button>
-                     <button class="btn btn-danger" onclick="clearReceipt()"><i class="fa fa-plus"></i></button>
-                     <button class="btn btn-secondary" onclick="location.reload()"><i class="fa fa-spinner"></i></button>
+                     <button class="btn btn-danger" onclick="clearReceipt()"><i class="fa fa-times"></i></button>
+                     <button style="margin-right:10px" class="btn btn-secondary" onclick="location.reload()"><i class="fa fa-spinner"></i></button>
                    </div>
                         <br>
-                      <thead style="background-color:orange">
+                      <thead style="background-color:orange; margin-right:10px">
                         <tr>
                           
                           <th style="width: 10px">name</th>

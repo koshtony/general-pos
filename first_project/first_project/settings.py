@@ -159,4 +159,35 @@ LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'offline_pos/static/js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'firstapp/static/js', 'serviceworker.js')
+
+PWA_APP_NAME = 'koshtech pos'
+PWA_APP_DESCRIPTION = "koshtech sales management system"
+PWA_APP_THEME_COLOR = '#000000'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/offline-counter'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/offline-counter'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': os.path.join(BASE_DIR, 'images', 'logo.png'),
+        'sizes': '160x160'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': os.path.join(BASE_DIR, 'images', 'logo.png'),
+        'sizes': '160x160'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': os.path.join(BASE_DIR, 'images', 'logo.png'),
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+
