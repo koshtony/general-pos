@@ -49,6 +49,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script type="module" src="{% static 'js/camera.js' %}"></script>
 
 
 <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
@@ -368,6 +369,7 @@ if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAge
         document.getElementById("mainCont").style.width = "480px"
         document.getElementById("uphead").style.overflow = "scroll"
         document.getElementById("uphead").style.width = "480px"
+        document.getElementById("cBtn").style.margin ="0px"
       }else{
   // false for not mobile device
         console.log("operating on pc")
