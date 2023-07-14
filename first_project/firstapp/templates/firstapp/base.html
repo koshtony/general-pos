@@ -48,7 +48,7 @@
   
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap4.min.css"></script>
   <script type="module" src="{% static 'js/camera.js' %}"></script>
 
 
@@ -105,9 +105,17 @@
         <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
       </li>
        &nbsp; &nbsp;
-      <li class="nav-item">
-        <a class="btn btn-primary" href="" role="button"><i class="fas fa-phone">contacts</i></a>
-      </li>
+       <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-phone">Contacts</i>
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactModal"><i class="fa fa-money-bill"> Add Contacts</i></a></li>
+          <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactListModal"><i class="fa fa-file"> List Contacts</i></a></li>
+           <li><a style="margin-left:30px" type="button"><i class="fa fa-clock"> Bulk Sms </i></a></li>
+          
+          
+        </ul>
+      </div>
       
       &nbsp; &nbsp;
       <div class="dropdown">
@@ -188,7 +196,7 @@
             <a href="{% url 'firstapp-sales' %}" class="nav-link">
               <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
               <p>
-              Orders
+              Sales
               </p>
             </a>
           </li>
@@ -285,6 +293,106 @@
         </div>
         <!-- /.sidebar -->
     </aside>
+
+    <!-- add contacts modals -->
+
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">add contacts</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <form class="form-inline">
+              
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">  Customer Name</label>
+                <input type="password" class="form-control" id="cname" placeholder="Name">
+              </div>
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" class="sr-only">Customer Number</label>
+                <input type="password" class="form-control" id="cnum" placeholder="Phone">
+              </div>
+            
+            </form>
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addContacts()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--end contacts modal-->
+
+    <!--  list contacts modal-->
+
+
+    <div class="modal fade" id="contactListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contacts List</h4>
+          </div>
+          <div class="modal-body">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Created</th>
+                      
+                  </tr>
+              </thead>
+              <tbody id="contacts">
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    </div>
+
+    <!-- end list contacts modal-->
+
+    <!-- send bulky sms modal-->
+
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">send bulky sms </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              
+           
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- end bulky sms modal-->
        
   <div class="toast" style="position: absolute; top: 50px; right: 0;">
     <div class="toast-header">
@@ -333,6 +441,46 @@
 
 <!-- ./wrapper -->
 <script>
+
+  function addContacts(){
+
+    $.post("{% url 'firstapp-addcontact' %}",{
+
+      name: $("#cname").val(),
+      phone: $("#cnum").val(),
+      csrfmiddlewaretoken:'{{ csrf_token }}',
+      },
+      function(data,status){
+
+          alert(data)
+          location.reload()
+      }
+
+
+      )
+
+  }
+
+  $.get("{% url 'firstapp-getcontact' %}",function(data,status){
+
+     var contacts = JSON.parse(data)
+     for (var contact in contacts){
+    $("#contacts").html(
+
+        `
+        <tr>
+          <td>${contacts[contact]["pk"]}</td>
+          <td>${contacts[contact]["fields"]["cont_name"]}</td>
+          <td>${contacts[contact]["fields"]["cont_phone"]}</td>
+          <td>${contacts[contact]["fields"]["cont_created"]}</td>
+          </tr>
+
+        `
+    )
+     }
+
+  })
+
 
 setInterval(onStatus,60000)
 function onStatus(){

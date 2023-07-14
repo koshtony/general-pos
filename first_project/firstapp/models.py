@@ -142,3 +142,10 @@ class Debts(models.Model):
     
     def __str__(self):
         return self.debt_cus
+
+class Contacts(models.Model):
+    
+    cont_id = models.AutoField(primary_key=True)
+    cont_name = models.CharField(max_length=100)
+    cont_phone = models.CharField(max_length=100)
+    cont_created = models.DateTimeField(default=datetime.now())

@@ -98,12 +98,12 @@ def today_summary(model1,model2):
     tmrrw = datetime.strftime(tmrrw, '%Y-%m-%d')
     ystdy = datetime.now()
     ystdy = datetime.strftime(ystdy, '%Y-%m-%d')
-    today_paid = model1.objects.filter(date__gte=ystdy,date__lte=tmrrw)
+    today_paid = model1.objects.filter(s_created__range=[ystdy,tmrrw])
     today_sales = model2.objects.filter(s_created__range=[ystdy,tmrrw])
     
-    today_profit = [paid.profit for paid in today_paid]
+    today_profit = [paid.s_profit for paid in today_paid]
     today_sales = [sale.s_qty for sale in today_sales]
-    today_amount = [paid.amount for paid in today_paid]
+    today_amount = [paid.s_price for paid in today_paid]
     return sum(today_profit),sum(today_sales),sum(today_amount)
 
     

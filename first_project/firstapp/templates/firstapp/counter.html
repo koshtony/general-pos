@@ -94,13 +94,7 @@
             </ul>
           </div>
           &nbsp; &nbsp;
-          <li class="nav-item">
-            <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
-          </li>
-           &nbsp; &nbsp;
-          <li class="nav-item">
-            <a class="btn btn-primary" href="" role="button"><i class="fas fa-phone">contacts</i></a>
-          </li>
+          
           
           &nbsp; &nbsp;
           <div class="dropdown">
@@ -181,7 +175,7 @@
             <a href="{% url 'firstapp-sales' %}" class="nav-link">
               <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
               <p>
-              Orders
+              Sales
               </p>
             </a>
           </li>
@@ -326,11 +320,9 @@
                       <button onclick="balCounter()" style="margin-left:50px" type="button" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#payModal"> checkout </button>
                       
                       
-                      <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
-
+                     
+                      <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
                       
-
-                      <button type="button" class="btn btn-sm btn-secondary" onclick="showPrint()"><i class="fa fa-print">print receipt</i></button>
                       <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
 
                       

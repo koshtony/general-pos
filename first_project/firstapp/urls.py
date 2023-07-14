@@ -10,7 +10,7 @@ from .views import StocksCreateView,\
                 counterPlusSess,counterMinusSess,counterRemvSess,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
-                    offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,cashier,addPaid
+                    offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,cashier,addPaid,addContact,getContact
             
 urlpatterns = [
 
@@ -24,6 +24,8 @@ urlpatterns = [
                     path('counter/mpesa', views.MpesaTrans,name='firstapp-stkpush'),
                     path('addsales', views.addSales,name='firstapp-addsales'),
                     path('addpaid', views.addPaid,name='firstapp-addpaid'),
+                    path('addcontact', views.addContact,name='firstapp-addcontact'),
+                    path('getcontact', views.getContact,name='firstapp-getcontact'),
                     path('reports/charts', views.Charts,name='firstapp-charts'),
                     path('sales/list',views.SalesListView.as_view(),name="firstapp-sales"),
                     path('sales/post',views.salesPostView,name="firstapp-salespost"),

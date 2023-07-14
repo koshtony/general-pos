@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
-from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid
+from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts
 from posUsers.models import Profile
 from .mpesa import stk_push,c_2_b_reg_url
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
@@ -35,7 +35,7 @@ def home(request):
     tasks = Tasks.objects.all()
     _,_,sales_qty = sales_summ(Sales)
     _,_,_,stocks_qty = stocks_summ(Stocks)
-    profit,qty,amount= today_summary(Paid,Sales)
+    profit,qty,amount= today_summary(Sales,Sales)
     
     data={
         "orders":profit,
@@ -290,7 +290,30 @@ def addPaid(request):
             msg += "failed ensure receipt is correct"
         return JsonResponse(msg,safe=False)
             
-             
+@login_required
+def addContact(request):
+    
+    if request.POST:
+        
+        name = request.POST.get("name") 
+        phone = request.POST.get("phone")  
+        
+        contact = Contacts(cont_name = name, cont_phone = phone, cont_created = datetime.now())
+        
+        contact.save()
+        
+        return JsonResponse("contact added successfully",safe=False)
+    
+@login_required
+def getContact(request):
+    
+    contacts = Contacts.objects.all()
+    
+    contacts = serializers.serialize('json',contacts)
+    
+    return JsonResponse(contacts,safe=False)
+    
+    
     
 @login_required
 def stocksView(request): 
