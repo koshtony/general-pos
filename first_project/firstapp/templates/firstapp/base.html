@@ -111,7 +111,7 @@
         <ul class="dropdown-menu">
           <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactModal"><i class="fa fa-money-bill"> Add Contacts</i></a></li>
           <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactListModal"><i class="fa fa-file"> List Contacts</i></a></li>
-           <li><a style="margin-left:30px" type="button"><i class="fa fa-clock"> Bulk Sms </i></a></li>
+           <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#smsModal"><i class="fa fa-comment"> Bulk Sms </i></a></li>
           
           
         </ul>
@@ -370,7 +370,7 @@
 
     <!-- send bulky sms modal-->
 
-    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -378,12 +378,26 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
+            <div id="plagSpinner" style="display:none; margin-left:50px"> 
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-secondary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-success" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
           </div>
           <div class="modal-body">
+
+            <textarea cols="40" rows="5" id="sms_text"></textarea>
               
            
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="sendSms()"><i class="fa fa-plane"></i></button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
              
           </div>
@@ -480,6 +494,34 @@
      }
 
   })
+
+  function sendSms(){
+
+    $.ajax({
+
+         type:"POST",
+         url:"{% url 'firstapp-sendsms' %}",
+         data:{
+          sms:$("#sms_text").val(),
+          csrfmiddlewaretoken:'{{ csrf_token }}',
+         },      
+                    beforeSend:function(){
+
+                        $("#plagSpinner").show()
+
+                    },
+                    complete:function(){
+                        $("#plagSpinner").hide()
+                    },
+        success:function(data,status){
+
+            alert(data)
+        }
+    }
+
+)
+
+  }
 
 
 setInterval(onStatus,60000)

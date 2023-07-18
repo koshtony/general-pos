@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^8ykmy*#mg$kd1v61eg4t1_**ov^-cl82z@!8qn=fkl3*v)mmc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -51,6 +51,7 @@ X_FRAME_OPTIONS='SAMEORIGIN'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -140,9 +141,13 @@ CSRF_COOKIE_HTTPONLY = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+
 STATIC_ROOT =  os.path.join(BASE_DIR,'firstapp/static')
 
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 

@@ -14,6 +14,7 @@ from django.core import serializers
 from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts
 from posUsers.models import Profile
+from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
 from datetime import datetime
@@ -303,6 +304,28 @@ def addContact(request):
         contact.save()
         
         return JsonResponse("contact added successfully",safe=False)
+'''
+     send text message to all saved contacts
+'''
+    
+@login_required
+def sendSms(request):
+    
+    if request.POST:
+        
+        sms = request.POST.get("sms")
+        
+        resp = []
+        
+        for contact in Contacts.objects.all():
+            
+            res = send_text(contact.cont_phone,sms)
+            
+            resp.append(res)
+        
+        return JsonResponse("",safe=False)
+        
+        
     
 @login_required
 def getContact(request):
