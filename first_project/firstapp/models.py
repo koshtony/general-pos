@@ -21,7 +21,7 @@ class Shops(models.Model):
     
 class Stocks(models.Model):
     p_id=models.AutoField(primary_key=True)
-    p_gen = models.IntegerField(default=hash(datetime.now()))
+    p_gen = models.BigIntegerField(default=hash(datetime.now()))
     p_serial = models.CharField(max_length=100,default='No serial')
     p_name=models.CharField(max_length=100)
     p_category=models.CharField(max_length=100)

@@ -317,11 +317,13 @@ def sendSms(request):
         
         resp = []
         
+      
         for contact in Contacts.objects.all():
             
             res = send_text(contact.cont_phone,sms)
             
             resp.append(res)
+            
         
         return JsonResponse(resp,safe=False)
         
