@@ -128,7 +128,7 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_NAME = "sessioninfo"
 
-CORS_ORIGIN_WHITELIST = [ "http://localhost:5000" ]
+#CORS_ORIGIN_WHITELIST = [ "http://localhost:5000" ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET","POST"]
@@ -137,7 +137,7 @@ CORS_ALLOW_HEADERS = [ "accept", "accept-encoding", "authorization", "content-ty
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 
-CSRF_TRUSTED_ORIGINS = ['https://general-pos-production.up.railway.app/','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://general-pos-production.up.railway.app','https://*.127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
