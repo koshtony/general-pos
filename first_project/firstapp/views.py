@@ -323,7 +323,7 @@ def sendSms(request):
             
             resp.append(res)
         
-        return JsonResponse("",safe=False)
+        return JsonResponse(resp,safe=False)
         
         
     
