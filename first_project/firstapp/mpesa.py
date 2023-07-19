@@ -64,13 +64,12 @@ def sim_c_2_b():
     headers = { 'Authorization': f"Bearer {get_token()}"}
 
     payload = {
-        "ShortCode": 600986,
-        "CommandID": "CustomerBuyGoodsOnline",
-        "amount": "1",
-        "MSISDN": "254705912645",
-        "BillRefNumber": "",
+         "ShortCode": 600426,
+    "CommandID": "CustomerPayBillOnline",
+    "Amount": 100,
+    "Msisdn": 254708374149,
+    "BillRefNumber": "test"
     }
 
     response = requests.request("POST",url, headers = headers, data = payload)
-    print(response.text.encode('utf8'))
-
+    return response.text.encode('utf8')

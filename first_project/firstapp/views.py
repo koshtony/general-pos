@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts,mpesaPay
 from posUsers.models import Profile
 from .sms import send_text
-from .mpesa import stk_push,c_2_b_reg_url
+from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
 from datetime import datetime
 import json
@@ -778,6 +778,12 @@ def mpesa_reg_url(request):
     resp = c_2_b_reg_url()
 
     return resp 
+
+def mpesa_sim(request):
+
+    resp = sim_c_2_b()
+
+    return resp
 
 def c_2_b_conf_url(request):
 
