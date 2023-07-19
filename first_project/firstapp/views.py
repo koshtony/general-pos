@@ -787,8 +787,8 @@ def c_2_b_conf_url(request):
 
         print(resp)
 
-        return JsonResponse(resp)
-
+        return JsonResponse(resp,safe=False)
+    return HttpResponse("waiting")
     
 
 def c_2_b_val_url(request):
@@ -800,6 +800,7 @@ def c_2_b_val_url(request):
         print(resp)
 
         return HttpResponse(resp)
+    return HttpResponse("waiting")
 
 
 
