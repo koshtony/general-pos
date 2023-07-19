@@ -778,13 +778,14 @@ def mpesa_reg_url(request):
     resp = c_2_b_reg_url()
 
     return resp 
-
+@csrf_exempt
 def mpesa_sim(request):
 
     resp = sim_c_2_b()
 
     return resp
 
+@csrf_exempt
 def c_2_b_conf_url(request):
 
     if request.method == "POST":
@@ -802,7 +803,7 @@ def c_2_b_conf_url(request):
         return JsonResponse(resp,safe=False)
     return HttpResponse("waiting response")
     
-
+@csrf_exempt
 def c_2_b_val_url(request):
 
     if request.method == "POST":
