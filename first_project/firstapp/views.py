@@ -772,12 +772,12 @@ def MpesaTrans(request):
         return JsonResponse(data,status=200,safe=False)
     
  # ======== C 2 B register URL -- Daraja Api============
-
+@csrf_exempt
 def mpesa_reg_url(request):
 
     resp = c_2_b_reg_url()
 
-    return resp 
+    return HttpResponse(resp)
 @csrf_exempt
 def mpesa_sim(request):
 
