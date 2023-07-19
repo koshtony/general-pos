@@ -72,4 +72,4 @@ def sim_c_2_b():
     }
 
     response = requests.request("POST",url, headers = headers, data = payload)
-    return response.text.encode('utf8')
+    return response.json()
