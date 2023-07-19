@@ -56,3 +56,21 @@ def c_2_b_reg_url():
     resp = requests.post(url,json=req_body,headers=headers)
     
     return resp.json()
+
+def sim_c_2_b():
+     
+    url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate'
+
+    headers = { 'Authorization': f"Bearer {get_token()}"}
+
+    payload = {
+        "ShortCode": 600986,
+        "CommandID": "CustomerBuyGoodsOnline",
+        "amount": "1",
+        "MSISDN": "254705912645",
+        "BillRefNumber": "",
+    }
+
+    response = requests.request("POST",url, headers = headers, data = payload)
+    print(response.text.encode('utf8'))
+

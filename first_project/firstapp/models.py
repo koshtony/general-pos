@@ -81,6 +81,16 @@ class Paid(models.Model):
 
         return self.product
     
+class mpesaPay(models.Model):
+    name = models.CharField(max_length=100)
+    details = models.TextField()
+
+    def __str__(self):
+
+        return self.name
+
+
+    
 class Expenses(models.Model):
     exp_id = models.AutoField(primary_key=True)
     exp_desc = models.TextField()

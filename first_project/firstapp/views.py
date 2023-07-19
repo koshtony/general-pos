@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
-from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts
+from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts,mpesaPay
 from posUsers.models import Profile
 from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url
@@ -785,6 +785,12 @@ def c_2_b_conf_url(request):
 
         resp = request.body
 
+        resp = json.loads(resp.decode('utf-8'))
+
+        mpesa_res = mpesaPay(name="mpesa",details=resp)
+
+        mpesa_res.save()
+
         print(resp)
 
         return JsonResponse(resp,safe=False)
@@ -812,7 +818,7 @@ def MpesaConfirm(request):
     
     resp = request.body
     
-    return HttpResponse(body)
+    return HttpResponse(resp)
                     
 
 def GenReceipt(request):
