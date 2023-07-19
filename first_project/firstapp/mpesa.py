@@ -36,24 +36,23 @@ def stk_push(phone,amount):
     "TransactionDesc": "Payment of X" 
     }
     resp=requests.post(url,json=req,headers=headers)
-    print({"info":json.loads(resp.text)})
+
     return {"info":json.loads(resp.text)},200
 
 def c_2_b_reg_url():
 
 
     url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl'
-    headers = {"Authorization":"Bearer %s" % get_token()}
+    headers = { 'Authorization': f"Bearer {get_token()}"}
 
     req_body = {    
-                   "ShortCode": "600986",
+                   "ShortCode": 600986,
                    "ResponseType":"Completed",
-                   "ConfirmationURL":os.getenv("CallBackURL"),
-                   "ValidationURL":os.getenv("CallBackURLS")
+                   "ConfirmationURL":os.getenv("conf_url"),
+                   "ValidationURL":os.getenv("val_url"),
     }
     
 
     resp = requests.post(url,json=req_body,headers=headers)
     
     return resp.json()
-

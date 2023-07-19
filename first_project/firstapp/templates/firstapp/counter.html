@@ -47,9 +47,24 @@
     </script>
 
 <body class="hold-transition sidebar-mini layout-fixed" style="zoom:80%">
-  <div class="spinner-grow" role="status">
-    <span class="sr-only">Loading...</span>
+
+  <div id="loadspin" style="margin-left:500px; display: none;" >
+
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-success" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
+ 
+  
   <div class="wrapper" >
     
     <!-- Navbar -->
@@ -366,6 +381,18 @@
                         </tr>
                       </thead>
                       <tbody  style="background-color:grey" id="countBody">
+
+                        <div id="plagSpinner" style="display:none; margin-left:50px"> 
+                          <div class="spinner-grow text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                          <div class="spinner-grow text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                          <div class="spinner-grow text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
                         
                         {% if "sales" in request.session %} 
                            {% for key,val in request.session.sales.items %}
@@ -473,6 +500,17 @@
                          <span aria-hidden="true">&times;</span>
                        </button>
                      </div>
+                     <div id="outSpinner" style="display:none; margin-left:50px"> 
+                      <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-secondary" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
                      <div class="modal-body">
                       <div class="form-group">
                         <label for="paid">paid>>>>>>>></label>
@@ -674,8 +712,13 @@
 
                 }
                 
-                         
-          $.post("{% url 'firstapp-getcounter' %}",{
+          $.ajax({
+
+          type:"POST",
+           
+          url:"{% url 'firstapp-getcounter' %}",
+
+          data:{
 
             keys: $("#receipt-no").val(),
             pid: qty,
@@ -686,7 +729,15 @@
             waiter: $("#waiter").val(),
             csrfmiddlewaretoken:'{{ csrf_token }}',
           },
-          function(data,status){
+          beforeSend:function(){
+
+$("#plagSpinner").show()
+
+},
+complete:function(){
+$("#plagSpinner").hide()
+},
+          success:function(data,status){
             //var data = JSON.parse(data)
         var sum = 0;
          for (var key in data){
@@ -744,7 +795,7 @@
 
             
           }
-          )
+         } )
       }
     }
       $("#countTab").on("click", "#delBtn", function() {
@@ -1018,20 +1069,33 @@ p{
            var receipt_no = $("#receipt-no").val()
            var waiter = $("#waiter").val()
 
-           $.post("{% url 'firstapp-addsales' %}",{
+           $.ajax({
+
+           type:"POST",
+           url:"{% url 'firstapp-addsales' %}",
+           data:{
 
             code: $("#receipt-no").val(),
             waiter: waiter,
              csrfmiddlewaretoken:'{{ csrf_token }}',
            },
-           function(data,status){
+           beforeSend:function(){
+
+              $("#outSpinner").show()
+
+              },
+              complete:function(){
+              $("#outSpinner").hide()
+              },
+
+           success:function(data,status){
 
                 alert(data)
                 location.reload()
            }
 
 
-           )
+          })
 
        }
 
@@ -1063,6 +1127,13 @@ p{
                   link.setAttribute("aria-current", "page");
               }
           });
+
+          $(document).ready(function() {
+    $(window).load(function() {
+         $('#loadspin').show();
+      
+    });
+});
       </script>
       
     </section>

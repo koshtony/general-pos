@@ -787,7 +787,7 @@ def c_2_b_conf_url(request):
 
         print(resp)
 
-        return HttpResponse(resp)
+        return JsonResponse(resp)
 
     
 
