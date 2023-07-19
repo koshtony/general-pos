@@ -783,7 +783,7 @@ def mpesa_sim(request):
 
     resp = sim_c_2_b()
 
-    return resp
+    return HttpResponse(resp)
 
 @csrf_exempt
 def c_2_b_conf_url(request):
@@ -794,7 +794,7 @@ def c_2_b_conf_url(request):
 
         resp = json.loads(resp.decode('utf-8'))
 
-        mpesa_res = mpesaPay(name="mpesa",details=resp)
+        mpesa_res = mpesaPay(name="mpesa",details=str(resp))
 
         mpesa_res.save()
 
@@ -809,8 +809,6 @@ def c_2_b_val_url(request):
     if request.method == "POST":
 
         resp = request.body
-
-        print(resp)
 
         return HttpResponse(resp)
     return HttpResponse("waiting")

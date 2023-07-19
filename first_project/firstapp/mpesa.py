@@ -63,13 +63,14 @@ def sim_c_2_b():
 
     headers = { 'Authorization': f"Bearer {get_token()}"}
 
-    payload = {
-         "ShortCode": 600426,
-    "CommandID": "CustomerPayBillOnline",
+    req_body = {
+            "ShortCode": 600991,
+    "CommandID": "CustomerBuyGoodsOnline",
     "Amount": 100,
-    "Msisdn": 254708374149,
-    "BillRefNumber": "test"
+    "Msisdn": "254705912645",
+    "BillRefNumber": "",
     }
 
-    response = requests.request("POST",url, headers = headers, data = payload)
+    response = requests.post(url,json=req_body,headers=headers)
     return response.json()
+

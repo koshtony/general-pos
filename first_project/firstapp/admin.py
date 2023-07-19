@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Sum
-from .models import Stocks,Shops,Sales,Expenses,Transfers,Location,Tasks,Debts,Paid
+from .models import Stocks,Shops,Sales,Expenses,Transfers,Location,Tasks,Debts,Paid,mpesaPay
 
 
 # Register your models here.
@@ -13,6 +13,7 @@ admin.site.register(Transfers)
 admin.site.register(Location)
 admin.site.register(Tasks)
 admin.site.register(Debts)
+admin.site.register(mpesaPay)
 
 class PaidAdmin(admin.ModelAdmin):
     
