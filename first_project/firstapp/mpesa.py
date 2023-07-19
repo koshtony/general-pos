@@ -46,7 +46,7 @@ def c_2_b_reg_url():
     headers = { 'Authorization': f"Bearer {get_token()}"}
 
     req_body = {    
-                   "ShortCode": 600986,
+                   "ShortCode": 600991,
                    "ResponseType":"Completed",
                    "ConfirmationURL":os.getenv("conf_url"),
                    "ValidationURL":os.getenv("val_url"),
