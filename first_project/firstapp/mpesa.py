@@ -31,7 +31,7 @@ def stk_push(phone,amount):
     "PartyA": phone,
     "PartyB": 174379,
     "PhoneNumber": phone,
-    "CallBackURL":os.getenv("CallBackURLS"),
+    "CallBackURL":os.getenv("conf_url"),
     "AccountReference": "CompanyXLTD",
     "TransactionDesc": "Payment of X" 
     }
