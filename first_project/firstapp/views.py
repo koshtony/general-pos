@@ -787,17 +787,20 @@ def mpesa_sim(request):
 
 @csrf_exempt
 def c_2_b_conf_url(request):
+     
+    if request.method == "POST":
 
-     resp = request.body
+        resp = request.body
 
-     resp = json.loads(resp.decode('utf-8'))
+        resp = json.loads(resp.decode('utf-8'))
 
-     mpesa_res = mpesaPay(name="mpesa",details=str(resp))
+        mpesa_res = mpesaPay(name="mpesa",details=str(resp))
 
-     mpesa_res.save()
+        mpesa_res.save()
 
 
-     return JsonResponse(resp,safe=False)
+        return JsonResponse(resp,safe=False)
+    return HttpResponse("waiting")
   
     
 @csrf_exempt
