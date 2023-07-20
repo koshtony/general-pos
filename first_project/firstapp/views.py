@@ -780,7 +780,7 @@ def mpesa_reg_url(request):
     headers = { 'Authorization': f"Bearer {get_token()}"}
 
     req_body = {    
-                   "ShortCode": 600980,
+                   "ShortCode": "600980",
                    "ResponseType":"Completed",
                    "ConfirmationURL":'https://general-pos-production.up.railway.app/conf_url',
                    "ValidationURL":'https://general-pos-production.up.railway.app/validate_url',
@@ -799,11 +799,11 @@ def mpesa_sim(request):
     headers = { 'Authorization': f"Bearer {get_token()}"}
 
     req_body = {
-            "ShortCode":600980,
+            "ShortCode":"600980",
     "CommandID": "CustomerPayBillOnline",
     "Amount": 1,
     "Msisdn": "254708374149",
-    "BillRefNumber": "done",
+    "BillRefNumber": "testapi",
     }
 
     response = requests.post(url,json=req_body,headers=headers)
