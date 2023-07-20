@@ -10,7 +10,7 @@ class Shops(models.Model):
     shop_name =  models.CharField(max_length=100)
     shop_cat = models.CharField(max_length=100)
     shop_loc = models.CharField(max_length=100)
-    shop_created = models.DateTimeField(default= datetime.now())
+    shop_created = models.DateTimeField(default= timezone.now)
     
     
     def __str__(self):
@@ -21,7 +21,7 @@ class Shops(models.Model):
     
 class Stocks(models.Model):
     p_id=models.AutoField(primary_key=True)
-    p_gen = models.BigIntegerField(default=hash(datetime.now()))
+    p_gen = models.BigIntegerField(default=hash(timezone.now))
     p_serial = models.CharField(max_length=100,default='No serial')
     p_name=models.CharField(max_length=100)
     p_category=models.CharField(max_length=100)
@@ -34,7 +34,7 @@ class Stocks(models.Model):
     p_disc = models.FloatField(default=0.0)
     p_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
     p_creator=models.ForeignKey(User,on_delete=models.PROTECT)
-    p_created=models.DateTimeField(default= datetime.now())
+    p_created=models.DateTimeField(default= timezone.now)
     
     
     
@@ -60,7 +60,7 @@ class Sales(models.Model):
     s_type = models.CharField(max_length=100,default="cash")
     s_status = models.CharField(max_length=100,default="sold")
     s_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
-    s_created = models.DateTimeField(default= datetime.now())
+    s_created = models.DateTimeField(default= timezone.now)
     s_creator = models.ForeignKey(User,on_delete=models.PROTECT)
     
     def __str__(self):
@@ -75,14 +75,19 @@ class Paid(models.Model):
     profit = models.FloatField()
     pay_type = models.CharField(max_length=100)
     waiter = models.ForeignKey(User,on_delete=models.PROTECT)
-    date = models.DateTimeField(default= datetime.now())
+    date = models.DateTimeField(default= timezone.now)
 
     def __str__(self):
 
         return self.product
     
 class mpesaPay(models.Model):
+    trans_id = models.CharField(max_length=100,default="")
     name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100,default="")
+    ref_no = models.CharField(max_length=100,default="")
+    amount = models.CharField(max_length=100,default="")
+    date = models.DateTimeField(default=timezone.now)
     details = models.TextField()
 
     def __str__(self):
@@ -97,7 +102,7 @@ class Expenses(models.Model):
     exp_amount= models.FloatField()
     exp_creator = models.ForeignKey(User,on_delete=models.PROTECT)
     exp_shop = models.CharField(max_length=100,default=" ")
-    exp_date = models.DateTimeField(default= datetime.now())
+    exp_date = models.DateTimeField(default= timezone.now)
     
     def __str__(self):
         return self.exp_desc
@@ -110,7 +115,7 @@ class Transfers(models.Model):
     t_to =  models.CharField(max_length=100)
     t_qty = models.IntegerField()
     t_creator = models.ForeignKey(User,on_delete=models.PROTECT)
-    t_created = models.DateTimeField(default= datetime.now())
+    t_created = models.DateTimeField(default= timezone.now)
     
     def __str__(self):
         return self.t_name
@@ -121,7 +126,7 @@ class Location(models.Model):
     longitude = models.CharField(max_length = 100000,default=0.0)
     loc_tag = models.CharField(max_length=100,default="not set")
     loc_creator = models.ForeignKey(User,on_delete=models.CASCADE)
-    loc_created = models.DateTimeField(default= datetime.now())
+    loc_created = models.DateTimeField(default= timezone.now)
 
     def __str__(self):
         return f"latitude:{self.latitude} longitude:{self.longitude}"
@@ -134,7 +139,7 @@ class Tasks(models.Model):
     task_to = models.ManyToManyField(User)
     task_status = models.CharField(max_length=1000)
     task_creator = models.CharField(max_length=1000)
-    task_created = models.DateTimeField(default=datetime.now())
+    task_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.task_name
@@ -146,7 +151,7 @@ class Debts(models.Model):
     debt_cus = models.CharField(max_length=1000)
     debt_amnt = models.FloatField(default=0.0)
     debt_rem = models.FloatField(default=0.0)
-    debt_last = models.DateTimeField(default=datetime.now())
+    debt_last = models.DateTimeField(default=timezone.now)
     debt_remks = models.TextField()
     debt_creator = models.ForeignKey(User,on_delete=models.PROTECT)
     
@@ -158,4 +163,4 @@ class Contacts(models.Model):
     cont_id = models.AutoField(primary_key=True)
     cont_name = models.CharField(max_length=100)
     cont_phone = models.CharField(max_length=100)
-    cont_created = models.DateTimeField(default=datetime.now())
+    cont_created = models.DateTimeField(default=timezone.now)

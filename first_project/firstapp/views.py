@@ -782,8 +782,8 @@ def mpesa_reg_url(request):
     req_body = {    
                    "ShortCode": "600980",
                    "ResponseType":"Completed",
-                   "ConfirmationURL":'https://general-pos-production.up.railway.app/conf_url',
-                   "ValidationURL":'https://general-pos-production.up.railway.app/validate_url',
+                   "ConfirmationURL":os.getenv('conf_url'),
+                   "ValidationURL":os.getenv('val_url'),
     }
     
 
@@ -817,9 +817,18 @@ def c_2_b_conf_url(request):
         try:
             data = request.body
 
-            #data = json.loads(data.decode('utf-8'))
+            data = json.loads(data.decode('utf-8'))
+            
+            
 
-            mpesa_res = mpesaPay(name="mpesa",details="yes")
+            mpesa_res = mpesaPay(
+                trans_id = data["TransID"],
+                name=" ".join([data["FirstName"],data["MiddleName"],data["LastName"]]),
+                phone = data["MSISDN"],
+                ref_no = data["BillRefNumber"],
+                amount = data["TransAmount"],
+                details=str(data)
+                )
 
             mpesa_res.save()
             
@@ -831,9 +840,6 @@ def c_2_b_conf_url(request):
             return JsonResponse(dict(resp))
         except:
             
-            mpesa_res = mpesaPay(name="mpesa",details="no")
-
-            mpesa_res.save()
             
             resp = {
                 "ResultCode": 1,
