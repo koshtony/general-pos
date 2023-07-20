@@ -794,7 +794,7 @@ def c_2_b_conf_url(request):
 
         resp = json.loads(resp.decode('utf-8'))
 
-        mpesa_res = mpesaPay(name="mpesa",details=str(resp))
+        mpesa_res = mpesaPay(name="mpesa",details="yes")
 
         mpesa_res.save()
 
