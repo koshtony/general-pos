@@ -817,14 +817,14 @@ def c_2_b_conf_url(request):
 
         resp = request.body
 
-        resp = json.loads(resp.decode('utf-8'))
+        #resp = json.loads(resp.decode('utf-8'))
 
         mpesa_res = mpesaPay(name="mpesa",details="yes")
 
         mpesa_res.save()
 
 
-        return JsonResponse(resp,safe=False)
+        return JsonResponse(resp)
     return HttpResponse("waiting")
   
     
