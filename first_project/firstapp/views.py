@@ -15,9 +15,10 @@ from django.contrib.auth.models import User
 from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts,mpesaPay
 from posUsers.models import Profile
 from .sms import send_text
-from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b
+from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b,get_token
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
 from datetime import datetime
+import requests
 import json
 import time
 import os
@@ -775,15 +776,39 @@ def MpesaTrans(request):
 @csrf_exempt
 def mpesa_reg_url(request):
 
-    resp = c_2_b_reg_url()
+    url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl'
+    headers = { 'Authorization': f"Bearer {get_token()}"}
 
-    return HttpResponse(resp)
+    req_body = {    
+                   "ShortCode": 600991,
+                   "ResponseType":"Completed",
+                   "ConfirmationURL":os.getenv("conf_url"),
+                   "ValidationURL":os.getenv("val_url"),
+    }
+    
+
+    resp = requests.post(url,json=req_body,headers=headers)
+    
+    return JsonResponse(resp.json())
+
 @csrf_exempt
 def mpesa_sim(request):
+    
+    url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate'
 
-    resp = sim_c_2_b()
+    headers = { 'Authorization': f"Bearer {get_token()}"}
 
-    return HttpResponse(resp)
+    req_body = {
+            "ShortCode": 600991,
+    "CommandID": "CustomerBuyGoodsOnline",
+    "Amount": 100,
+    "Msisdn": "254705912645",
+    "BillRefNumber": "",
+    }
+
+    response = requests.post(url,json=req_body,headers=headers)
+    return JsonResponse(response.json())
+
 
 @csrf_exempt
 def c_2_b_conf_url(request):
