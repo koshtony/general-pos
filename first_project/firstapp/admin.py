@@ -28,5 +28,12 @@ class PaidAdmin(admin.ModelAdmin):
         return super(PaidAdmin, self).get_queryset(request).annotate(
             tot_amount=Sum('amount'),
             tot_profit=Sum('profit'))
+        
+class MpesaAdmin(admin.ModelAdmin):
     
+    list_display = ('trans_id','name','phone',"ref_no","date",'amount',)
+    list_filter = ("name",)
+    search_fields = ("trans_id",)
+
 admin.site.register(Paid,PaidAdmin)
+admin.site.register(mpesaPay,MpesaAdmin)
