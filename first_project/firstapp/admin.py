@@ -13,7 +13,6 @@ admin.site.register(Transfers)
 admin.site.register(Location)
 admin.site.register(Tasks)
 admin.site.register(Debts)
-admin.site.register(mpesaPay)
 
 class PaidAdmin(admin.ModelAdmin):
     
