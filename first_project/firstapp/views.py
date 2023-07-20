@@ -782,8 +782,8 @@ def mpesa_reg_url(request):
     req_body = {    
                    "ShortCode": 600991,
                    "ResponseType":"Completed",
-                   "ConfirmationURL":os.getenv("conf_url"),
-                   "ValidationURL":os.getenv("val_url"),
+                   "ConfirmationURL":'https://general-pos-production.up.railway.app/conf_url',
+                   "ValidationURL":'https://general-pos-production.up.railway.app/validate_url',
     }
     
 
