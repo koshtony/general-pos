@@ -802,7 +802,7 @@ def mpesa_sim(request):
             "ShortCode":600426,
     "CommandID": "CustomerBuyGoodsOnline",
     "Amount": 100,
-    "Msisdn": "254705912645",
+    "Msisdn": "254708374149",
     "BillRefNumber": "",
     }
 
