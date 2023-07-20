@@ -814,17 +814,35 @@ def mpesa_sim(request):
 def c_2_b_conf_url(request):
      
     if request.method == "POST":
+        try:
+            data = request.body
 
-        resp = request.body
+            data = json.loads(data.decode('utf-8'))
 
-        #resp = json.loads(resp.decode('utf-8'))
+            mpesa_res = mpesaPay(name="mpesa",details="yes")
 
-        mpesa_res = mpesaPay(name="mpesa",details="yes")
+            mpesa_res.save()
+            
+            resp = {
+                "ResultCode": 0,
+                "ResultDesc": "Accepted"
+            }
+            
+            return JsonResponse(dict(resp))
+        except:
+            
+            mpesa_res = mpesaPay(name="mpesa",details="no")
 
-        mpesa_res.save()
-
-
-        return JsonResponse(resp)
+            mpesa_res.save()
+            
+            resp = {
+                "ResultCode": 1,
+                "ResultDesc": "failed"
+            }
+            
+            return JsonResponse(dict(resp))
+            
+    
     return HttpResponse("waiting")
   
     
