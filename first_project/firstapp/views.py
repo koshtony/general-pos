@@ -870,8 +870,8 @@ def MpesaConfirm(request):
 
 def postMpesaMessage(request):
     
-    mpesa_rec = mpesaPay.objects.last()
-    
+    mpesa_rec = mpesaPay.objects.order_by('pk')
+    #print(mpesa_rec)
     mpesa_rec = serializers.serialize('json',mpesa_rec)
     
     return JsonResponse(mpesa_rec,safe=False)
