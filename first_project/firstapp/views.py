@@ -89,8 +89,7 @@ def Charts(request):
     stocks_labels,_,_,stocks_qty = stocks_summ(Stocks)
     dates,qty= time_sales_summ(Sales)
     dates = [date.month for date in dates ]
-    print(dates)
-    print(qty)
+    
     contxt = {
         "sales_labels": sales_labels,
         "sales_qty":sales_qty,
@@ -868,6 +867,14 @@ def MpesaConfirm(request):
     resp = request.body
     
     return HttpResponse(resp)
+
+def postMpesaMessage(request):
+    
+    mpesa_rec = mpesaPay.objects.last()
+    
+    mpesa_rec = serializers.serialize('json',mpesa_rec)
+    
+    return JsonResponse(mpesa_rec,safe=False)
                     
 
 def GenReceipt(request):

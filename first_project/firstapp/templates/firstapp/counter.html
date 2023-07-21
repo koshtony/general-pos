@@ -133,6 +133,9 @@
           </ul> -->
     </nav>
     <!-- /.navbar -->
+
+
+    
     
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -349,10 +352,10 @@
                    
                   </div>
                   <div class="card-body p-0" style="overflow-y: scroll; height:700px;">
+                    
+                    <br><br>
                     <table class="table table-striped"  id="countTab">
                       
-                       <a style="margin-left:5px;"><i class="fa fa-times"></i></a>
-                      <br><br>
                       <div>
                         <div class="input-group">
                      <input type="text" id="receipt-no" class="form-control" size="1" style="width: 100px; margin-left:5px" onkeyup="receiptFilt()" placeholder="receipt number">
@@ -528,11 +531,18 @@
                    </div>
                  </div>
                </div>
+
+               <!-- end modal-->
+
               
                 
                  
                 
               <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                <div class="alert alert-info" role="alert" id="payAlert" style="display:none">
+                 
+                </div>
+             
                 <div class="input-group">
                   <input list="magicHouses" id="pname" type="text" class="form-control" placeholder="Search">
                   <datalist id="magicHouses">
@@ -1134,6 +1144,44 @@ p{
       
     });
 });
+
+function getMpesaMsg(){
+
+  var url = "{% url 'mpesa-msg' %}"
+
+    $.ajax({
+      
+      type:"GET",
+      url:url,
+      success:function(data,status){
+
+        var data = JSON.parse(data)
+
+        $("#payAlert").show()
+       for(key in data){
+        $("#payAlert").html(
+          `
+          <strong style="color:green">new mpesa</strong>
+          &nbsp  &nbsp &nbsp  &nbsp
+          Name:  <strong style="color:yellow">${data[key]["fields"]["name"]}</strong>
+          &nbsp  &nbsp
+          Amount: <strong style="color:yellow">${data[key]["fields"]["amount"]}</strong>
+          &nbsp  &nbsp
+          ref: <strong style="color:yellow">${data[key]["fields"]["trans_id"]}</strong>
+          &nbsp  &nbsp
+          Date: <strong style="color:yellow">${data[key]["fields"]["date"]}</strong>
+         
+
+          `
+        )
+       }
+      }
+
+    })
+}
+
+setInterval(getMpesaMsg,1000)
+
       </script>
       
     </section>

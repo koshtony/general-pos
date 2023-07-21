@@ -11,7 +11,7 @@ from .views import StocksCreateView,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
-                        cashier,addPaid,addContact,getContact,sendSms
+                        cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage
             
 urlpatterns = [
 
@@ -60,7 +60,8 @@ urlpatterns = [
                     path('register_url',views.mpesa_reg_url,name="register-url"),
                     path('conf_url',views.c_2_b_conf_url,name="conf-url"),
                     path('validate_url',views.c_2_b_val_url,name="validate-url"),
-                    path('mpesa_sim',views.mpesa_sim,name="mpesa-sim")
+                    path('mpesa_sim',views.mpesa_sim,name="mpesa-sim"),
+                    path('mpesa_msg',views.postMpesaMessage,name="mpesa-msg")
 
 
 ]

@@ -1,0 +1,37 @@
+@media (max-width:567px){
+    .img-thumbnail{
+        height: 200px !important;
+    }
+}
+.line{
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    margin-bottom: 3px;
+}
+.active{
+    background-color:rgba(221, 221, 221, 0.1) !important;
+}
+.img-thumbnail{
+    height: 150px;    
+}
+.b-0{
+    border: 0 !important;
+}
+.cf{
+    padding: 5px;
+}
+.title{
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.price{
+    color: teal;
+    font-size: 20px;
+}
+.mr10{
+    margin-right: 10px;
+}
