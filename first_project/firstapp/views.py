@@ -225,7 +225,7 @@ def addSales(request):
         if 'sales' in request.session and len(code)>0:
             keys_to_del = []
             for key,value in request.session["sales"].items():
-                    if request.session["sales"][key]["key"] == code:
+                    #if request.session["sales"][key]["key"] == code:
 
                         sales= Sales(
                             s_serial = code,

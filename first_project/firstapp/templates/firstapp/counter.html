@@ -365,7 +365,9 @@
                           <option value="{{user.user.username}}">{{user.user.username}}</option>
                       {% endfor %}
                      </select>
+                     <!--
                      <button style="margin-left:5px" class="btn btn-success" onclick="newReceipt()"><i class="fa fa-plus"></i></button>
+                     -->
                      <button style="margin-right:10px" class="btn btn-danger" onclick="clearReceipt()"><i class="fa fa-times"></i></button>
                    </div>
 
@@ -415,7 +417,7 @@
                             
                             <td><p style="color:yellowgreen;">{{ val.waiter }}</p>
                               <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-times"></i></button></td>
-                            <td class="recpt">{{val.key}}</td>
+                            <td class="recpt">{{val.key}}<a class="fa fa-filter" onclick="copier('{{val.key}}')"></a></td>
                         </tr>
                            {% endfor %}
                         {% endif %}
@@ -703,11 +705,7 @@
       function counter(qty,names,prices){
           event.preventDefault()
 
-          if($("#receipt-no").val() == ''){
-
-              alert("No receipt number ---> refreshing")
-              location.reload()
-          }else{
+         
 
             var receipt_no = $("#receipt-no").val()
             sale_dict = {
@@ -765,7 +763,7 @@ $("#plagSpinner").hide()
                   <td>${data[key]["price"]}</td>
                   <td><p style="color:yellowgreen">${data[key]["waiter"]}</p>
                   <button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
-                  <td class="recpt">${data[key]["key"]}</td>
+                  <td class="recpt">${data[key]["key"]}<a onclick="copier('${data[key]["key"]}')" class="fa fa-filter"></a></td>
               </tr>
 
               `
@@ -806,7 +804,7 @@ $("#plagSpinner").hide()
             
           }
          } )
-      }
+      
     }
       $("#countTab").on("click", "#delBtn", function() {
                   cRow = $(this).closest("tr")
@@ -1076,7 +1074,7 @@ p{
           
            document.getElementById("receipt-no").required = true;
            
-           var receipt_no = $("#receipt-no").val()
+           var receipt_no = Date.now()
            var waiter = $("#waiter").val()
 
            $.ajax({
@@ -1085,7 +1083,7 @@ p{
            url:"{% url 'firstapp-addsales' %}",
            data:{
 
-            code: $("#receipt-no").val(),
+            code: receipt_no,
             waiter: waiter,
              csrfmiddlewaretoken:'{{ csrf_token }}',
            },
@@ -1117,8 +1115,16 @@ p{
        function clearReceipt(){
 
         $("#receipt-no").val('')
+        $("#receipt-no").keyup()
 
        }
+
+       function copier(num){
+        $("#receipt-no").val(num)
+  
+        $("#receipt-no").keyup()
+       }
+
       
        if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
         // true for mobile device
