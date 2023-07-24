@@ -1,6 +1,6 @@
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,date
 
 def sales_summ(object):
     labels,profit,qty = [],[],[]
@@ -107,5 +107,18 @@ def today_summary(model1,model2):
     return sum(today_profit),sum(today_sales),sum(today_amount)
 
     
-        
+def monthly_comp(sales,stocks):
+
+    sales = sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values("s_name").annotate(total_qty=Sum('s_qty'))
+    stocks = stocks.objects.values("p_name").annotate(total_stock=Sum('p_qty'))
+    print(stocks)
+    stock_names =[stock["p_name"] for stock in stocks]
+    print(stock_names)
+    stock_qty = [stock["total_stock"] for stock in stocks]
+    sales_qty = [sale["total_qty"] for sale in sales]
+
+    return stock_names,stock_qty,sales_qty
+
+
+
         

@@ -16,7 +16,7 @@ from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contac
 from posUsers.models import Profile
 from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b,get_token
-from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary
+from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary,monthly_comp
 from datetime import datetime,timedelta,date
 import requests
 import json
@@ -49,6 +49,7 @@ def home(request):
     shop_sales = Sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values('s_shop').annotate(
         total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
     )
+    items,stoks,salez = monthly_comp(Sales,Stocks)
     data={
         "orders":profit,
         "tasks":tasks,
@@ -59,6 +60,9 @@ def home(request):
         "today_sales":today_sales,
         "month_sales":month_sales,
         "shop_sales":shop_sales,
+        "items":items,
+        "stoks":stoks,
+        "salez":salez
         
     }
     return render(request,'firstapp/home.html',data)

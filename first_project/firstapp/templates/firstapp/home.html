@@ -215,10 +215,20 @@
                 </div>
               </div>
             </div>
-
+         
+              <div class="row">
+                <div class="col-lg-3 col-12" style="height:300px;margin-left:10px;" id="bar1">
+            
+                </div>
+                <div class="col-lg-3 col-12" id="bar2">
+                  
+                </div>
+              </div>
+           
+<!---->
           <div class="row">
               
-              <div class="col-lg-3 col-6">
+              <div class="col-lg-3 col-6" style="display:none">
 
                <div class="small-box bg-outline">
                 <h4 id="status" style="margin-left:50px;"> status </h4>
@@ -229,56 +239,13 @@
                 
               </div>
 
-              <div class="col-lg-3 col-6">
-               <div class="small-box bg-info">
-                    <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      
-      <th scope="col">assigned_by</th>
-      <th scope="col">status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for task in tasks %}
-    <tr>
-      {% if task.task_status == "pending" %}
-      <th scope="row"><input type="checkbox" value="pending"></th>
-      {% else %}
-       <th scope="row"><input type="checkbox" value="done"></th>
-       {% endif %}
-     
-      <th>{{ task.task_creator }}</th>
-      <th>{{ task.task_status }}</th>
-
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<a href="{% url 'firstapp-taskslist' %}" class="small-box-footer">view tasks <i class="fas fa-arrow-circle-right"></i></a>
 
 
-
-              </div>
-                
-              </div>
-
-
-              <div class="col-lg-3 col-6">
-               <div class="small-box bg-secondary">
-                     <p> important </p>
-              </div>
-                
-              </div>
-              <div class="col-lg-3 col-6">
-               <div class="small-box bg-info">
-                    <p> reminders </p>
-              </div>
-                
-              </div>
+             
+             
                  
              </div>
+            
 
           </div>
         </section>
@@ -415,6 +382,53 @@ $('#stocks').DataTable( {
     "lengthMenu": [[2,5], [2,5]]
 } );
           })
+
+
+
+
+// =============================chart1================================
+var bar1 = document.getElementById("bar1")
+var stocks = {
+  x: {{items | safe }},
+  y: {{stoks | safe}},
+  name: 'stocks',
+  type: 'bar'
+};
+
+var sales = {
+  x: {{items | safe }},
+  y:  {{salez | safe}},
+  name: 'sales',
+  type: 'bar'
+};
+
+var data = [stocks, sales];
+
+var layout = {barmode: 'group'};
+
+Plotly.newPlot(bar1, data, layout);
+
+// ======================chart2==========================
+var bar2 = document.getElementById("bar2")
+var stocks = {
+  x: {{items | safe }},
+  y: {{stoks | safe}},
+  name: 'stocks',
+  type: 'bar'
+};
+
+var sales = {
+  x: {{items | safe }},
+  y:  {{salez | safe}},
+  name: 'sales',
+  type: 'bar'
+};
+
+var data = [stocks, sales];
+
+var layout = {barmode: 'stack'};
+
+Plotly.newPlot(bar2, data, layout);
 
 </script>
 
