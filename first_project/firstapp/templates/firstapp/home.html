@@ -71,6 +71,151 @@
               <!-- ./col -->
             </div>
 
+            <div class="row">
+              <div class="col-lg-3 col-12">
+                <!-- small box -->
+                <div class="small-box bg-white">
+                  <div class="inner">
+                    <h6>current stocks</h6>
+                  
+                    <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="stocks">
+                      <thead class="bg-light">
+                        <tr>
+                          
+                          <th>Item</th>
+                          <th>Qty</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in stocks_items %}
+                        <tr>
+                            <td>{{item.p_name}}</td>
+                            <td>{{item.total_qty}}</td>
+                        </tr>
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                  
+                    
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-warehouse"></i>
+                  </div>
+                  <a href="{% url 'firstapp-stocks' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <div class="col-lg-3 col-12" style="height:40px;">
+                <!-- small box -->
+                <div class="small-box bg-white">
+                  <div class="inner">
+                    <h4>today sales</h4>
+                    <table class="table align-middle mb-0 bg-white" data-page-length='5' style="margin-left:10px" id="today-sales">
+                      <thead class="bg-light">
+                        <tr>
+                          
+                          <th>Item</th>
+                          <th>Qty</th>
+                          <th>Amount</th>
+                          <th>Profit</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for sale in today_sales %}
+                        <tr>
+                            <td>{{sale.s_name}}</td>
+                            <td>{{sale.total_qty}}</td>
+                            <td>{{sale.total_price}}</td>
+                            <td>{{sale.total_profit}}</td>
+                        </tr>
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                  </div>
+                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+              <div class="col-lg-3 col-12" style="overflow-y: scroll;">
+                <!-- small box -->
+                <div class="small-box bg-white">
+                  <div class="inner">
+                    <h6>MTD sales</h6>
+                   <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="sales">
+                            <thead class="bg-light">
+                              <tr>
+                                
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Amount</th>
+                                <th>Profit</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for sale in month_sales %}
+                              <tr>
+                                  <td>{{sale.s_name}}</td>
+                                  <td>{{sale.total_qty}}</td>
+                                  <td>{{sale.total_price}}</td>
+                                  <td>{{sale.total_profit}}</td>
+                              </tr>
+                              {% endfor %}
+      
+                            </tbody>
+                         
+                    </table>
+                    
+                  </div>
+                  
+                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-12">
+                <!-- small box -->
+                <div class="small-box bg-white">
+                  <div class="inner">
+                    <strong>shop sales</strong>
+                    <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="sales2">
+                      <thead class="bg-light">
+                        <tr>
+                          
+                          <th>Shop</th>
+                          <th>Qty</th>
+                          <th>Amount</th>
+                          <th>Profit</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for sale in shop_sales %}
+                        <tr>
+                            <td>{{sale.s_shop}}</td>
+                            <td>{{sale.total_qty}}</td>
+                            <td>{{sale.total_price}}</td>
+                            <td>{{sale.total_profit}}</td>
+                        </tr>
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                    
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                  </div>
+                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+            </div>
+
           <div class="row">
               
               <div class="col-lg-3 col-6">
@@ -247,7 +392,29 @@
 
           // update confirmed tasks 
 
+          $(document).ready(function() {
+$('#sales').DataTable( {
+    "lengthMenu": [[2,5], [2,5]]
+} );
+          })
+          $(document).ready(function() {
+$('#today-sales').DataTable( {
+    "lengthMenu": [[2,5], [2,5]]
+} );
 
+$(document).ready(function() {
+$('#sales2').DataTable( {
+    "lengthMenu": [[2,5], [2,5]]
+} );
+          })
+          })
+          
+
+          $(document).ready(function() {
+$('#stocks').DataTable( {
+    "lengthMenu": [[2,5], [2,5]]
+} );
+          })
 
 </script>
 
