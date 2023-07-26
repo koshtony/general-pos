@@ -137,7 +137,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_NAME = "sessioninfo"
+SESSION_COOKIE_NAME = "sessioninfos"
 
 #CORS_ORIGIN_WHITELIST = [ "http://localhost:5000" ]
 CORS_ORIGIN_ALLOW_ALL = True
