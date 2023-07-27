@@ -49,7 +49,7 @@ def home(request):
     shop_sales = Sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values('s_shop').annotate(
         total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
     )
-    items,stoks,salez = monthly_comp(Sales,Stocks)
+    items,stoks,salez,seller_qty,seller,shop_qty,shop_name = monthly_comp(Sales,Stocks)
     data={
         "orders":profit,
         "tasks":tasks,
@@ -62,7 +62,11 @@ def home(request):
         "shop_sales":shop_sales,
         "items":items,
         "stoks":stoks,
-        "salez":salez
+        "salez":salez,
+        "seller_qty":seller_qty,
+        "seller":seller,
+        "shop_qty":shop_qty,
+        "shop_name":shop_name,
         
     }
     return render(request,'firstapp/home.html',data)

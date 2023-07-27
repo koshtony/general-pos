@@ -1,5 +1,7 @@
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
+from posUsers.models import Profile
+from .models import Shops
 from datetime import datetime, timedelta,date
 
 def sales_summ(object):
@@ -109,15 +111,21 @@ def today_summary(model1,model2):
     
 def monthly_comp(sales,stocks):
 
-    sales = sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values("s_name").annotate(total_qty=Sum('s_qty'))
+    sales_ = sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values("s_name").annotate(total_qty=Sum('s_qty'))
+    seller = sales.objects.values('s_creator').annotate(total_sales=Sum('s_qty'))
+    shops = sales.objects.values('s_shop').annotate(total_sales=Sum('s_qty'))
     stocks = stocks.objects.values("p_name").annotate(total_stock=Sum('p_qty'))
     print(stocks)
     stock_names =[stock["p_name"] for stock in stocks]
     print(stock_names)
     stock_qty = [stock["total_stock"] for stock in stocks]
-    sales_qty = [sale["total_qty"] for sale in sales]
+    sales_qty = [sale["total_qty"] for sale in sales_]
+    seller_qty = [sell["total_sales"] for sell in seller]
+    seller_user = [Profile.objects.get(user=sell["s_creator"]).user.username for sell in seller]
+    shop_qty = [shop["total_sales"] for shop in shops]
+    shop_name = [Shops.objects.get(shop_id=shop["s_shop"]).shop_name for shop in shops]
 
-    return stock_names,stock_qty,sales_qty
+    return stock_names,stock_qty,sales_qty,seller_qty,seller_user,shop_qty,shop_name
 
 
 
