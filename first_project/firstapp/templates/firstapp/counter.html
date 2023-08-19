@@ -63,7 +63,19 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
- 
+ <style>
+  .modal-backdrop {
+   background-color: transparent;
+
+   #resize {
+	resize:horizontal;
+	overflow:auto;
+	border:1px silver solid;
+	width:320px;
+	margin:0 auto;
+}
+}
+ </style>
   
   <div class="wrapper" >
     
@@ -306,7 +318,7 @@
           <div class="container-fluid">
             <div class="row">
             
-              <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+              <div class="col-12 col-sm-12 col-md-7 col-lg-7" id="resize">
                 <div class="card">
                   <div class="card-footer">
                     <div class="row" >
@@ -496,8 +508,8 @@
 
 
                <!-- Modal -->
-               <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                 <div class="modal-dialog" role="document">
+               <div class="modal fade bd-example-modal-lg" id="payModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog modal-lg" role="document">
                    <div class="modal-content">
                      <div class="modal-header">
                        <h5 class="modal-title" id="exampleModalLabel">===================Bal Counter==============</h5>
@@ -517,18 +529,45 @@
                       </div>
                     </div>
                      <div class="modal-body">
-                      <div class="form-group">
-                        <label for="paid">paid>>>>>>>></label>
-                       <input type="text" id="paid" value="" style="margin-left:100px">
-                       <br> <br>
-                       <label for="all">Total>>>>>>></label>
-                       <input type="text" id="all" value="" style="margin-left:105px">
-                       <br> <br>
-                       <label for="bal">Bal>>>>>>>>></label>
-                       <input type="text" id="bal" value=""style="margin-left:103px">
-                       </div>
-                       <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
-                       <button type="button" class="btn btn-sm btn-info" onclick="compSale();"> complete </button>
+                      <div class="card-footer">
+                        <div class="row" >
+                          <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+                            <label for="paid">paid</label>
+                            <br>
+                            
+                            <label for="total">Total</label>
+                            <br>
+                            <label for="bal">Balance</label>
+                          </div>
+                          <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+                            <div class="input-group input-group-sm mb-1">
+                              <input type="text" class="form-control" id="paid">
+                            </div>
+                            <div class="input-group input-group-sm mb-1">
+                              <input type="text" id="all" class="form-control" >
+                            </div>
+                            <div class="input-group input-group-sm mb-1">
+                              <input type="text" id="bal"  class="form-control" >
+                            </div>
+                            
+                          </div>
+                        </div>
+
+                        <div class="col-8 col-sm-8 col-md-8 col-lg-8" id="deficit">
+
+                        </div>
+                        <div class="text-center" style="margin-left:50px">
+                          
+                          <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
+                          <button type="button" class="btn btn-sm btn-info" onclick="compSale();"> complete </button>
+                          
+                        </div>
+                        
+                        <!---      mpesa modal-->
+                        
+                       
+                      </div>
+                      
                      </div> 
                    </div>
                  </div>
@@ -540,11 +579,14 @@
                 
                  
                 
-              <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+              <div class="col">
                 <div class="alert alert-info" role="alert" id="payAlert" style="display:none">
                  
                 </div>
-             
+                <div class="input-group">
+                  <input  id="barcode" type="text" class="form-control" placeholder="Scan barcode here">
+                </div>
+                <br>
                 <div class="input-group">
                   <input list="magicHouses" id="pname" type="text" class="form-control" placeholder="Search">
                   <datalist id="magicHouses">
@@ -618,6 +660,7 @@
             var paid = parseFloat($(this).val())
             var newtot = paid - parseFloat($("#all").val())
             $("#bal").val(newtot)
+            
           })
         }
        
@@ -1076,7 +1119,53 @@ p{
            
            var receipt_no = Date.now()
            var waiter = $("#waiter").val()
+           if($("#bal").val()<0){
+            
+               $("#deficit").html(
+               `
+               <h4>payment not cleared</h4>
+              <h5>optional methods</h5>
 
+              <div class="card-footer">
+                        <div class="row" >
+                          <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+                            <label for="cusphone">phone</label>
+                            <br>
+                            
+                            <label for="remainder">bal</label>
+                            <br>
+                           
+                          </div>
+                          <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+                            <div class="input-group input-group-sm mb-1">
+                              <input type="text" class="form-control" id="cusphone">
+                            </div>
+                            <div class="input-group input-group-sm mb-1">
+                              <input type="text" id="remainder" class="form-control" >
+                            </div>
+                           
+                            
+                          </div>
+                        </div>
+
+                        <div class="col-8 col-sm-8 col-md-8 col-lg-8" id="deficit">
+
+                        </div>
+                       
+                        
+                        <!---      mpesa modal-->
+                        
+                       
+                      </div>
+
+              <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
+               `
+
+
+               )
+               var new_bal = $("#bal").val()*-1
+            $("#remainder").val(new_bal)
+            }else{
            $.ajax({
 
            type:"POST",
@@ -1104,6 +1193,7 @@ p{
 
 
           })
+        }
 
        }
 
