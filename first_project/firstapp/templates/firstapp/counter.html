@@ -584,7 +584,7 @@
                  
                 </div>
                 <div class="input-group">
-                  <input  id="barcode" type="text" class="form-control" placeholder="Scan barcode here">
+                  <input  id="barcode" type="text" class="form-control" placeholder="Scan barcode here" onkeyup="saleByScan()">
                 </div>
                 <br>
                 <div class="input-group">
@@ -1277,6 +1277,76 @@ function getMpesaMsg(){
 }
 
 setInterval(getMpesaMsg,5000)
+
+function saleByScan() {
+
+  alert($("#barcode").val())
+
+  $.ajax({
+    type:"post",
+    url:"{% url 'firstapp-scancounter' %}",
+    data:{ 
+      barcode:$("#barcode").val(),
+      csrfmiddlewaretoken:'{{ csrf_token }}'
+    },
+    success:function(data,status){
+      var sum = 0;
+         for (var key in data){
+            $("#countTab tbody").prepend(
+              `
+              <tr>
+                  <td>${data[key]["name"]}</td>
+                  <td>
+                              
+                            ${data[key]["qty"]}
+                             
+                  </td>
+                  <td>${data[key]["price1"]}</td>
+                  <td>${data[key]["disc"]}</td>
+                  <td>${data[key]["price"]}</td>
+                  <td><p style="color:yellowgreen">${data[key]["waiter"]}</p>
+                  <button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
+                  <td class="recpt">${data[key]["key"]}<a onclick="copier('${data[key]["key"]}')" class="fa fa-filter"></a></td>
+              </tr>
+
+              `
+            
+            )
+            
+         }
+            
+            var input, filter, table, tr, td, i, txtValue,sum;
+          input = document.getElementById("receipt-no");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("countBody");
+          tr = table.getElementsByTagName("tr");
+          sum = 0;
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[6];
+            
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                sum += parseFloat(tr[i].getElementsByTagName("td")[4].innerText)
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+            
+            tot =parseFloat($("#total").val())
+            
+            
+            $("#total").val(sum)
+            minuses = $("#minus").val()
+            nettot = sum - minuses
+            $("#nettotal").val(nettot)
+    }
+  })
+     
+}
 
       </script>
       

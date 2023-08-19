@@ -11,7 +11,7 @@ from .views import StocksCreateView,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
-                        cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage
+                        cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter
             
 urlpatterns = [
 
@@ -19,6 +19,7 @@ urlpatterns = [
                     path('counter/', views.counter,name='firstapp-counter'),
                     path('cashier/', views.cashier,name='firstapp-cashier'),
                     path('getcounter', views.getCounter,name='firstapp-getcounter'),
+                    path('scancounter', views.scanCounter,name='firstapp-scancounter'),
                     path('counter/plus', views.counterPlusSess,name='firstapp-counterplus'),
                     path('counter/minus', views.counterMinusSess,name='firstapp-counterminus'),
                     path('counter/remove', views.counterRemvSess,name='firstapp-counterremove'),
