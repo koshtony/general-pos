@@ -131,31 +131,37 @@ def scanCounter(request):
     if request.POST:
         barcode = request.POST.get("barcode")
         print(barcode)
-        product = Stocks.objects.filter(p_serial=barcode)[0]
         
-        pid = str(hash(time.time())+int(product.p_id))
-        data = {pid:{
-               "key":pid,"serial":barcode,"name":product.p_name,
-               "category":product.p_category,"shops":product.p_shop.shop_id,"qty":1,
-               "price1":product.p_price,"price":product.p_price,"cost1":product.p_cost,
-               "cost":product.p_cost,"profit":product.p_price-product.p_cost,"disc":0,
-               "waiter":request.user.username
-        }
+        try:
+            product = Stocks.objects.filter(p_serial=barcode)[0]
+            pid = str(hash(time.time())+int(product.p_id))
+            data = {pid:{
+                "key":pid,"serial":barcode,"name":product.p_name,
+                "category":product.p_category,"shops":product.p_shop.shop_id,"qty":1,
+                "price1":product.p_price,"price":product.p_price,"cost1":product.p_cost,
+                "cost":product.p_cost,"profit":product.p_price-product.p_cost,"disc":0,
+                "waiter":request.user.username
+            }
 
-        }
+            }
 
-        if request.session.has_key('sales'):
-            request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
+            if request.session.has_key('sales'):
+                request.session["sales"] = dict(list(request.session["sales"].items())+ list(data.items()))
 
-        else:
+            else:
 
-            request.session["sales"] = data
+                request.session["sales"] = data
 
-        scanned_stock = Stocks.objects.filter(p_serial=barcode).first()
-        rem_stock = Stocks.objects.filter(p_serial=barcode).first()
-        rem_stock.p_qty = scanned_stock.p_qty-1 
-        rem_stock.save()
-        return JsonResponse(data,status=200)
+            scanned_stock = Stocks.objects.filter(p_serial=barcode).first()
+            rem_stock = Stocks.objects.filter(p_serial=barcode).first()
+            rem_stock.p_qty = scanned_stock.p_qty-1 
+            rem_stock.save()
+            return JsonResponse(data,status=200)
+        except Exception as e:
+            
+            data = "error!! serial no -> not found"
+            print(data)
+            return JsonResponse(data,safe=False)
         
 
 @login_required

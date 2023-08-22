@@ -352,9 +352,11 @@
                       
                       
                      
-                      <a style="margin-left:100px" href="{% url 'firstapp-receipt' %}" download><i class="fa fa-download">receipt</i></a>
+                      <a style="margin-left:100px" class="printReceipt" href="{% url 'firstapp-receipt' %}"><i class="fa fa-download">receipt</i></a>
                       
-                      <a onclick="window.location.reload()"> <i class="fa fa-edit"></i>edit mode</a>
+                      <a onclick="refreshDiv()"> <i class="fa fa-edit"></i>edit mode</a>
+
+                      
 
                       
                     </div>
@@ -363,7 +365,7 @@
                     
                    
                   </div>
-                  <div class="card-body p-0" style="overflow-y: scroll; height:700px;">
+                  <div class="card-body p-0" style="overflow-y: scroll; height:700px;" id="salesList">
                     
                     <br><br>
                     <table class="table table-striped"  id="countTab">
@@ -584,8 +586,9 @@
                  
                 </div>
                 <div class="input-group">
-                  <input  id="barcode" type="text" class="form-control" placeholder="Scan barcode here" onkeyup="saleByScan()">
+                  <input  id="barcode" type="text" class="form-control" placeholder="Scan barcode here" onchange="saleByScan()">
                 </div>
+                <strong><h4 style="color:red" id="sError"></h4></strong>
                 <br>
                 <div class="input-group">
                   <input list="magicHouses" id="pname" type="text" class="form-control" placeholder="Search">
@@ -805,7 +808,7 @@ $("#plagSpinner").hide()
                   <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
                   <td><p style="color:yellowgreen">${data[key]["waiter"]}</p>
-                  <button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
+                  <button type="button" class="btn btn-secondary" onclick="location.reload()"><i class="fa fa-refresh"></i></button></td>
                   <td class="recpt">${data[key]["key"]}<a onclick="copier('${data[key]["key"]}')" class="fa fa-filter"></a></td>
               </tr>
 
@@ -858,15 +861,29 @@ $("#plagSpinner").hide()
                   newnets = parseFloat($("#nettotal").val()) - tabval - discval
                   $("#total").val(newtotal)
                   $("#nettotal").val(newnets)
+                  
+                  $.ajax({
+                    type:"get",
+                    url:"{% url 'firstapp-counterremove' %}",
+                    data:{
+                      key: cRow.find("input[type=hidden]").val()
+                    },
+                    beforeSend:function(){
 
-                  // send unique key 
-                  $.get("{% url 'firstapp-counterremove' %}",{
-                     key: cRow.find("input[type=hidden]").val()
-                  },
-                    function(data,status){
+                      $("#plagSpinner").show()
+
+                      },
+                      complete:function(){
+                      $("#plagSpinner").hide()
+                      },
+                      success:function(data,status){
                        document.getElementById("plusAlerts").style.display = "block"
                     }
-                  )
+
+
+                  })
+                  // send unique key 
+          
                   
 
                   cRow.remove()
@@ -1280,7 +1297,7 @@ setInterval(getMpesaMsg,5000)
 
 function saleByScan() {
 
-  alert($("#barcode").val())
+ // alert($("#barcode").val())
 
   $.ajax({
     type:"post",
@@ -1289,7 +1306,18 @@ function saleByScan() {
       barcode:$("#barcode").val(),
       csrfmiddlewaretoken:'{{ csrf_token }}'
     },
+    beforeSend:function(){
+
+$("#plagSpinner").show()
+
+},
+complete:function(){
+$("#plagSpinner").hide()
+},
     success:function(data,status){
+      $("#barcode").val("")
+      $("#sError").html("")
+      if(data != "error!! serial no -> not found"){
       var sum = 0;
          for (var key in data){
             $("#countTab tbody").prepend(
@@ -1305,7 +1333,7 @@ function saleByScan() {
                   <td>${data[key]["disc"]}</td>
                   <td>${data[key]["price"]}</td>
                   <td><p style="color:yellowgreen">${data[key]["waiter"]}</p>
-                  <button type="button" class="btn btn-secondary" onclick="location.reload();"><i class="fa fa-edit"></i></button></td>
+                  <button type="button" class="btn btn-secondary" ><i class="fa fa-edit"></i></button></td>
                   <td class="recpt">${data[key]["key"]}<a onclick="copier('${data[key]["key"]}')" class="fa fa-filter"></a></td>
               </tr>
 
@@ -1314,6 +1342,9 @@ function saleByScan() {
             )
             
          }
+        }else{
+            $("#sError").html(data)
+        }
             
             var input, filter, table, tr, td, i, txtValue,sum;
           input = document.getElementById("receipt-no");
@@ -1343,11 +1374,40 @@ function saleByScan() {
             minuses = $("#minus").val()
             nettot = sum - minuses
             $("#nettotal").val(nettot)
-    }
+   
+     
+    
+  }
+
   })
      
 }
 
+function refreshDiv(){
+
+  $("#salesList").html("")
+    
+  $("#salesList").load(location.href + " #salesList>*","");
+}
+
+function loadPrint(){
+
+        window.open("{% url 'firstapp-receipt' %}").print()
+      
+    
+}
+$('a.printReceipt').click(function(){
+  var printWindow = window.open(
+    "{% url 'firstapp-receipt' %}", 
+    'Print', 
+    'left=200', 
+    'top=200', 
+    'width=950', 
+    'height=500', 
+    'toolbar=0', 
+    'resizable=0'
+);
+});
       </script>
       
     </section>
