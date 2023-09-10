@@ -215,6 +215,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{% url 'market_home' %}" class="nav-link">
+              <i class="nav-icon fa fa-comment" aria-hidden="true"></i>
+              <p>
+              bulky sms
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{% url 'firstapp-financesummary' %}" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>reports</p>
@@ -295,7 +303,7 @@
     <!-- add contacts modals -->
 
     <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">add contacts</h5>
@@ -305,19 +313,8 @@
           </div>
           <div class="modal-body">
 
-            <form class="form-inline">
-              
-              <div class="form-group mx-sm-3 mb-2">
-                <label for="inputPassword2" class="sr-only">  Customer Name</label>
-                <input type="password" class="form-control" id="cname" placeholder="Name">
-              </div>
-              <div class="form-group mx-sm-3 mb-2">
-                <label for="inputPassword2" class="sr-only">Customer Number</label>
-                <input type="password" class="form-control" id="cnum" placeholder="Phone">
-              </div>
-            
-            </form>
-            ...
+          </div>
+          </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

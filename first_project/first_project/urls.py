@@ -26,6 +26,7 @@ urlpatterns = [
     path('',include('firstapp.urls')),
     path('',include('posUsers.urls')),
     path('',include('offline_pos.urls')),
+    path('',include('marketing.urls')),
    # path('', include('pwa.urls')),
 
 ]

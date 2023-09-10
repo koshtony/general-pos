@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^8ykmy*#mg$kd1v61eg4t1_**ov^-cl82z@!8qn=fkl3*v)mmc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
     'offline_pos.apps.OfflinePosConfig',
+    'marketing.apps.MarketingConfig',
     'crispy_forms',
     'admin_interface', 
     'colorfield', 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pwa',
+    'ckeditor'
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'
@@ -92,6 +94,7 @@ DATABASES = {
     }
 }
 '''
+
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
