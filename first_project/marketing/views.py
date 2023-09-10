@@ -24,7 +24,7 @@ def market_home(request):
 
         cnames = request.POST.get("cnames").split('\n')
         cphones = request.POST.get("cphones").split()
-        print(cnames)
+
         if len(cnames)==len(cphones):
             for i in range(len(cphones)):
 
