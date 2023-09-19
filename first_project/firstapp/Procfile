@@ -1,1 +1,1 @@
-web: gunicorn 'first_project.wsgi'
+web: gunicorn 'first_project.wsgi' --timeout 720
