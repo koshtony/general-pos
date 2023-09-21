@@ -1,1 +1,1 @@
-gunicorn first_project.wsgi --timeout 720
+gunicorn first_project.wsgi:application -k gthread -w 3 --threads 2
