@@ -1,1 +1,0 @@
-gunicorn first_project.wsgi:application -k gthread -w 3 --threads 2
