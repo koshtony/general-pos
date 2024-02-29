@@ -1,0 +1,111 @@
+<div class="container">
+
+    <div class="row row-cols row-cols-lg-2">
+        <div class="col">
+            <div class="row">
+            <div class="d-flex">
+                <div class="col-3">
+                    <input class="form-control" type="text" placeholder="scan">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" placeholder="search by name">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" placeholder="search by category">
+                </div>
+                <div class="col-3">
+                    <input class="form-control" type="text" placeholder="search by description">
+                </div>
+            </div>
+        </div>
+
+        <br>
+           
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th> category </th>
+                    <th> Description </th>
+                    <th>Price </th>
+                    <th> Status </th>
+                    <th> sell </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for stock in stocks %}
+                    <tr>
+                        <td>{{stock.p_name}}</td>
+                        <td>{{stock.p_category}}</td> 
+                        <td>{{stock.p_desc}}</td>
+                        <td>{{stock.p_price}}</td>
+                        {% if stock.p_qty > 5 %}
+                        <td><strong style="color:green">high</strong></td>
+                        {% else %}
+                        <td><strong style="color:red">high</strong></td>
+                        {% endif %}
+                       <td><a hx-get="{% url 'add-to-cart' stock.pk %}" hx-target="#sellResp" class="btn btn-primary">sell
+
+
+                       </a>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+
+            </table>
+        
+        </div>
+
+        <div class="col">
+            <h4>Cart Items </h4>
+            <div id="sellResp">
+                <div class="row" style="height:500px; overflow-y:scroll;">
+                    <table class="table">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Price</th>
+                              <th>Qty</th>
+                              <th>Total</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for cart in carts %}
+                          <tr>
+                              <td>{{cart.cart_stock.p_name}}</td>
+                              <td>{{cart.cart_stock.p_price}}</td>
+                              <td><input type="number" value="{{cart.qty}}" class="form-control" style="width:80px;"></td>
+                              <td>Ksh {{cart.cart_stock.p_price}}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                   <div class="row">
+                      <table>
+                          <tbody>
+                              <tr style="font-weight: bold; font-size: 16px;">
+                                  <td>Subtotal</td>
+                                  <td>Ksh {{sub_total}}</td>
+                              </tr>
+                              <tr style="font-weight: bold; font-size: 16px;">
+                                  <td>VAT(16%)</td>
+                                  <td>Ksh {{vat}}</td>
+                              </tr>
+                              <tr style="font-weight: bold; font-size: 16px;">
+                                  <td>Total</td>
+                                  <td>Ksh {{total}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+        </div>
+        </div>
+    </div> 
+
+</div>

@@ -55,6 +55,7 @@
 
 <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
  
 
 
@@ -173,6 +174,14 @@
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
              dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a hx-get="{% url 'simple-counter' %}" hx-target="#linkResp" class="nav-link">
+              <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
+              <p>
+                 simple counter
               </p>
             </a>
           </li>
@@ -429,7 +438,7 @@
 
       
         <!-- /.content-header -->
-         <section class="content">
+         <section class="content" id="linkResp">
         <!-- Main content -->
         {% block mainContent %}
         {% if messages %}

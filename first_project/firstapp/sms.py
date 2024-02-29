@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-print(os.getenv('sms_key'))
+
 
 def send_text(phone,msg):
     headers = {

@@ -1,0 +1,40 @@
+<div class="row" style="height:500px; overflow-y:scroll;">
+    <table class="table">
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for cart in carts %}
+          <tr>
+              <td>{{cart.cart_stock.p_name}}</td>
+              <td>{{cart.cart_stock.p_price}}</td>
+              <td><input type="number" value="{{cart.qty}}" class="form-control" style="width:80px;"></td>
+              <td>Ksh {{cart.cart_stock.p_price}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+   <div class="row">
+      <table>
+          <tbody>
+              <tr style="font-weight: bold; font-size: 16px;">
+                  <td>Subtotal</td>
+                  <td>Ksh {{total}}</td>
+              </tr>
+              <tr style="font-weight: bold; font-size: 16px;">
+                  <td>VAT(16%)</td>
+                  <td>Ksh {{vat}}</td>
+              </tr>
+              <tr style="font-weight: bold; font-size: 16px;">
+                  <td>Total</td>
+                  <td>Ksh {{total}}</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>

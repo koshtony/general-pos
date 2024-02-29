@@ -47,6 +47,13 @@ class Stocks(models.Model):
         except:
             return reverse('firstapp-stocks')
 
+class Cart(models.Model):
+    
+    cart_stock = models.ForeignKey(Stocks,null=True,on_delete=models.SET_NULL)
+    qty = models.FloatField(default=1.0,null=True)
+    
+    def __str__(self):
+        return self.cart_stock.p_name
 class Sales(models.Model):
     s_id = models.AutoField(primary_key=True)
     s_serial = models.CharField(max_length=100)

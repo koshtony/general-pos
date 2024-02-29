@@ -685,6 +685,7 @@
             url:"",
             data:{
               name:$("#names").val(),
+
               phone:$("#phone_no").val(),
               amount:$("#pay").val(),
               csrfmiddlewaretoken:'{{ csrf_token }}'
@@ -703,6 +704,34 @@
 
           })
         }
+
+        function mpesaCompleteRem(){
+
+                $.ajax({
+
+                  type:"post",
+                  url:"",
+                  data:{
+                    name:"remainder",
+                    
+                    phone:$("#cusphone").val(),
+                    amount:$("#remainder").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}'
+                  },
+                  beforeSend: function(){
+                      $("#spinner-mpesa").show()
+                  },
+                  complete: function(){
+
+                    $("#spinner-mpesa").hide()
+                  },
+                  success: function(){
+
+
+                  }
+
+                })
+}
 
         // register debt
 
@@ -1175,7 +1204,7 @@ p{
                        
                       </div>
 
-              <button type="button"  onclick="mpesaCounter()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
+              <button type="button"  onclick="mpesaCompleteRem()" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mpesaModal"><i class="fa fa-mobile">mpesa</i></button>
                `
 
 

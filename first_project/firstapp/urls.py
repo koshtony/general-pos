@@ -11,7 +11,8 @@ from .views import StocksCreateView,\
                 StocksInbound, StocksTransfer,HandleLoc,ShowLoc,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
-                        cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter
+                        cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter,\
+                            simple_counter,add_to_cart
             
 urlpatterns = [
 
@@ -62,7 +63,14 @@ urlpatterns = [
                     path('conf_url',views.c_2_b_conf_url,name="conf-url"),
                     path('validate_url',views.c_2_b_val_url,name="validate-url"),
                     path('mpesa_sim',views.mpesa_sim,name="mpesa-sim"),
-                    path('mpesa_msg',views.postMpesaMessage,name="mpesa-msg")
+                    path('mpesa_msg',views.postMpesaMessage,name="mpesa-msg"),
+                    
+                    
+                    # simple counter 
+                    path("simple_counter/",views.simple_counter,name="simple-counter"),
+                    path("add_to_cart/<int:id>/",views.add_to_cart,name="add-to-cart")
+                    
+                    
 
 
 ]

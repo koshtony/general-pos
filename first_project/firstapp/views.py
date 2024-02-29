@@ -12,7 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
-from .models import Stocks,Shops,Sales,Expenses,Location,Tasks,Debts,Paid,Contacts,mpesaPay
+from .models import Stocks,Shops,Sales,Expenses,Location,\
+Tasks,Debts,Paid,Contacts,mpesaPay,Cart
 from posUsers.models import Profile
 from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b,get_token
@@ -70,6 +71,45 @@ def home(request):
         
     }
     return render(request,'firstapp/home.html',data)
+#===========simple counter =============
+@login_required
+def simple_counter(request):
+    
+    stocks = Stocks.objects.all()
+    
+    carts = Cart.objects.all()
+    
+    sub_total = sum([(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    
+    total = sub_total + vat
+    
+    contxt = {"stocks":stocks,"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    return render(request,'firstapp/simple_counter.html',contxt)
+
+@login_required 
+def add_to_cart(request,id):
+    
+    stock = Stocks.objects.get(pk=id)
+    
+    cart = Cart(
+        cart_stock = stock 
+    )
+    
+    cart.save()
+    
+    carts = Cart.objects.all()
+    
+    total = sum([(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat}
+    
+    
+    
+    return render(request,'firstapp/cart.html',contxt)
 
 #==============render counter page =================
 @login_required
