@@ -12,7 +12,8 @@ from .views import StocksCreateView,\
                 ShowTasks,SalesReturn,MpesaTrans,GenReceipt,DebtAdd,DebtView,DebtPay, financeSummary,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
                         cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter,\
-                            simple_counter,add_to_cart
+                            simple_counter,add_to_cart,del_cart_item,search_by_scan,search_by_name,search_by_category,\
+                                search_by_desc,print_cart_receipt,cart_to_sales,clear_cart
             
 urlpatterns = [
 
@@ -68,7 +69,17 @@ urlpatterns = [
                     
                     # simple counter 
                     path("simple_counter/",views.simple_counter,name="simple-counter"),
-                    path("add_to_cart/<int:id>/",views.add_to_cart,name="add-to-cart")
+                    path("add_to_cart/<int:id>/",views.add_to_cart,name="add-to-cart"),
+                    path('update_cart_qty/<int:id>/',views.update_cart_qty,name="update-cart-qty"),
+                    path('del_cart_item/<int:id>/',views.del_cart_item,name="del-cart-item"),
+                    path('search_by_scan',views.search_by_scan,name="search-by-scan"),
+                    path('search_by_name',views.search_by_name,name="search-by-name"),
+                    path('search_by_category',views.search_by_category,name="search-by-category"),
+                    path('search_by_desc',views.search_by_desc,name="search-by-desc"),
+                    path('print_cart_receipt',views.print_cart_receipt,name='print-cart-receipt'),
+                    path('cart_to_sales/',views.cart_to_sales,name="cart-to-sales"),
+                    path('clear_cart/',views.clear_cart,name="clear-cart"),
+                    
                     
                     
 

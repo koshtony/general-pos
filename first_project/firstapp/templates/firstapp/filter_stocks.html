@@ -1,0 +1,18 @@
+{% for stock in stocks %}
+                    <tr>
+                        <td>{{stock.p_name}}</td>
+                        <td>{{stock.p_category}}</td> 
+                        <td>{{stock.p_desc}}</td>
+                        <td>{{stock.p_price}}</td>
+                        {% if stock.p_qty > 5 %}
+                        <td><strong style="color:green">high</strong></td>
+                        {% else %}
+                        <td><strong style="color:red">high</strong></td>
+                        {% endif %}
+                       <td><a hx-get="{% url 'add-to-cart' stock.pk %}" hx-target="#sellResp" class="btn btn-primary">sell
+
+
+                       </a>
+                    </tr>
+
+                    {% endfor %}

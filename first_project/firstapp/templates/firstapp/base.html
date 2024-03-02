@@ -56,7 +56,20 @@
 <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
- 
+<style>
+
+  .htmx-indicator{
+    opacity:100;
+    transition: opacity 500ms ease-in;
+}
+.htmx-request .htmx-indicator{
+    opacity:1
+}
+.htmx-request.htmx-indicator{
+    opacity:1
+}
+
+</style>
 
 
 <body class="hold-transition sidebar-mini layout-fixed" style="zoom:75%">
@@ -178,13 +191,18 @@
             </a>
           </li>
           <li class="nav-item">
-            <a hx-get="{% url 'simple-counter' %}" hx-target="#linkResp" class="nav-link">
+            <a hx-get="{% url 'simple-counter' %}" hx-target="#linkResp" hx-indicator="#counterSpin" hx-replace-url="true" class="nav-link">
               <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
+              
               <p>
                  simple counter
+
               </p>
+              <i class="fa fa-spinner htmx-indicator" id="counterSpin" ></i>
             </a>
+            
           </li>
+          <!--
           <li class="nav-item">
             <a href="{% url 'firstapp-counter' %}" class="nav-link">
               <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
@@ -193,6 +211,7 @@
               </p>
             </a>
           </li>
+        -->
           <li class="nav-item">
             <a href="{% url 'firstapp-stocks' %}" class="nav-link">
               <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>

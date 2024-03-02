@@ -1,3 +1,4 @@
+
 <div class="row" style="height:500px; overflow-y:scroll;">
     <table class="table">
       <thead>
@@ -6,17 +7,23 @@
               <th>Price</th>
               <th>Qty</th>
               <th>Total</th>
+              <th>Remove </th>
           </tr>
       </thead>
       <tbody>
+        {% if carts|length <= 0 %}
+            <strong style="color:green">SUCCESS: Cleared sucessfully</strong>
+        {% else %}
         {% for cart in carts %}
           <tr>
               <td>{{cart.cart_stock.p_name}}</td>
               <td>{{cart.cart_stock.p_price}}</td>
-              <td><input type="number" value="{{cart.qty}}" class="form-control" style="width:80px;"></td>
-              <td>Ksh {{cart.cart_stock.p_price}}</td>
+              <td><input type="number" value="{{cart.qty}}" hx-post="{% url 'update-cart-qty' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemQty" class="form-control" style="width:80px;"></td>
+              <td>Ksh {{cart.price}}</td>
+              <td> <a class="btn btn-danger" hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp"><i class="fa fa-trash"></i></a></td>
           </tr>
         {% endfor %}
+        {% endif %}
       </tbody>
     </table>
   </div>
@@ -25,7 +32,7 @@
           <tbody>
               <tr style="font-weight: bold; font-size: 16px;">
                   <td>Subtotal</td>
-                  <td>Ksh {{total}}</td>
+                  <td>Ksh {{sub_total}}</td>
               </tr>
               <tr style="font-weight: bold; font-size: 16px;">
                   <td>VAT(16%)</td>

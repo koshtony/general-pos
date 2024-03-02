@@ -1,3 +1,17 @@
+{% load crispy_forms_filters %}
+<style>
+
+    .htmx-indicator{
+        opacity:0;
+        transition: opacity 500ms ease-in;
+    }
+    .htmx-request .htmx-indicator{
+        opacity:1
+    }
+    .htmx-request.htmx-indicator{
+        opacity:1
+    }
+</style>
 <div class="container">
 
     <div class="row row-cols row-cols-lg-2">
@@ -5,24 +19,24 @@
             <div class="row">
             <div class="d-flex">
                 <div class="col-3">
-                    <input class="form-control" type="text" placeholder="scan">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-scan' %}" hx-target="#filterResp" hx-trigger="change" name="serial" placeholder="scan" >
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" placeholder="search by name">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-name' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="name" placeholder="search by name">
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" placeholder="search by category">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-category' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="category" placeholder="search by category">
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" placeholder="search by description">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-desc' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="desc"  placeholder="search by description">
                 </div>
             </div>
         </div>
 
         <br>
            
-        
-            <table class="table">
+        <div style="height:800px; overflow-y:scroll">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                     <th>Name</th>
@@ -34,7 +48,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="filterResp">
                     {% for stock in stocks %}
                     <tr>
                         <td>{{stock.p_name}}</td>
@@ -58,13 +72,45 @@
 
 
             </table>
+        </div>
         
         </div>
 
         <div class="col">
             <h4>Cart Items </h4>
-            <div id="sellResp">
-                <div class="row" style="height:500px; overflow-y:scroll;">
+            <div id="dispResp">
+            </div>
+            <div class="row">
+
+                
+                <div class="col-sm-3">
+                <a class="btn btn-light" hx-get="{% url 'print-cart-receipt' %}" hx-target="#receiptResp">
+                <i class="fa fa-print"></i>Receipt
+                </a>
+                <div id="receiptResp" style="display:none">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <a class="btn btn-light" hx-get="{% url 'cart-to-sales' %}" hx-target="#sellResp" hx-indicator='#checkoutSpin'>
+                <i class="fa fa-check"></i>checkout 
+                </a>
+                <div class="spinner-border htmx-indicator" id="checkoutSpin" role="status">
+                    <span class="sr-only">adding..</span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <a class="btn btn-light" hx-get="{% url 'clear-cart' %}" hx-target="#sellResp" hx-indicator='#clearSpin'>
+                <i class="fa fa-trash"></i>clear
+                </a>
+                <div class="spinner-border htmx-indicator" id="clearSpin" role="status">
+                    <span class="sr-only">del..</span>
+                </div>
+            </div>
+            </div>
+            <br>
+
+            <div class="col" id="sellResp">
+                <div class="row" style="height:500px; overflow-y:scroll;" id="nosalesRep">
                     <table class="table">
                       <thead>
                           <tr>
@@ -72,6 +118,7 @@
                               <th>Price</th>
                               <th>Qty</th>
                               <th>Total</th>
+                              <th>Remove </th>
                           </tr>
                       </thead>
                       <tbody>
@@ -79,8 +126,9 @@
                           <tr>
                               <td>{{cart.cart_stock.p_name}}</td>
                               <td>{{cart.cart_stock.p_price}}</td>
-                              <td><input type="number" value="{{cart.qty}}" class="form-control" style="width:80px;"></td>
-                              <td>Ksh {{cart.cart_stock.p_price}}</td>
+                              <td><input type="number" value="{{cart.qty}}" hx-post="{% url 'update-cart-qty' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemQty" class="form-control" style="width:80px;"></td>
+                              <td>Ksh {{cart.price}}</td>
+                              <td> <a class="btn btn-danger" hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp"><i class="fa fa-trash"></i></a></td>
                           </tr>
                         {% endfor %}
                       </tbody>

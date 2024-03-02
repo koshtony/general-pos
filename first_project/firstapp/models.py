@@ -51,6 +51,7 @@ class Cart(models.Model):
     
     cart_stock = models.ForeignKey(Stocks,null=True,on_delete=models.SET_NULL)
     qty = models.FloatField(default=1.0,null=True)
+    price = models.FloatField(default=200.0,null=True)
     
     def __str__(self):
         return self.cart_stock.p_name
@@ -66,7 +67,7 @@ class Sales(models.Model):
     s_profit = models.FloatField()
     s_type = models.CharField(max_length=100,default="cash")
     s_status = models.CharField(max_length=100,default="sold")
-    s_shop = models.ForeignKey(Shops,on_delete=models.PROTECT)
+    s_shop = models.ForeignKey(Shops,on_delete=models.PROTECT,null=True)
     s_created = models.DateTimeField(default= timezone.now)
     s_creator = models.ForeignKey(User,on_delete=models.PROTECT)
     

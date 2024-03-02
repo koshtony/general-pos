@@ -77,7 +77,7 @@ def simple_counter(request):
     
     stocks = Stocks.objects.all()
     
-    carts = Cart.objects.all()
+    carts = Cart.objects.all().order_by('-pk')
     
     sub_total = sum([(cart.cart_stock.p_price * cart.qty) for cart in carts])
     vat = sum([cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
@@ -94,23 +94,202 @@ def add_to_cart(request,id):
     stock = Stocks.objects.get(pk=id)
     
     cart = Cart(
-        cart_stock = stock 
+        cart_stock = stock ,
+        price = stock.p_price
     )
     
     cart.save()
     
-    carts = Cart.objects.all()
+    carts = Cart.objects.all().order_by('-pk')
     
-    total = sum([(cart.cart_stock.p_price * cart.qty) for cart in carts])
-    vat = sum([cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
      
     
-    contxt = {"carts":carts,"total":total,"vat":vat}
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
     
     
     
     return render(request,'firstapp/cart.html',contxt)
+@csrf_exempt
+def update_cart_qty(request,id):
+    
+    new_qty = float(request.POST.get("itemQty"))
+    
+    cart = Cart.objects.get(pk=id)
+    cart.qty = new_qty
+    cart.price = new_qty * cart.price
+    cart.save()
+    
+    carts = Cart.objects.all().order_by('-pk')
+    
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    return render(request,'firstapp/cart.html',contxt)
 
+def del_cart_item(request,id):
+    
+    cart = Cart.objects.get(pk=id)
+    cart.delete()
+    
+    carts = Cart.objects.all().order_by('-pk')
+    
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    return render(request,'firstapp/cart.html',contxt)
+
+# search items by scanning 
+@csrf_exempt
+def search_by_scan(request):
+    
+    serial = request.POST.get("serial")
+    stocks = Stocks.objects.filter(p_serial = serial)
+    
+    contxt = {"stocks":stocks}
+    
+    return render(request,'firstapp/filter_stocks.html',contxt)
+    
+
+@csrf_exempt
+def search_by_name(request):
+    
+    name = request.POST.get("name")
+    stocks = Stocks.objects.filter(p_name__contains = name)
+    
+    contxt = {"stocks":stocks}
+    
+    return render(request,'firstapp/filter_stocks.html',contxt)
+    
+@csrf_exempt
+def search_by_category(request):
+    
+    category = request.POST.get("category")
+    stocks = Stocks.objects.filter(p_category__contains = category)
+    
+    contxt = {"stocks":stocks}
+    
+    return render(request,'firstapp/filter_stocks.html',contxt)
+
+@csrf_exempt
+def search_by_desc(request):
+    
+    desc = request.POST.get("desc")
+    stocks = Stocks.objects.filter(p_desc__contains = desc)
+    
+    contxt = {"stocks":stocks}
+    
+    return render(request,'firstapp/filter_stocks.html',contxt)
+
+def print_cart_receipt(request):
+    
+    carts = Cart.objects.all().order_by('-pk')
+    
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    
+    
+    return render(request,'firstapp/simple_receipt.html',contxt)
+
+def cart_to_sales(request):
+    
+    carts = Cart.objects.all()
+    msg = ''
+    if len(carts)>0:
+       
+            
+        try:
+            for cart in carts:
+                sale = Sales(
+                    s_serial = cart.cart_stock.p_serial,
+                    s_name = cart.cart_stock.p_name,
+                    s_shop = cart.cart_stock.p_shop,
+                    s_qty = cart.qty,
+                    s_price = cart.price,
+                    s_cost = cart.cart_stock.p_cost * cart.qty,
+                    s_negatives = 0,
+                    s_profit = cart.price - cart.cart_stock.p_cost * cart.qty,
+                    s_type = "cash",
+                    s_status = "sold",
+                    
+                    s_creator = request.user
+                    
+                    
+                    
+                )
+                sale.save()
+                stock = cart.cart_stock
+                stock.p_qty = stock.p_qty-cart.qty
+                stock.save()
+                cart.delete()
+                
+            msg += '<strong style="color:green">SUCCESS: Sale saved successfully </strong>'
+                
+        except Exception as err:
+                
+                msg += f'<strong style="color:red">SERVER ERR: {err}</strong>'
+        
+                
+                
+            
+        pass
+    else:
+        msg+='<strong style="color:green">FAILED: cart is empty</strong>'
+    
+    return HttpResponse(msg)
+
+def clear_cart(request):
+    msg = ''
+    try:
+        Cart.objects.all().delete()
+        
+        msg+='<strong style="color:orange">SUCCESS: cart deleted successfully</strong>'
+        
+    except Exception as err:
+        
+        msg += f'<strong style="color:green">FAILED: {err}</strong>'
+        
+    carts = Cart.objects.all().order_by('-pk')
+    
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    return render(request,'firstapp/cart.html',contxt)
+    
+    
+    
+    
+        
+        
+        
+        
+        
+        
+        
 #==============render counter page =================
 @login_required
 def counter(request):
