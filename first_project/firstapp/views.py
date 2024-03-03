@@ -18,6 +18,7 @@ from posUsers.models import Profile
 from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b,get_token
 from .summary import sales_summ,stocks_summ,time_sales_summ,sales_summary,exp_summary,today_summary,monthly_comp
+from .data_transfer import connect_sql
 from datetime import datetime,timedelta,date
 import requests
 import json
@@ -282,7 +283,29 @@ def clear_cart(request):
     
     
     
+def transfer_data(request):
     
+    df = connect_sql()
+    
+    for idx in df.index:
+        
+        stock = Stocks(
+            p_name = df["name"][idx],
+            p_category = df["category"][idx],
+            p_desc = df["desc"][idx],
+            p_qty = df["qty"][idx],
+            p_price = df["price"][idx],
+            p_cost = df["cost"][idx],
+            p_vat = df["tax"][idx],
+            p_shop = Shops.objects.get(shop_name = 'Touch & Light'),
+            p_creator = request.user,
+        
+            
+            
+        )
+        stock.save()
+    
+    return HttpResponse("done")  
         
         
         

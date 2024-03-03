@@ -13,7 +13,7 @@ from .views import StocksCreateView,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
                         cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter,\
                             simple_counter,add_to_cart,del_cart_item,search_by_scan,search_by_name,search_by_category,\
-                                search_by_desc,print_cart_receipt,cart_to_sales,clear_cart
+                                search_by_desc,print_cart_receipt,cart_to_sales,clear_cart,transfer_data
             
 urlpatterns = [
 
@@ -79,6 +79,7 @@ urlpatterns = [
                     path('print_cart_receipt',views.print_cart_receipt,name='print-cart-receipt'),
                     path('cart_to_sales/',views.cart_to_sales,name="cart-to-sales"),
                     path('clear_cart/',views.clear_cart,name="clear-cart"),
+                    path('transfer_data/',views.transfer_data,name="transfer-data"),
                     
                     
                     
