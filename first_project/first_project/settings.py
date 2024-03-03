@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^8ykmy*#mg$kd1v61eg4t1_**ov^-cl82z@!8qn=fkl3*v)mmc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -34,8 +34,7 @@ ALLOWED_HOSTS = ['.vercel.app','localhost']
 INSTALLED_APPS = [
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
-    'offline_pos.apps.OfflinePosConfig',
-    'marketing.apps.MarketingConfig',
+    
     'crispy_forms',
     'admin_interface', 
     'colorfield', 
