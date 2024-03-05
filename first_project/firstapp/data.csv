@@ -1,270 +1,284 @@
-,id,serial,name,category,desc,qty,cost,price,tax,image
-0,1,001,phillips bulb,bulbs,100 watts,8.0,80.0,120.0,0.16,
-1,2,002,Thread tapes,tapes,s,13.0,0.0,30.0,0.16,
-2,3,003,converter bulb holders,bulb holders,s,30.0,0.0,100.0,0.16,
-3,4,004,KMBG main switch 60/80 amps,switch,t,1.0,0.0,500.0,0.16,
-4,5,005,LED torch,torch,t,100.0,0.0,1000.0,0.16,
-5,6,006,Round covers (big black),covers,t,5.0,0.0,50.0,0.16,
-6,7,007,25mm2 normal bend,couplers,t,10.0,0.0,30.0,0.16,
-7,8,008,20mm2 couplers,couplers,t,1.0,0.0,5.0,0.16,
-8,9,008,32mm2 couplers,couplers,t,2.0,0.0,15.0,0.16,
-9,10,008,32mm2 normal bend,couplers,t,5.0,0.0,50.0,0.16,
-10,11,010,25mm2 couplers,couplers,t,2.0,0.0,10.0,0.16,
-11,12,0011,single box,box,s,1.0,0.0,30.0,0.16,
-12,13,0011,single box,box,s,1.0,0.0,30.0,0.16,
-13,14,0012,Twin box,box,s,1.0,0.0,50.0,0.16,
-14,15,0013,universal single (LNB),Universal,s,1.0,0.0,2000.0,0.16,
-15,16,0014,600 *600m panels,panels,s,197.0,0.0,1500.0,0.16,
-16,17,0014,600 *600m panels,panels,s,2.0,0.0,1500.0,0.16,
-17,18,0014,9*9 toilet fan,fan,t,8.0,0.0,6000.0,0.16,
-18,19,0015,10.0mm2 flex cable 4core,cables,t,51.0,0.0,1470.0,0.16,
-19,20,0016,6.0mm2 flex cable 3core,cables,t,61.0,0.0,630.0,0.16,
-20,21,0017,2.5mm2 flex cable 3core,cables,t,51.0,0.0,370.0,0.16,
-21,22,0017,2.5mm2 flex cable 3core,cables,t,51.0,0.0,370.0,0.16,
-22,23,0018,chandalier single (single black gold in),holder,t,2.0,0.0,500.0,0.16,
-23,24,0019,chandalier single 5holder(black)Fibre,holder,t,1.0,0.0,1500.0,0.16,
-24,25,0020,chandalier single 4holder(black)Fibre,holder,t,2.0,0.0,1300.0,0.16,
-25,26,0021,chandalier single 6holder(white)Fibre,holder,t,1.0,0.0,20000.0,0.16,
-26,27,0022,chandalier single 3holder(black)Fibre,holder,t,1.0,0.0,12000.0,0.16,
-27,28,0023,chandalier single 3holder(silver)Fibre,holder,t,1.0,0.0,14000.0,0.16,
-28,29,0023,chandalier single 3holder(white)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-29,30,0023,chandalier single 5holder(white)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-30,31,0024,chandalier single (white)glass,holder,t,2.0,0.0,10000.0,0.16,
-31,32,0025,chandalier 5holder (Dark brown)glass,holder,t,2.0,0.0,15000.0,0.16,
-32,33,0026,chandalier single plain (Red)metal,holder,t,10.0,0.0,3000.0,0.16,
-33,34,0027,chandalier 3 holder (white)glass,holder,t,1.0,0.0,120000.0,0.16,
-34,35,0027,flower Led wallbracecket,led,t,1.0,0.0,3000.0,0.16,
-35,36,0028,50mm2 couplers,couplers,t,50.0,0.0,70.0,0.16,
-36,37,0027,chandalier 3 holder (white)glass,holder,t,1.0,0.0,12000.0,0.16,
-37,38,0019,chandalier single 5holder(black)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-38,39,0019,chandalier single 5holder(black)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-39,40,0019,chandalier single 5holder(black)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-40,41,0019,chandalier single 5holder(black)Fibre,holder,t,1.0,0.0,15000.0,0.16,
-41,42,0020,chandalier single 4holder(black)Fibre,holder,t,2.0,0.0,13000.0,0.16,
-42,43,0030,calling rose big blue ,padlock,r,1.0,0.0,300.0,0.16,
-43,44,0031,mindy big padlock ,padlock,r,3.0,0.0,1000.0,0.16,
-44,45,0031,stetar padlock ,padlock,r,1.0,0.0,500.0,0.16,
-45,46,0034,kinbarar padlock alam,padlock,r,2.0,0.0,1500.0,0.16,
-46,47,0036,rolison padlock ,padlock,r,3.0,0.0,800.0,0.16,
-47,48,0036,auto padlock big,padlock,r,3.0,0.0,600.0,0.16,
-48,49,0036,auto padlock small,padlock,r,3.0,0.0,300.0,0.16,
-49,50,0036,mindy small padlock ,padlock,r,2.0,0.0,900.0,0.16,
-50,51,0037,kinbar padlock ,padlock,r,2.0,0.0,1200.0,0.16,
-51,52,0038,stelar smallest padlock ,padlock,r,2.0,0.0,400.0,0.16,
-52,53,0039,snoek light 5mfr complete ,padlock,r,2.0,0.0,1000.0,0.16,
-53,54,0040,eletrick kettle titer,kettle,r,1.0,0.0,2000.0,0.16,
-54,55,0041,eletrick kettle sathixa,kettle,r,2.0,0.0,2000.0,0.16,
-55,56,0043,mccb black 100amps,mccb,r,1.0,0.0,3000.0,0.16,
-56,57,0044,circullar 4way boxes,boxes,r,10.0,0.0,30.0,0.16,
-57,58,0045,25mm2 normal bends boxes,boxes,r,15.0,0.0,30.0,0.16,
-58,59,0046,32mm2 normal bends boxes,boxes,r,3.0,0.0,50.0,0.16,
-59,60,0047,32mm2 couplers,couplers,r,2.0,0.0,15.0,0.16,
-60,61,0048,25mm2 couplers,couplers,r,11.0,0.0,5.0,0.16,
-61,62,0049,4 pin chaser,chaser,r,1.0,0.0,500.0,0.16,
-62,63,0051,2pin bulb jc G4,bulb,r,5.0,0.0,400.0,0.16,
-63,64,0052,boss white bulb 400g,bulb,r,1.0,0.0,300.0,0.16,
-64,65,0052,conduct 50mm ,conduct,r,6.0,0.0,500.0,0.16,
-65,66,0053,conduct 32mm ,conduct,r,14.0,0.0,250.0,0.16,
-66,67,0054,conduct 25mm ,conduct,r,30.0,0.0,200.0,0.16,
-67,68,0055,conduct 20mm ,conduct,r,68.0,0.0,120.0,0.16,
-68,69,0056,flood light +sens vellmax 50wott ,vellmax,r,3.0,0.0,3500.0,0.16,
-69,70,0057,1.5 East African single cable (Red),cable,r,2.0,0.0,2000.0,0.16,
-70,71,0057,1.5 East African single cable (Red),cable,r,2.0,0.0,3000.0,0.16,
-71,72,0057,1.5 East African single cable (Red),cable,r,2.0,0.0,3000.0,0.16,
-72,73,0057,1.5 East African single cable (black),cable,r,8.0,0.0,2800.0,0.16,
-73,74,0057,1.5 East African single cable (green),cable,r,10.0,0.0,2880.0,0.16,
-74,75,0057,coast cable(red),cable,r,1.0,0.0,2800.0,0.16,
-75,76,0060,2.5 single cable(red),cable,r,5.0,0.0,4700.0,0.16,
-76,77,0060,2.5 single cable(black),cable,r,5.0,0.0,4700.0,0.16,
-77,78,0060,2.5 single cable(green),cable,r,4.0,0.0,4700.0,0.16,
-78,79,0060,4.0 single cable(green),cable,r,6.0,0.0,75500.0,0.16,
-79,80,0060,4.0 single cable(black),cable,r,4.0,0.0,7550.0,0.16,
-80,81,0060,4.0 single cable(red),cable,r,4.0,0.0,7550.0,0.16,
-81,82,0062,6.0 single cable(red),cable,r,7.0,0.0,11150.0,0.16,
-82,83,0062,6.0 single cable(black),cable,r,6.0,0.0,11150.0,0.16,
-83,84,00623,6.0 single cable(green),cable,r,6.0,0.0,11150.0,0.16,
-84,85,0065,Twin cable 1.5 monster,cable,r,2.0,0.0,5500.0,0.16,
-85,86,0065,Twin cable 1.5 finboy,cable,r,1.0,0.0,10000.0,0.16,
-86,87,0067,sneak light wormlight ,worm light,r,1.0,0.0,5000.0,0.16,
-87,88,0068,4way 2y consumer unit,consumer unity,r,1.0,0.0,1500.0,0.16,
-88,89,0068,5ways extension ASTRA,extension,r,1.0,0.0,800.0,0.16,
-89,90,0070,Fan remote,extension,r,1.0,0.0,1000.0,0.16,
-90,91,0071,Astel cable,cable,r,1.0,0.0,2500.0,0.16,
-91,92,0072,Phelistar cable,cable,r,1.0,0.0,1550.0,0.16,
-92,93,0073,Speaker cable,cable,r,1.0,0.0,1000.0,0.16,
-93,94,0079,H.D.M.I 1.5MTR,H.D.M.I,r,6.0,0.0,600.0,0.16,
-94,95,0079,H.D.M.I 3.0MTR,H.D.M.I,r,2.0,0.0,700.0,0.16,
-95,96,0079,H.D.M.I 1.5MTR,H.D.M.I,r,6.0,0.0,500.0,0.16,
-96,97,0079,H.D.M.I 1.5MTR,H.D.M.I,r,6.0,0.0,500.0,0.16,
-97,98,0079,H.D.M.I 1.5MTR,H.D.M.I,r,6.0,0.0,500.0,0.16,
-98,99,0081,Lamp stand big,Lamp stand,y,3.0,0.0,3000.0,0.16,
-99,100,0082,Lamp stand small,Lamp stand,y,2.0,0.0,1000.0,0.16,
-100,101,0083,Lamp stand without stand,Lamp stand,y,3.0,0.0,500.0,0.16,
-101,102,0083,Lamp cover small,Lamp cover,y,12.0,0.0,300.0,0.16,
-102,103,0083,Lamp cover big,Lamp cover,y,4.0,0.0,500.0,0.16,
-103,104,0083,extension without cable,extension,y,8.0,0.0,200.0,0.16,
-104,105,0084,Torch,torch,y,15.0,0.0,200.0,0.16,
-105,106,0088,spotlight,spotlight,y,15.0,0.0,300.0,0.16,
-106,107,0088,spotlight,spotlight,y,4.0,0.0,300.0,0.16,
-107,108,0088,spotlight,spotlight,y,4.0,0.0,300.0,0.16,
-108,109,0089,supper glue small,supper glue,y,9.0,0.0,30.0,0.16,
-109,110,000100,supper glue big,supper glue,y,5.0,0.0,50.0,0.16,
-110,111,000101,element lorenzetti,element lorenzetti,y,7.0,0.0,300.0,0.16,
-111,112,000101,element horizon,element horizon,y,7.0,0.0,300.0,0.16,
-112,113,000101,element lorenzetti round,element lorenzetti round,y,1.0,0.0,1500.0,0.16,
-113,114,000101,element Fame 4T,element Fame,y,1.0,0.0,1000.0,0.16,
-114,115,000101,element Fame 3T,element Fame,y,3.0,0.0,1000.0,0.16,
-115,116,000101,element ener shower 3T,element shower,y,5.0,0.0,1000.0,0.16,
-116,117,000101,element ener shower 4T,element shower,y,2.0,0.0,1000.0,0.16,
-117,118,000107,Twin Banking cover,Banking cover,y,29.0,0.0,50.0,0.16,
-118,119,000107,ball fitting complete,ball fitting,y,2.0,0.0,1000.0,0.16,
-119,120,000107,ball fitting without baze,ball fitting,y,1.0,0.0,500.0,0.16,
-120,121,000107,Celling rose big head,celling,y,1.0,0.0,300.0,0.16,
-121,122,000107,spotlight white,spotlight,y,12.0,0.0,1000.0,0.16,
-122,123,000107,spotlight black,spotlight,y,21.0,0.0,1000.0,0.16,
-123,124,000107,Internet cable,spotlight,y,21.0,0.0,600.0,0.16,
-124,125,000120,sing deep patress box,patress box,y,61.0,0.0,30.0,0.16,
-125,126,000120,twin deep patress box,patress box,y,29.0,0.0,50.0,0.16,
-126,127,000125,Wallbrackets small complete,Wallbrackets,y,17.0,0.0,2500.0,0.16,
-127,128,000125,Wallbrackets big glass,Wallbrackets,y,5.0,0.0,1000.0,0.16,
-128,129,000125,Wallbrackets big complete,Wallbrackets,y,5.0,0.0,3500.0,0.16,
-129,130,00012,Wallbrackets vell max,Wallbrackets,y,2.0,0.0,1000.0,0.16,
-130,131,00012,Wallbrackets glass,Wallbrackets,y,2.0,0.0,2500.0,0.16,
-131,132,000127,Wallbrackets 2 in 1 LED,Wallbrackets,y,5.0,0.0,3000.0,0.16,
-132,133,000127,32mm2 bends,normal bendes,y,36.0,0.0,50.0,0.16,
-133,134,000127,2omm normal bends,normal bendes,y,8.0,0.0,30.0,0.16,
-134,135,000129,charger head small,charger,y,3.0,0.0,300.0,0.16,
-135,136,000129,charger head big,charger,y,3.0,0.0,400.0,0.16,
-136,137,000170,BT Speaker,BT Speaker,y,3.0,0.0,1000.0,0.16,
-137,138,000170,charger cable,charger cable,y,11.0,0.0,200.0,0.16,
-138,139,000170,Flourecent starters,Flourecent starters,y,11.0,0.0,50.0,0.16,
-139,140,000175,VGA cable, cable,y,1.0,0.0,3000.0,0.16,
-140,141,000177,5*30mm2  cable ties, cable ties,y,2.0,0.0,300.0,0.16,
-141,142,000179,RCA cable 3 pin, cable ties,y,40.0,0.0,100.0,0.16,
-142,143,000179,RCA cable 3 pin and jackpin, cable ties,y,38.0,0.0,100.0,0.16,
-143,144,000179,itel travel charger,travel charger,y,1.0,0.0,300.0,0.16,
-144,145,000179,UK travel charger,travel charger,y,1.0,0.0,300.0,0.16,
-145,146,000179,Bt travel charger,travel charger,y,1.0,0.0,400.0,0.16,
-146,147,000179,Fast travel charger,travel charger,y,1.0,0.0,500.0,0.16,
-147,148,000179,Car charger excellent,travel charger,y,1.0,0.0,400.0,0.16,
-148,149,000200,fixed set allan key,allan key,y,1.0,0.0,1000.0,0.16,
-149,150,000200,wireless earphone hifi,earphone,y,1.0,0.0,1000.0,0.16,
-150,151,000200,wireless earphone 2 in 1 sport,earphone,y,3.0,0.0,700.0,0.16,
-151,152,000200,wireless stereo earphone,earphone,y,1.0,0.0,700.0,0.16,
-152,153,000200,normal earphone,earphone,y,8.0,0.0,200.0,0.16,
-153,154,000200,Hacksaw blue(eclipse),Hacksaw blades,y,35.0,0.0,100.0,0.16,
-154,155,000200,Hacksaw red(sand flex),Hacksaw blades,y,13.0,0.0,150.0,0.16,
-155,156,000203,emptop pliers, pliers,y,5.0,0.0,700.0,0.16,
-156,157,000203,jetech pliers 8mm, pliers,y,2.0,0.0,1000.0,0.16,
-157,158,000203,smithmo pliers, pliers,y,2.0,0.0,350.0,0.16,
-158,159,000203,long nose, pliers,y,2.0,0.0,350.0,0.16,
-159,160,000203,side cutter, pliers,y,3.0,0.0,350.0,0.16,
-160,161,000203,prunning shears, pliers,y,3.0,0.0,1200.0,0.16,
-161,162,000203,25mm2 circular boxes (4ways),boxes,y,71.0,0.0,50.0,0.16,
-162,163,000203,25mm2 saddle clips (metal),clips metal,y,100.0,0.0,15.0,0.16,
-163,164,000203,20mm2 saddle clips (metal),clips metal,y,100.0,0.0,10.0,0.16,
-164,165,000203,32mm2 saddle clips (metal),clips metal,y,120.0,0.0,20.0,0.16,
-165,166,000203,tester (small),tester,y,18.0,0.0,50.0,0.16,
-166,167,000203,fridge bulb,bulb,y,9.0,0.0,200.0,0.16,
-167,168,000250,photocell zodion,photocell,y,3.0,0.0,1500.0,0.16,
-168,169,000250,photocell linier,photocell,y,1.0,0.0,1500.0,0.16,
-169,170,000250,motion senser linier,motion senser,y,1.0,0.0,1500.0,0.16,
-170,171,000250,motion senser betric,motion senser,y,1.0,0.0,1500.0,0.16,
-171,172,000250,motion senser bently,motion senser,y,1.0,0.0,1500.0,0.16,
-172,173,000261,single blanking gold,single blanking,y,9.0,0.0,700.0,0.16,
-173,174,000261,Twin socket Gold,socket,y,4.0,0.0,1200.0,0.16,
-174,175,000261,4g 2way switch Gold,switch,y,5.0,0.0,1000.0,0.16,
-175,176,000261,2g 2way switch Gold,switch,y,5.0,0.0,800.0,0.16,
-176,177,000267,1g 2way switch Gold,switch,y,2.0,0.0,700.0,0.16,
-177,178,000267,TV outlet,TV outlet,y,3.0,0.0,1200.0,0.16,
-178,179,000267,TV outlet wooden,TV outlet,y,2.0,0.0,1200.0,0.16,
-179,180,000267,bell push Gold,bell push,y,1.0,0.0,1200.0,0.16,
-180,181,00271,single banking linier,single banking,y,1.0,0.0,500.0,0.16,
-181,182,00278,2g 2way switch wooden,switch,y,2.0,0.0,800.0,0.16,
-182,183,00278,dimmer switch wooden vip,switch,y,2.0,0.0,1200.0,0.16,
-183,184,00278,float switch ,switch,y,1.0,0.0,1000.0,0.16,
-184,185,00278,iron element,element,y,1.0,0.0,600.0,0.16,
-185,186,00278,head phones shuer,head phones,y,2.0,0.0,1000.0,0.16,
-186,187,00278,head phones P47,head phones,y,1.0,0.0,1000.0,0.16,
-187,188,00278,Motion seanser (Square VIP),Motion seanser ,y,1.0,0.0,1500.0,0.16,
-188,189,00278,mirror lights,lights,y,5.0,0.0,1500.0,0.16,
-189,190,004,mouse extender,mouse extender,t,2.0,0.0,400.0,0.16,
-190,191,004,screw driver 7in1 rachet,screw driver,t,1.0,0.0,2000.0,0.16,
-191,192,004,mem reader,mem reader,t,19.0,0.0,100.0,0.16,
-192,193,004,screw driver terminator small green,screw driver,t,16.0,0.0,1000.0,0.16,
-193,194,004,screw driver stanley yellow/black flat ,screw driver,t,2.0,0.0,500.0,0.16,
-194,195,004,odinary driver ,screw driver,t,12.0,0.0,300.0,0.16,
-195,196,004,insulated driver ,screw driver,t,4.0,0.0,300.0,0.16,
-196,197,004,Rubber grip orange/black drivers,screw driver,t,3.0,0.0,100.0,0.16,
-197,198,004,Rubber grip yellow/black drivers,screw driver,t,1.0,0.0,100.0,0.16,
-198,199,004,AAA battery , battery ,t,40.0,0.0,50.0,0.16,
-199,200,004,AA battery , battery ,t,30.0,0.0,50.0,0.16,
-200,201,004,PVC gate valve 20mm2,pvc ,t,1.0,0.0,400.0,0.16,
-201,202,00202,pvc tee 11/4,pvc,t,7.0,0.0,100.0,0.16,
-202,203,00202,pvc 2 bend,pvc,t,1.0,0.0,100.0,0.16,
-203,204,00202,pvc 45 11/2 bend,pvc,t,1.0,0.0,50.0,0.16,
-204,205,00202,pvc  11/2 bend,pvc,t,1.0,0.0,50.0,0.16,
-205,206,00202,pvc  11/4 bend,pvc,t,1.0,0.0,40.0,0.16,
-206,207,00202,pvc 45 11/4 bend,pvc,t,1.0,0.0,50.0,0.16,
-207,208,00202,white plain socket 25mm,socket,t,1.0,0.0,50.0,0.16,
-208,209,00202,white plain elbow 25mm2,elbow,t,1.0,0.0,100.0,0.16,
-209,210,00202,non return 11/2 valve,elbow,t,1.0,0.0,1500.0,0.16,
-210,211,00202,wifi panorama,camera bulb,t,1.0,0.0,5000.0,0.16,
-211,212,00202,40amps ghisalba,contractors,t,1.0,0.0,3500.0,0.16,
-212,213,00202,25amps schneider,contractors,t,1.0,0.0,3000.0,0.16,
-213,214,00202,100*100*70 (plastic),adaptors boxes,t,19.0,0.0,350.0,0.16,
-214,215,00202,150*150*70 (plastic),adaptors boxes,t,1.0,0.0,500.0,0.16,
-215,216,00202,85*85*50 (plastic),adaptors boxes,t,2.0,0.0,250.0,0.16,
-216,217,00202,250ml Tangit glue,Tangit glue,t,18.0,0.0,500.0,0.16,
-217,218,00202,500ml Tangit glue,Tangit glue,t,4.0,0.0,750.0,0.16,
-218,219,00202,100ml Tangit glue,Tangit glue,t,4.0,0.0,250.0,0.16,
-219,220,00202,1l Tangit glue,Tangit glue,t,1.0,0.0,1500.0,0.16,
-220,221,00202,1l conta glue,Tangit glue,t,1.0,0.0,1200.0,0.16,
-221,222,00202,250ml metro,Tangit glue,t,2.0,0.0,350.0,0.16,
-222,223,00202,250ml magpow,Tangit glue,t,2.0,0.0,350.0,0.16,
-223,224,00202,250ml pac,Tangit glue,t,1.0,0.0,350.0,0.16,
-224,225,00202,3pin socket 16amps,Industrial socket,t,1.0,0.0,900.0,0.16,
-225,226,00202,4pin socket 32amps,Industrial socket,t,1.0,0.0,1000.0,0.16,
-226,227,00202,4pin socket 16amps,Industrial socket,t,1.0,0.0,1000.0,0.16,
-227,228,00202,3pin socket 16amps without head,Industrial socket,t,1.0,0.0,500.0,0.16,
-228,229,00202,80amps contractor powerstar,contractor,t,1.0,0.0,5000.0,0.16,
-229,230,00202,digital multi meter (big),meter,t,1.0,0.0,2000.0,0.16,
-230,231,00202,digital multi meter (small),meter,t,1.0,0.0,700.0,0.16,
-231,232,00202,green,staircase light,t,4.0,0.0,600.0,0.16,
-232,233,00202,blue,staircase light,t,2.0,0.0,600.0,0.16,
-233,234,00202,white,staircase light,t,1.0,0.0,600.0,0.16,
-234,235,00202,yellow,staircase light,t,1.0,0.0,600.0,0.16,
-235,236,00202,lockable tap 1/2,tap,t,1.0,0.0,500.0,0.16,
-236,237,00202,lockable tap 3/4,tap,t,1.0,0.0,650.0,0.16,
-237,238,00202,gate valve lirlee 3/4,tap,t,1.0,0.0,650.0,0.16,
-238,239,00202,gate valve lirlee 1/2,tap,t,1.0,0.0,450.0,0.16,
-239,240,00202,gate valve lirlee 1,tap,t,1.0,0.0,900.0,0.16,
-240,241,00202,pillar tap lirlee 1/2,tap,t,1.0,0.0,500.0,0.16,
-241,242,00202,wall tap lirlee 1/2 silver,tap,t,1.0,0.0,500.0,0.16,
-242,243,00202,taps pepler,tap,t,1.0,0.0,450.0,0.16,
-243,244,00202,popups,tap,t,5.0,0.0,350.0,0.16,
-244,245,00202,angle valves 1/2 to 3/4 lirlee,tap,t,1.0,0.0,350.0,0.16,
-245,246,00202,angle valves 1/2 to 1/2 lirlee,tap,t,1.0,0.0,350.0,0.16,
-246,247,00202,dispensar taps,tap,t,1.0,0.0,1800.0,0.16,
-247,248,00202,reducing socket 32 to 25mm2,tap,t,10.0,0.0,30.0,0.16,
-248,249,00202,non return 1,tap,t,1.0,0.0,1800.0,0.16,
-249,250,00202,non return 11/2,tap,t,0.0,0.0,2500.0,0.16,
-250,251,00202,reducing socket 32 to 20,tap,t,6.0,0.0,30.0,0.16,
-251,252,00202,ppr elbow 20mm2,ppr,t,4.0,0.0,20.0,0.16,
-252,253,00202,ppr elbow 25mm2,ppr,t,31.0,0.0,20.0,0.16,
-253,254,00202,ppr elbow 32mm2,ppr,t,0.0,0.0,30.0,0.16,
-254,255,00202,ppr elbow 40mm2,ppr,t,0.0,0.0,40.0,0.16,
-255,256,00202,ppr elbow 1,ppr,t,0.0,0.0,30.0,0.16,
-256,257,00202,ppr elbow 2,ppr,t,0.0,0.0,150.0,0.16,
-257,258,00202,ppr elbow 20mm2,ppr,t,3.0,0.0,20.0,0.16,
-258,259,00202,flexible 4,ppr,t,2.0,0.0,300.0,0.16,
-259,260,00202,inspector bend,ppr,t,7.0,0.0,300.0,0.16,
-260,261,00202,bottle trap 11/4 (viega),ppr,t,6.0,0.0,250.0,0.16,
-261,262,00202,bottle trap 11/2 (viega),ppr,t,2.0,0.0,250.0,0.16,
-262,263,00202,duel flashing kit 11/2 (KOMFI),ppr,t,2.0,0.0,850.0,0.16,
-263,264,00202,Flexible pipe 1/2*2ft (brazil),ppr,t,9.0,0.0,150.0,0.16,
-264,265,00202,Flexible bottle trap 11/2 (viega),ppr,t,2.0,0.0,200.0,0.16,
-265,266,00202,Flexible bottle trap 11/4 (viega),ppr,t,2.0,0.0,250.0,0.16,
-266,267,00202,Flexible pipe 11/2ft*1/2 (Brazil),ppr,t,10.0,0.0,200.0,0.16,
-267,268,00202,Flexible pipe 1ft *1/2 (Italy),ppr,t,8.0,0.0,100.0,0.16,
-268,269,00202,Flexible pipe 11/2ft *1/2 (Italy),ppr,t,10.0,0.0,100.0,0.16,
+name,category,desc,qty,price,cost,Status,shop name,Creator,Actions,Created,,
+phillips bulb,bulbs,100 watts,8,120,80,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Thread tapes,tapes,s,13,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+converter bulb holders,bulb holders,s,30,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+KMBG main switch 60/80 amps,switch,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+LED torch,torch,t,100,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Round covers (big black),covers,t,5,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+25mm2 normal bend,couplers,t,10,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+20mm2 couplers,couplers,t,1,5,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+32mm2 couplers,couplers,t,2,15,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+32mm2 normal bend,couplers,t,5,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+25mm2 couplers,couplers,t,2,10,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+single box,box,s,1,30,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+single box,box,s,1,30,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Twin box,box,s,1,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+universal single (LNB),Universal,s,1,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+600 *600m panels,panels,s,197,1500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+600 *600m panels,panels,s,2,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+9*9 toilet fan,fan,t,8,6000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+10.0mm2 flex cable 4core,cables,t,51,1470,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+6.0mm2 flex cable 3core,cables,t,61,630,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2.5mm2 flex cable 3core,cables,t,51,370,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2.5mm2 flex cable 3core,cables,t,51,370,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single (single black gold in),holder,t,2,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(black)Fibre,holder,t,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 4holder(black)Fibre,holder,t,2,1300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 6holder(white)Fibre,holder,t,1,20000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 3holder(black)Fibre,holder,t,1,12000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 3holder(silver)Fibre,holder,t,1,14000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 3holder(white)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(white)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single (white)glass,holder,t,2,10000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier 5holder (Dark brown)glass,holder,t,2,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single plain (Red)metal,holder,t,10,3000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier 3 holder (white)glass,holder,t,1,120000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+flower Led wallbracecket,led,t,1,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+50mm2 couplers,couplers,t,50,70,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier 3 holder (white)glass,holder,t,1,12000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(black)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(black)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(black)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 5holder(black)Fibre,holder,t,1,15000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+chandalier single 4holder(black)Fibre,holder,t,2,13000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+calling rose big blue,padlock,r,1,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+mindy big padlock,padlock,r,3,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+stetar padlock,padlock,r,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+kinbarar padlock alam,padlock,r,2,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+rolison padlock,padlock,r,3,800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+auto padlock big,padlock,r,3,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+auto padlock small,padlock,r,3,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+mindy small padlock,padlock,r,2,900,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+kinbar padlock,padlock,r,2,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+stelar smallest padlock,padlock,r,2,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+snoek light 5mfr complete,padlock,r,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+eletrick kettle titer,kettle,r,1,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+eletrick kettle sathixa,kettle,r,2,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+mccb black 100amps,mccb,r,1,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+circullar 4way boxes,boxes,r,10,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+25mm2 normal bends boxes,boxes,r,15,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+32mm2 normal bends boxes,boxes,r,3,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+32mm2 couplers,couplers,r,2,15,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+25mm2 couplers,couplers,r,11,5,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+4 pin chaser,chaser,r,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2pin bulb jc G4,bulb,r,5,400,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+boss white bulb 400g,bulb,r,1,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+conduct 50mm,conduct,r,6,500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+conduct 32mm,conduct,r,14,250,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+conduct 25mm,conduct,r,30,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+conduct 20mm,conduct,r,68,120,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+flood light +sens vellmax 50wott,vellmax,r,3,3500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+1.5 East African single cable (Red),cable,r,2,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+1.5 East African single cable (Red),cable,r,2,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+1.5 East African single cable (Red),cable,r,2,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+1.5 East African single cable (black),cable,r,8,2800,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+1.5 East African single cable (green),cable,r,10,2880,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+coast cable(red),cable,r,1,2800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2.5 single cable(red),cable,r,5,4700,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2.5 single cable(black),cable,r,5,4700,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+2.5 single cable(green),cable,r,4,4700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+4.0 single cable(green),cable,r,6,75500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+4.0 single cable(black),cable,r,4,7550,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+4.0 single cable(red),cable,r,4,7550,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+6.0 single cable(red),cable,r,7,11150,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+6.0 single cable(black),cable,r,6,11150,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+6.0 single cable(green),cable,r,6,11150,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Twin cable 1.5 monster,cable,r,2,5500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Twin cable 1.5 finboy,cable,r,1,10000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+sneak light wormlight,worm light,r,1,5000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+4way 2y consumer unit,consumer unity,r,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+5ways extension ASTRA,extension,r,1,800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Fan remote,extension,r,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Astel cable,cable,r,1,2500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Phelistar cable,cable,r,1,1550,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Speaker cable,cable,r,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+H.D.M.I 1.5MTR,H.D.M.I,r,6,600,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+H.D.M.I 3.0MTR,H.D.M.I,r,2,700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+H.D.M.I 1.5MTR,H.D.M.I,r,6,500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+H.D.M.I 1.5MTR,H.D.M.I,r,6,500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+H.D.M.I 1.5MTR,H.D.M.I,r,6,500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Lamp stand big,Lamp stand,y,3,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Lamp stand small,Lamp stand,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Lamp stand without stand,Lamp stand,y,3,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Lamp cover small,Lamp cover,y,12,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:08 a.m.
+Lamp cover big,Lamp cover,y,4,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+extension without cable,extension,y,8,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Torch,torch,y,15,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+spotlight,spotlight,y,15,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+spotlight,spotlight,y,4,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+spotlight,spotlight,y,4,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+supper glue small,supper glue,y,9,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+supper glue big,supper glue,y,5,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element lorenzetti,element lorenzetti,y,7,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element horizon,element horizon,y,7,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element lorenzetti round,element lorenzetti round,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element Fame 4T,element Fame,y,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element Fame 3T,element Fame,y,3,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element ener shower 3T,element shower,y,5,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+element ener shower 4T,element shower,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Twin Banking cover,Banking cover,y,29,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ball fitting complete,ball fitting,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ball fitting without baze,ball fitting,y,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Celling rose big head,celling,y,1,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+spotlight white,spotlight,y,12,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+spotlight black,spotlight,y,21,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Internet cable,spotlight,y,21,600,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+sing deep patress box,patress box,y,61,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+twin deep patress box,patress box,y,29,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets small complete,Wallbrackets,y,17,2500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets big glass,Wallbrackets,y,5,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets big complete,Wallbrackets,y,5,3500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets vell max,Wallbrackets,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets glass,Wallbrackets,y,2,2500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Wallbrackets 2 in 1 LED,Wallbrackets,y,5,3000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+32mm2 bends,normal bendes,y,36,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+2omm normal bends,normal bendes,y,8,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+charger head small,charger,y,3,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+charger head big,charger,y,3,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+BT Speaker,BT Speaker,y,3,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+charger cable,charger cable,y,11,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flourecent starters,Flourecent starters,y,11,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+VGA cable,cable,y,1,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+5*30mm2 cable ties,cable ties,y,2,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+RCA cable 3 pin,cable ties,y,40,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+RCA cable 3 pin and jackpin,cable ties,y,38,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+itel travel charger,travel charger,y,1,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+UK travel charger,travel charger,y,1,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Bt travel charger,travel charger,y,1,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Fast travel charger,travel charger,y,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Car charger excellent,travel charger,y,1,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+fixed set allan key,allan key,y,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+wireless earphone hifi,earphone,y,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+wireless earphone 2 in 1 sport,earphone,y,3,700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+wireless stereo earphone,earphone,y,1,700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+normal earphone,earphone,y,8,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Hacksaw blue(eclipse),Hacksaw blades,y,35,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Hacksaw red(sand flex),Hacksaw blades,y,13,150,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+emptop pliers,pliers,y,5,700,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+jetech pliers 8mm,pliers,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+smithmo pliers,pliers,y,2,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+long nose,pliers,y,2,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+side cutter,pliers,y,3,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+prunning shears,pliers,y,3,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+25mm2 circular boxes (4ways),boxes,y,71,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+25mm2 saddle clips (metal),clips metal,y,100,15,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+20mm2 saddle clips (metal),clips metal,y,100,10,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+32mm2 saddle clips (metal),clips metal,y,120,20,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+tester (small),tester,y,18,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+fridge bulb,bulb,y,9,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+photocell zodion,photocell,y,3,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+photocell linier,photocell,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+motion senser linier,motion senser,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+motion senser betric,motion senser,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+motion senser bently,motion senser,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+single blanking gold,single blanking,y,9,700,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Twin socket Gold,socket,y,4,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+4g 2way switch Gold,switch,y,5,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+2g 2way switch Gold,switch,y,5,800,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+1g 2way switch Gold,switch,y,2,700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+TV outlet,TV outlet,y,3,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+TV outlet wooden,TV outlet,y,2,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+bell push Gold,bell push,y,1,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+single banking linier,single banking,y,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+2g 2way switch wooden,switch,y,2,800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+dimmer switch wooden vip,switch,y,2,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+float switch,switch,y,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+iron element,element,y,1,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+head phones shuer,head phones,y,2,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+head phones P47,head phones,y,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Motion seanser (Square VIP),Motion seanser,y,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+mirror lights,lights,y,5,1500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+mouse extender,mouse extender,t,2,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+screw driver 7in1 rachet,screw driver,t,1,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+mem reader,mem reader,t,19,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+screw driver terminator small green,screw driver,t,16,1000,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+screw driver stanley yellow/black flat,screw driver,t,2,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+odinary driver,screw driver,t,12,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+insulated driver,screw driver,t,4,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Rubber grip orange/black drivers,screw driver,t,3,100,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Rubber grip yellow/black drivers,screw driver,t,1,100,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+AAA battery,battery,t,40,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+AA battery,battery,t,30,50,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+PVC gate valve 20mm2,pvc,t,1,400,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc tee 11/4,pvc,t,7,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc 2 bend,pvc,t,1,100,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc 45 11/2 bend,pvc,t,1,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc 11/2 bend,pvc,t,1,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc 11/4 bend,pvc,t,1,40,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pvc 45 11/4 bend,pvc,t,1,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+white plain socket 25mm,socket,t,1,50,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+white plain elbow 25mm2,elbow,t,1,100,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+non return 11/2 valve,elbow,t,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+wifi panorama,camera bulb,t,1,5000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+40amps ghisalba,contractors,t,1,3500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+25amps schneider,contractors,t,1,3000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+100*100*70 (plastic),adaptors boxes,t,19,350,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+150*150*70 (plastic),adaptors boxes,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+85*85*50 (plastic),adaptors boxes,t,2,250,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+250ml Tangit glue,Tangit glue,t,18,500,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+500ml Tangit glue,Tangit glue,t,4,750,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+100ml Tangit glue,Tangit glue,t,4,250,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+1l Tangit glue,Tangit glue,t,1,1500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+1l conta glue,Tangit glue,t,1,1200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+250ml metro,Tangit glue,t,2,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+250ml magpow,Tangit glue,t,2,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+250ml pac,Tangit glue,t,1,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+3pin socket 16amps,Industrial socket,t,1,900,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+4pin socket 32amps,Industrial socket,t,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+4pin socket 16amps,Industrial socket,t,1,1000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+3pin socket 16amps without head,Industrial socket,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+80amps contractor powerstar,contractor,t,1,5000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+digital multi meter (big),meter,t,1,2000,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+digital multi meter (small),meter,t,1,700,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+green,staircase light,t,4,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+blue,staircase light,t,2,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+white,staircase light,t,1,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+yellow,staircase light,t,1,600,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+lockable tap 1/2,tap,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+lockable tap 3/4,tap,t,1,650,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+gate valve lirlee 3/4,tap,t,1,650,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+gate valve lirlee 1/2,tap,t,1,450,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+gate valve lirlee 1,tap,t,1,900,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+pillar tap lirlee 1/2,tap,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+wall tap lirlee 1/2 silver,tap,t,1,500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+taps pepler,tap,t,1,450,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+popups,tap,t,5,350,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+angle valves 1/2 to 3/4 lirlee,tap,t,1,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+angle valves 1/2 to 1/2 lirlee,tap,t,1,350,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+dispensar taps,tap,t,1,1800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+reducing socket 32 to 25mm2,tap,t,10,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+non return 1,tap,t,1,1800,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+non return 11/2,tap,t,0,2500,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+reducing socket 32 to 20,tap,t,6,30,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 20mm2,ppr,t,4,20,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 25mm2,ppr,t,31,20,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 32mm2,ppr,t,0,30,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 40mm2,ppr,t,0,40,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 1,ppr,t,0,30,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 2,ppr,t,0,150,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+ppr elbow 20mm2,ppr,t,3,20,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+flexible 4,ppr,t,2,300,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+inspector bend,ppr,t,7,300,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+bottle trap 11/4 (viega),ppr,t,6,250,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+bottle trap 11/2 (viega),ppr,t,2,250,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+duel flashing kit 11/2 (KOMFI),ppr,t,2,850,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible pipe 1/2*2ft (brazil),ppr,t,9,150,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible bottle trap 11/2 (viega),ppr,t,2,200,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible bottle trap 11/4 (viega),ppr,t,2,250,0,low,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible pipe 11/2ft*1/2 (Brazil),ppr,t,10,200,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible pipe 1ft *1/2 (Italy),ppr,t,8,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Flexible pipe 11/2ft *1/2 (Italy),ppr,t,10,100,0,Active,Touch & Light,koshtech,Edit,3-Mar,2024, 8:09 a.m.
+Pipe 20mm,Pipe,20mm pvc conduits,40,110,75,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:19 a.m.
+6mm single cable red asl,Cable,6mm single cable red asl,11,11050,3000,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:21 a.m.
+6mm single black asl,Cable,6mm single black asl,11,11050,3000,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:23 a.m.
+4mm single green asl,Cable,4mm single green asl,12,7500,1000,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:25 a.m.
+2.5mm single red asl,Cable,2.5mm single red asl,4,4700,1500,low,Touch & Light,gitonga,Edit,4-Mar,2024, 11:27 a.m.
+2.5mm single black asl,Cable,2.5mm single black asl,8,4700,1500,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:29 a.m.
+2.5mm single green asl,Cable,2.5mm single green asl,5,4700,1500,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:32 a.m.
+1.5mm twin and earth per meter,Cable,1.5mm twin and earth,90,130,100,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:39 a.m.
+2.5mm twin and earth Finley per meter,Cable,2.5mm twin and earth per meter,90,220,150,Active,Touch & Light,gitonga,Edit,4-Mar,2024, 11:45 a.m.
+Astel aerial cable,Cable for aerial,Astel aerial cable,2,2500,1250,low,Touch & Light,gitonga,Edit,5-Mar,2024, 1:04 p.m.
+Straight holder big,Holder,Straight holder big,30,100,55,Active,Touch & Light,gitonga,Edit,5-Mar,2024, 1:07 p.m.
+Straight holder uk,Holder,Straight holder uk,10,50,29,Active,Touch & Light,gitonga,Edit,5-Mar,2024, 1:09 p.m.
+Hanging uk pendant,Pendant holder,Hanging uk pendant,20,50,20,Active,Touch & Light,gitonga,Edit,5-Mar,2024, 1:11 p.m.
+4t shower enerbras,Shower,4t shower enerbras,1,2500,1800,low,Touch & Light,gitonga,Edit,5-Mar,2024, 1:13 p.m.

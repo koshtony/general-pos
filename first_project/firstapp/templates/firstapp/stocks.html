@@ -162,7 +162,6 @@
     </datalist>
         <thead class="bg-light">
           <tr>
-            <th>Product Image</th>
             <th>Product name</th>
             <th>Category</th>
             <th>Description</th>
@@ -179,17 +178,7 @@
         <tbody id="stocks">
             {% for product in products %}
           <tr>
-            <td>
-              <div class="d-flex align-items-center">
-                <img
-                    src="{{product.p_image.url}}"
-                    alt=""
-                    style="width: 45px; height: 45px"
-                    class="rounded-circle"
-                    />
-                
-              </div>
-            </td>
+            
             <td>
               {{product.p_name}}
             </td>

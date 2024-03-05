@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.urls import reverse_lazy
 from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
 from django.db.models import Sum
@@ -12,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from .models import Stocks,Shops,Sales,Expenses,Location,\
 Tasks,Debts,Paid,Contacts,mpesaPay,Cart
 from posUsers.models import Profile
@@ -76,7 +78,12 @@ def home(request):
 @login_required
 def simple_counter(request):
     
-    stocks = Stocks.objects.all()
+    stocks = cache.get('stocks')
+    
+    if stocks is None:
+        
+        stocks = Stocks.objects.all()
+        cache.set("stocks",stocks)
     
     carts = Cart.objects.all().order_by('-pk')
     
@@ -119,9 +126,11 @@ def update_cart_qty(request,id):
     
     new_qty = float(request.POST.get("itemQty"))
     
+    print(new_qty)
+    
     cart = Cart.objects.get(pk=id)
     cart.qty = new_qty
-    cart.price = new_qty * cart.price
+    cart.price = new_qty * cart.cart_stock.p_price
     cart.save()
     
     carts = Cart.objects.all().order_by('-pk')
@@ -296,7 +305,7 @@ def transfer_data(request):
             p_qty = df["qty"][idx],
             p_price = df["price"][idx],
             p_cost = df["cost"][idx],
-            p_vat = df["tax"][idx],
+            p_vat = 0.16,
             p_shop = Shops.objects.get(shop_name = 'Touch & Light'),
             p_creator = request.user,
         
@@ -646,7 +655,15 @@ def getContact(request):
 @login_required
 def stocksView(request): 
     
-    products = Stocks.objects.all()        
+    products = cache.get('stocks')
+    
+    if products is None:
+        
+        products = Stocks.objects.all()
+        cache.set('stocks',products)
+        
+    
+            
     contxt = {
             'products':products,
     }
@@ -672,7 +689,7 @@ def stocksPostView(request):
 
 #=====view to handle stocks addittion=====
     
-class StocksCreateView(LoginRequiredMixin,CreateView):
+class StocksCreateView(SuccessMessageMixin,LoginRequiredMixin,CreateView):
     model = Stocks
     
     template_name = 'firstapp/add_stocks.html'
@@ -680,6 +697,10 @@ class StocksCreateView(LoginRequiredMixin,CreateView):
     fields = ['p_name','p_serial','p_category','p_desc',
               'p_image','p_qty','p_price','p_cost','p_vat','p_disc','p_shop','p_creator','p_created'
               ]
+    
+    success_message = "item added successfully"
+    
+    success_url = reverse_lazy('firstapp-addstocks')
     
     def form_valid(self,form):
         form.instance.p_creator = self.request.user
