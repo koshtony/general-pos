@@ -1,0 +1,46 @@
+<div style="margin:100px;">
+
+<button id="start-button"><h1>Start</h1></button>
+</div>
+<div id="interactive" class="viewport"></div>
+
+<script src="https://cdn.rawgit.com/serratus/quaggaJS/master/dist/quagga.min.js"></script>
+
+<script>
+
+  
+
+    Quagga.init({
+        inputStream: {
+            name: "live",
+            type: "LiveStream",
+            target: document.getElementById("interactive"),
+            constraints: {
+                facingMode: "environment",
+                width: 640,
+                height: 480
+            }
+        },
+        decoder: {
+            readers: ["code_128_reader"]
+        },
+        locate: true
+    }, function (err) {
+        if (err) { 
+            console.error(err);
+            return;
+        }
+        console.log("Initialization finished. Ready to start");
+        Quagga.start();
+    });
+
+    Quagga.onDetected(function(result) {
+        var code = result.codeResult.code;
+    
+        alert('Barcode detected and read! Value: ' + code);
+    });
+
+    document.getElementById('start-button').addEventListener('click', function() {
+        Quagga.start();
+    });
+</script>

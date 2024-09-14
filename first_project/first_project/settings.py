@@ -34,8 +34,11 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
+    'smart_centre.apps.SmartCentreConfig',
     
     'crispy_forms',
+    'crispy_bootstrap5',
+
     'admin_interface', 
     'colorfield', 
     'django.contrib.admin',
@@ -50,9 +53,11 @@ INSTALLED_APPS = [
 
 X_FRAME_OPTIONS='SAMEORIGIN'
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+   
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,7 +90,7 @@ WSGI_APPLICATION = 'first_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -104,6 +109,7 @@ DATABASES = {
        'PORT': '15166',
    }
 }
+'''
 
 
 
@@ -144,14 +150,14 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_NAME = "sessioninfos"
 
-#CORS_ORIGIN_WHITELIST = [ "http://localhost:5000" ]
+CORS_ORIGIN_WHITELIST = [ "http://localhost:5000" ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET","POST"]
 CORS_ALLOW_HEADERS = [ "accept", "accept-encoding", "authorization", "content-type", "dnt", "origin", "user-agent", "x-csrftoken", "x-requested-with" ]
 
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
+#CSRF_COOKIE_SECURE = True
+#CSRF_COOKIE_HTTPONLY = True
 
 CSRF_TRUSTED_ORIGINS = ['https://general-pos-production.up.railway.app','https://*.127.0.0.1']
 
@@ -164,13 +170,13 @@ STATIC_ROOT =  os.path.join(BASE_DIR,'firstapp/static')
 
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+#STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = 'firstapp-home'
 
