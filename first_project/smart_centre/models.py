@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from datetime import datetime
+import datetime
 
 
 # Create your models here.
@@ -45,7 +45,7 @@ class ProductName(models.Model):
     product_wholesale_price = models.FloatField(null=True)
     retail = models.BooleanField(default=True)
     launch = models.DateField(default=timezone.now)
-    eol_date = models.DateTimeField(default = datetime.now()+ datetime.timedelta(days=6*30) )
+    eol_date = models.DateTimeField(default = datetime.datetime.now()+ datetime.timedelta(days=6*30) )
     
     product_image = models.ImageField(default="product.jpg",upload_to="smart_products")
     
@@ -58,6 +58,13 @@ class ProductName(models.Model):
     
 class StocksList(models.Model):
     
-    device_id = models
+    device_id = models.AutoField(primary_key=True)
+    device_serial1 = models.CharField(max_length=100)
+    device_serial2 = models.CharField(max_length=100)
+    device_specs = models.ForeignKey(ProductName, related_name="product_specs",null=True,on_delete=models.SET_NULL)
+    device_stock_date = models.DateTimeField(default=timezone.now)
+    device_added_by = models.ForeignKey(User,on_delete=models.SET_NULL)
+    
+    
     
     
