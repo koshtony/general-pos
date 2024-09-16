@@ -22,6 +22,10 @@ class Specifications(models.Model):
     product_connectivity = models.TextField()
     product_colors = models.TextField()
     
+    class Meta:
+        
+        verbose_name_plural= "Product Specifications"
+    
     
     
     
@@ -31,6 +35,10 @@ class Brands(models.Model):
     brand_id = models.AutoField(primary_key=True)
     brand_name  = models.CharField(max_length=100)
     country = models.CharField(max_length=100,default="")
+    
+    class Meta:
+        
+        verbose_name_plural= "Brands"
     
 class Distributor(models.Model):
     
@@ -63,6 +71,10 @@ class ProductName(models.Model):
         
         return self.product_name + "\n"+self.products_specs
     
+    class Meta:
+        
+        verbose_name_plural= "Product List"
+    
 class StocksList(models.Model):
     
     device_id = models.AutoField(primary_key=True)
@@ -72,6 +84,11 @@ class StocksList(models.Model):
     device_stock_date = models.DateTimeField(default=timezone.now)
     device_added_by = models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
     device_stock_stage = models.CharField(max_length=100,default="Distributor",choices=(("Distributor","Distributor"),("Retailer","Retailer")))
+    
+    
+    class Meta:
+        
+        verbose_name_plural= "Device Stock"
     
     
 class DeviceSales(models.Model):
@@ -95,6 +112,11 @@ class DeviceSales(models.Model):
     customer_address = models.TextField()
     warranty = models.ImageField(default="warranty.jpg",upload_to="smart_products_warranty")
     warranty_expiry_date = models.DateTimeField(null=True)
+    
+    
+    class Meta:
+        
+        verbose_name_plural= "Device Sale"
     
     
     

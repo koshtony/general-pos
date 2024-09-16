@@ -19,6 +19,10 @@ class Shops(models.Model):
     def get_absolute_url(self):
         return reverse('firstapp-shops')
     
+    class Meta:
+        
+        verbose_name_plural= "Shops"
+    
 class Stocks(models.Model):
     p_id=models.AutoField(primary_key=True)
     p_gen = models.BigIntegerField(default=hash(timezone.now))
@@ -46,6 +50,10 @@ class Stocks(models.Model):
             return reverse('firstapp-addstocks',kwargs={'pk':self.pk})
         except:
             return reverse('firstapp-stocks')
+        
+    class Meta:
+        
+        verbose_name_plural= "Stocks"
 
 class Cart(models.Model):
     
@@ -73,6 +81,10 @@ class Sales(models.Model):
     
     def __str__(self):
         return self.s_name
+    
+    class Meta:
+        
+        verbose_name_plural= "Sales"
 
 class Paid(models.Model):
 
@@ -89,6 +101,9 @@ class Paid(models.Model):
 
         return self.product
     
+    class Meta:
+        verbose_name_plural= "Paid Products"
+    
 class mpesaPay(models.Model):
     trans_id = models.CharField(max_length=100,default="")
     name = models.CharField(max_length=100)
@@ -101,6 +116,10 @@ class mpesaPay(models.Model):
     def __str__(self):
 
         return self.name
+    
+    class Meta:
+        
+        verbose_name_plural= "Mpesa Payments"
 
 
     
@@ -115,6 +134,10 @@ class Expenses(models.Model):
     def __str__(self):
         return self.exp_desc
     
+    class Meta:
+        
+        verbose_name_plural = "Expenses"
+    
 class Transfers(models.Model):
     t_id = models.AutoField(primary_key=True)
     t_serial = models.CharField(max_length=100)
@@ -127,6 +150,8 @@ class Transfers(models.Model):
     
     def __str__(self):
         return self.t_name
+    class Meta:
+        verbose_name_plural= "Transfers"
 
 class Location(models.Model):
     loc_id = models.AutoField(primary_key=True)
@@ -152,6 +177,10 @@ class Tasks(models.Model):
     def __str__(self):
         return self.task_name
     
+    class Meta:
+        
+        verbose_name_plural= "Tasks"
+    
     
 class Debts(models.Model):
     
@@ -165,6 +194,10 @@ class Debts(models.Model):
     
     def __str__(self):
         return self.debt_cus
+    
+    class Meta:
+        
+        verbose_name_plural = "Debt List"
 
 class Contacts(models.Model):
     
@@ -172,3 +205,8 @@ class Contacts(models.Model):
     cont_name = models.CharField(max_length=100)
     cont_phone = models.CharField(max_length=100)
     cont_created = models.DateTimeField(default=timezone.now)
+    
+    
+    class Meta:
+        
+        verbose_name_plural= "Customer Contacts"
