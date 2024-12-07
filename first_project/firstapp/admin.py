@@ -5,7 +5,7 @@ from .models import Stocks,Shops,Sales,Expenses,Transfers,Location,Tasks,Debts,P
 
 # Register your models here.
 
-admin.site.register(Stocks)
+
 admin.site.register(Shops)
 admin.site.register(Sales)
 admin.site.register(Expenses)
@@ -13,6 +13,13 @@ admin.site.register(Transfers)
 admin.site.register(Location)
 admin.site.register(Tasks)
 admin.site.register(Debts)
+
+class StocksAdmin(admin.ModelAdmin):
+    
+    list_display = ('p_serial','p_name','p_category','p_qty','p_price','p_cost','p_vat','p_shop__shop_name','p_created','p_creator')
+    list_filter = ("p_shop__shop_name",)
+    search_fields = ("p_serial","p_name","p_category",)
+
 
 class PaidAdmin(admin.ModelAdmin):
     
@@ -36,3 +43,4 @@ class MpesaAdmin(admin.ModelAdmin):
 
 admin.site.register(Paid,PaidAdmin)
 admin.site.register(mpesaPay,MpesaAdmin)
+admin.site.register(Stocks,StocksAdmin)

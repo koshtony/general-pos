@@ -213,8 +213,13 @@ def print_cart_receipt(request):
     
     total = sub_total + vat
      
-    
-    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    shop_name = carts[0].cart_stock.p_shop.shop_name
+    shop_loc = carts[0].cart_stock.p_shop.shop_loc
+    contxt = {
+        "carts":carts,"total":total,"vat":vat,"sub_total":sub_total,
+        "shop_name":shop_name,"shop_loc":shop_loc,"date":datetime.now()
+        
+        }
     
     
     
