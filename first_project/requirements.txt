@@ -13,8 +13,10 @@ django-colorfield==0.11.0
 django-crispy-forms==2.3
 django-js-asset==2.2.0
 django-pwa==2.0.0
+gunicorn==23.0.0
 idna==3.8
 numpy==2.1.1
+packaging==24.2
 pandas==2.2.2
 pillow==10.4.0
 psycopg2==2.9.10
