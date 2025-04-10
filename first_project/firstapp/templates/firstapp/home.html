@@ -72,13 +72,13 @@
             </div>
 
             <div class="row">
-              <div class="col-lg-3 col-12" style="height:230px;overflow-x: hidden;">
+             
+              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden; scrollbar-width: none;">
                 <!-- small box -->
                 <div class="small-box bg-white">
                   <div class="inner">
-                    <h6>current stocks</h6>
-                  
-                    <table class="table align-middle mb-0 bg-white" style="margin-left:10px" id="stocks">
+                    <h4>Stocks Holdings</h4>
+                    <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="stocks">
                       <thead class="bg-light">
                         <tr>
                           
@@ -97,21 +97,20 @@
 
                       </tbody>
                     </table>
-                  
                     
                   </div>
                   <div class="icon">
-                    <i class="fa fa-warehouse"></i>
+                    <i class="ion ion-pie-graph"></i>
                   </div>
-                  <a href="{% url 'firstapp-stocks' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
+                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
-              <div class="col-lg-3 col-12" style="height:230px;overflow-x: hidden;">
+              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden; scrollbar-width: none;">
                 <!-- small box -->
                 <div class="small-box bg-white">
                   <div class="inner">
                     <h4>today sales</h4>
-                    <table class="table align-middle mb-0 bg-white" data-page-length='5' id="today-sales">
+                    <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x:hidden;  scrollbar-width: none;" data-page-length='5' id="today-sales">
                       <thead class="bg-light">
                         <tr>
                           
@@ -142,12 +141,12 @@
                   <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
-              <div class="col-lg-3 col-12" style="height:230px;overflow-x: hidden;">
+              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden;scrollbar-width: none;">
                 <!-- small box -->
                 <div class="small-box bg-white">
                   <div class="inner">
-                    <h6>MTD sales</h6>
-                   <table class="table align-middle mb-0 bg-white" id="sales">
+                    <h4>MTD sales</h4>
+                   <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="sales">
                             <thead class="bg-light">
                               <tr>
                                 
@@ -178,12 +177,12 @@
                 </div>
               </div>
 
-              <div class="col-lg-3 col-12" style="height:230px;overflow-x: hidden;">
+              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden;scrollbar-width: none;">
                 <!-- small box -->
                 <div class="small-box bg-white">
                   <div class="inner">
-                    <strong>shop sales</strong>
-                    <table class="table align-middle mb-0 bg-white"  style="height:200px;overflow-x: scroll;" id="sales2">
+                   <h4>Shop Sales </h4>
+                    <table class="table align-middle mb-0 bg-white"  style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="sales2">
                       <thead class="bg-light">
                         <tr>
                           
@@ -215,7 +214,7 @@
                 </div>
               </div>
             </div>
-         
+         <!--
               <div class="row">
                 <div class="col-lg-3 col-12" style="height:300px;overflow-x:hidden" id="bar1">
             
@@ -231,7 +230,7 @@
                 </div>
               </div>
            
-<!---->
+-->
           <div class="row">
               
               <div class="col-lg-3 col-6" style="display:none">
