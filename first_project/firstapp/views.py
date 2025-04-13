@@ -47,7 +47,7 @@ def home(request):
     today_sales = Sales.objects.filter(s_created__range=[date.today(),date.today()+timedelta(days=1)]).values('s_name').annotate(
         total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
     )
-    month_sales  = Sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values('s_name').annotate(
+    month_sales  = Sales.objects.filter(s_created__month = datetime.now().month).values('s_name').annotate(
         total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
     )
     shop_sales = Sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values('s_shop').annotate(
@@ -82,7 +82,7 @@ def simple_counter(request):
     
     if stocks is None:
         
-        stocks = Stocks.objects.all()
+        stocks = Stocks.objects.all().order_by('-p_created')
         cache.set("stocks",stocks)
     
     carts = Cart.objects.all().order_by('-pk')
@@ -660,12 +660,28 @@ def getContact(request):
 @login_required
 def stocksView(request): 
     
+    shops = Shops.objects.filter(shop_auth__username = request.user.username)
+    
+    shops_ids = [shop.shop_id for shop in shops]
+    
     products = cache.get('stocks')
+    
+    
     
     if products is None:
         
-        products = Stocks.objects.all()
-        cache.set('stocks',products)
+        if request.user.is_superuser or request.user.is_staff:
+        
+            products = Stocks.objects.all().order_by('-p_created')
+            cache.set('stocks',products)
+            
+        else: 
+            
+            products = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')
+           
+            cache.set('stocks',products)
+            
+            
         
     
             
@@ -857,22 +873,22 @@ def shopsUpdate(request):
     
 # ---- sales view
 
-class SalesListView(LoginRequiredMixin,ListView):
-    model = Sales
+def SalesListView(request):
+    shops = Shops.objects.filter(shop_auth__username = request.user.username)
     
-    template = 'firstapp/sales_list.html'
+    shops_ids = [shop.shop_id for shop in shops]
+            
+    sales =  Sales.objects.filter(s_shop__shop_id__in=shops_ids).order_by('-s_created')
     
-    context_object_name = 'sales'
-   
+    contxt = { 
+                "sales":sales
+              
+              }
     
-    def get_queryset(self):
-        if self.request.GET:
-            date1 = self.request.GET.get("date1")
-            date2 = self.request.GET.get("date2")
-            queryset =  Sales.objects.filter(s_created__gte=date1,s_created__lte=date2)
-        
-            return queryset
-        return super().get_queryset()
+    
+    return render(request,'firstapp/sales_list.html',contxt)
+    
+    
 
 @login_required    
 def salesPostView(request):

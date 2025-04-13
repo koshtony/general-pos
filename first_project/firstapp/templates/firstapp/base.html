@@ -134,7 +134,7 @@
         </ul>
       </div>
     -->
-      
+   
       &nbsp; &nbsp;
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-wrench">generator</i>
@@ -161,10 +161,11 @@
     <!-- Main Sidebar Container -->
    <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-  
+     
       
       <!-- Sidebar -->
       <div class="sidebar">
+      
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           {% if user.is_superuser %}
@@ -179,11 +180,11 @@
         </div>
         
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav class="mt-2" hx-boost="true">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'firstapp-home' %}" class="nav-link">
+            <a href="{% url 'firstapp-home' %}" hx-indicator="#newPageSpinner" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
              dashboard
@@ -213,7 +214,7 @@
           </li>
         -->
           <li class="nav-item">
-            <a href="{% url 'firstapp-stocks' %}" class="nav-link">
+            <a href="{% url 'firstapp-stocks' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
               <p>
                  Stocks
@@ -221,7 +222,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'firstapp-sales' %}" class="nav-link">
+            <a href="{% url 'firstapp-sales' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
               <p>
               Sales
@@ -229,7 +230,7 @@
             </a>
           </li>
            <li class="nav-item">
-            <a href="{% url 'firstapp-cashier' %}" class="nav-link">
+            <a href="{% url 'firstapp-cashier' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-credit-card" aria-hidden="true"></i>
               <p>
               Cashier
@@ -237,7 +238,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'firstapp-orders' %}" class="nav-link">
+            <a href="{% url 'firstapp-orders' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
               <p>
               Ecommerce
@@ -246,13 +247,13 @@
           </li>
           
           <li class="nav-item">
-            <a href="{% url 'firstapp-financesummary' %}" class="nav-link">
+            <a href="{% url 'firstapp-financesummary' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fas fa-table"></i>
               <p>reports</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'firstapp-charts' %}" class="nav-link">
+            <a href="{% url 'firstapp-charts' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-eye" aria-hidden="true"></i>
               <p>
                  Visuals
@@ -261,7 +262,7 @@
           </li> 
 
           <li class="nav-item">
-            <a href="{% url 'posUsers-profile' %}" class="nav-link">
+            <a href="{% url 'posUsers-profile' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-user" aria-hidden="true"></i>
               <p>
                 User Profile
@@ -270,7 +271,7 @@
           </li> 
 
           <li class="nav-item">
-            <a href="{% url 'logout' %}" class="nav-link">
+            <a href="{% url 'logout' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
               <p>
                  logout
@@ -282,7 +283,7 @@
           <li class="line"></li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-mobile" aria-hidden="true"></i>
+              <i class="nav-icon fa fa-mobile" aria-hidden="true" hx-indicator="#newPageSpinner"></i>
               <p>
                   Phone Sales
                 <i class="right fas fa-angle-left"></i>
@@ -291,7 +292,7 @@
             <ul class="nav nav-treeview">
              
               <li class="nav-item">
-                <a href="{% url 'smart-stocks-upload' %}" class="nav-link">
+                <a href="{% url 'smart-stocks-upload' %}" class="nav-link" hx-indicator="#newPageSpinner">
                   <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
                   <p>Stocks Upload</p>
                 </a>
@@ -448,6 +449,33 @@
       
         <!-- /.content-header -->
          <section class="content" id="linkResp">
+          <div id="newPageSpinner" class="htmx-indicator">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-info" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+
+        </div>
         <!-- Main content -->
         {% block mainContent %}
         {% if messages %}
