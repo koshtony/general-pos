@@ -58,15 +58,136 @@
   <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
 <style>
 
-  .htmx-indicator{
-    opacity:100;
-    transition: opacity 500ms ease-in;
+  .my-indicator{
+    display:none;
 }
-.htmx-request .htmx-indicator{
-    opacity:1
+.htmx-request .my-indicator{
+    display:inline;
 }
-.htmx-request.htmx-indicator{
-    opacity:1
+.htmx-request.my-indicator{
+    display:inline;
+}
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 150ms infinite linear;
+  -moz-animation: spinner 150ms infinite linear;
+  -ms-animation: spinner 150ms infinite linear;
+  -o-animation: spinner 150ms infinite linear;
+  animation: spinner 150ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 </style>
@@ -77,7 +198,7 @@
   <div class="wrapper" >
     
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="uphead">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="uphead" hx-boost="true">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -87,38 +208,38 @@
       &nbsp; &nbsp;
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button"><i class="fas fa-plus">products</i></a>
+          <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-plus">products</i></a>
         </li>
         &nbsp; &nbsp;
         
         <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button"><i class="fas fa-plus">shops</i></a>
+          <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-plus">shops</i></a>
         </li>
     
         &nbsp; &nbsp;
       <li class="nav-item">
-        <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button"><i class="fas fa-list">shops</i></a>
+        <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-list">shops</i></a>
         
         </li>
         &nbsp; &nbsp;
       <li class="nav-item">
-        <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button"><i class="fas fa-table">Counter</i></a>
+        <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-table">Counter</i></a>
       </li>
       &nbsp; &nbsp;
      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-desktop">Manage</i>
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" hx-indicator="#newPageSpinner"><i class="fa fa-desktop">Manage</i>
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}"><i class="fa fa-money-bill"> Add Expenses</i></a></li>
-          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-taskslist' %}"><i class="fa fa-file"> Tasks</i></a></li>
-           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-locationlist' %}"><i class="fa fa-clock"> Attendance </i></a></li>
-           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-debtlist' %}"><i class="fa fa-clock"> Debts </i></a></li>
+          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}" hx-indicator="#newPageSpinner"><i class="fa fa-money-bill"> Add Expenses</i></a></li>
+          <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-taskslist' %}"hx-indicator="#newPageSpinner"><i class="fa fa-file"> Tasks</i></a></li>
+           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-locationlist' %}" hx-indicator="#newPageSpinner"><i class="fa fa-clock"> Attendance </i></a></li>
+           <li><a style="margin-left:30px" type="button" href="{% url 'firstapp-debtlist' %}" hx-indicator="#newPageSpinner"><i class="fa fa-clock"> Debts </i></a></li>
           
         </ul>
       </div>
       &nbsp; &nbsp;
       <li class="nav-item">
-        <a class="btn btn-primary" href="" role="button"><i class="fas fa-bell">notifications</i></a>
+        <a class="btn btn-primary" href="" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-bell">notifications</i></a>
       </li>
        &nbsp; &nbsp;
        <!--
@@ -137,11 +258,11 @@
    
       &nbsp; &nbsp;
       <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-wrench">generator</i>
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" hx-indicator="#newPageSpinner"><i class="fa fa-wrench">generator</i>
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a style="margin-left:30px" href="{% url 'firstapp-invoice' %}"><i class="fa fa-file-invoice"> invoice </i></a></li>
-          <li><a style="margin-left:30px" href="#"><i class="fa fa-money-check">PO</i></a></li>
+          <li><a style="margin-left:30px" href="{% url 'firstapp-invoice' %}" hx-indicator="#newPageSpinner"><i class="fa fa-file-invoice"> invoice </i></a></li>
+          <li><a style="margin-left:30px" href="#" hx-indicator="#newPageSpinner"><i class="fa fa-money-check">PO</i></a></li>
           
         </ul>
       </div>
@@ -174,7 +295,7 @@
           </div>
          
           <div class="info">
-            <a href="/admin" class="d-block">Admin</a>
+            <a href="/admin" class="d-block" hx-indicator="#newPageSpinner">Admin</a>
           </div>
          {% endif %}
         </div>
@@ -446,36 +567,14 @@
            
         </div>
 
-      
+     
         <!-- /.content-header -->
-         <section class="content" id="linkResp">
-          <div id="newPageSpinner" class="htmx-indicator">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-secondary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-success" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-warning" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-info" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-light" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <div class="spinner-border text-dark" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+         <section class="content shadow-lg p-3 mb-5 bg-white rounded" id="linkResp" style="margin:40px;">
 
-        </div>
+          <div class="loading my-indicator" id="newPageSpinner">Loading&#8230;</div>
+
+         
+         
         <!-- Main content -->
         {% block mainContent %}
         {% if messages %}
