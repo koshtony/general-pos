@@ -56,6 +56,10 @@
 <script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
+  <script src=
+  "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
 <style>
 
   .my-indicator{
@@ -313,7 +317,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
             </a>
           </li>
           <li class="nav-item">
-            <a hx-get="{% url 'simple-counter' %}" hx-target="#linkResp" hx-indicator="#counterSpin"  class="nav-link">
+            <a href="{% url 'simple-counter' %}" hx-indicator="#newPageSpinner"  class="nav-link">
               <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
               
               <p>

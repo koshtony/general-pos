@@ -10,6 +10,7 @@ class Shops(models.Model):
     shop_name =  models.CharField(max_length=100)
     shop_cat = models.CharField(max_length=100)
     shop_loc = models.CharField(max_length=100)
+    shop_terms = models.TextField(max_length=1000,null=True,blank=True)
     shop_created = models.DateTimeField(default= timezone.now)
     
     
@@ -60,12 +61,14 @@ class Cart(models.Model):
     cart_stock = models.ForeignKey(Stocks,null=True,on_delete=models.SET_NULL)
     qty = models.FloatField(default=1.0,null=True)
     price = models.FloatField(default=200.0,null=True)
+    order_code = models.CharField(max_length=100,null=True,blank=True)
     
     def __str__(self):
         return self.cart_stock.p_name
 class Sales(models.Model):
     s_id = models.AutoField(primary_key=True)
     s_serial = models.CharField(max_length=100)
+    s_order_code = models.CharField(max_length=100,null=True,blank=True)
     s_name = models.CharField(max_length=100)
     s_shop = models.CharField(max_length=100)
     s_qty = models.FloatField()

@@ -1,4 +1,8 @@
+{% extends 'firstapp/base.html' %}  
 {% load crispy_forms_filters %}
+
+
+{% block mainContent %}
 <style>
 
     .htmx-indicator{
@@ -19,21 +23,25 @@
             <div class="row">
             <div class="d-flex">
                 <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-scan' %}" hx-target="#filterResp" hx-trigger="change" name="serial" placeholder="scan" >
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-scan' %}" hx-target="#filterResp" hx-indicator="#searchSpinner"  hx-trigger="change" name="serial" placeholder="scan" >
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-name' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="name" placeholder="search by name">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-name' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="name" placeholder="search by name">
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-category' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="category" placeholder="search by category">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-category' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="category" placeholder="search by category">
                 </div>
                 <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-desc' %}" hx-target="#filterResp" hx-trigger="keyup changed delay:1s" name="desc"  placeholder="search by description">
+                    <input class="form-control" type="text" hx-post="{% url 'search-by-desc' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="desc"  placeholder="search by description">
                 </div>
             </div>
         </div>
 
         <br>
+        <div id="searchSpinner" class="htmx-indicator">
+        <div class="spinner-grow spinner-grow-sm" ></div>
+        <p>Searching..</p>
+        </div>
            
         <div style="height:800px; overflow-y:scroll">
             <table class="table table-striped">
@@ -106,6 +114,12 @@
                     <span class="sr-only">del..</span>
                 </div>
             </div>
+            <div class="col-sm-3">
+                <a class="btn btn-light" onclick="location.reload()">
+                <i class="fa fa-refresh"></i>Refresh
+                </a>
+               
+            </div>
             </div>
             <br>
 
@@ -157,3 +171,7 @@
     </div> 
 
 </div>
+
+
+
+{% endblock mainContent %}

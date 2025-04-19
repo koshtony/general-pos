@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Sum
-from .models import Stocks,Shops,Sales,Expenses,Transfers,Location,Tasks,Debts,Paid,mpesaPay
+from .models import Stocks,Shops,Sales,Expenses,Transfers,Location,Tasks,Debts,Paid,mpesaPay,Cart
 
 
 # Register your models here.
@@ -13,7 +13,7 @@ admin.site.register(Transfers)
 admin.site.register(Location)
 admin.site.register(Tasks)
 admin.site.register(Debts)
-
+admin.site.register(Cart)
 class StocksAdmin(admin.ModelAdmin):
     
     list_display = ('p_serial','p_name','p_category','p_qty','p_price','p_cost','p_vat','p_shop__shop_name','p_created','p_creator')

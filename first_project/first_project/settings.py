@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pwa',
-    'ckeditor'
+    'ckeditor',
+    'django.contrib.humanize'
 ]
 
 X_FRAME_OPTIONS='SAMEORIGIN'

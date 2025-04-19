@@ -87,8 +87,9 @@ def simple_counter(request):
     
     carts = Cart.objects.all().order_by('-pk')
     
-    sub_total = sum([(cart.cart_stock.p_price * cart.qty) for cart in carts])
-    vat = sum([cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    
+    sub_total = sum([0 if cart.cart_stock == None else (cart.cart_stock.p_price * cart.qty) for cart in carts])
+    vat = sum([0 if cart.cart_stock==None else cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
     
     total = sub_total + vat
     
@@ -103,7 +104,8 @@ def add_to_cart(request,id):
     
     cart = Cart(
         cart_stock = stock ,
-        price = stock.p_price
+        price = stock.p_price,
+        order_code = "ORD"+str(datetime.now().strftime('%Y%m%d%H%M%S%f'))
     )
     
     cart.save()
@@ -126,7 +128,7 @@ def update_cart_qty(request,id):
     
     new_qty = float(request.POST.get("itemQty"))
     
-    print(new_qty)
+    
     
     cart = Cart.objects.get(pk=id)
     cart.qty = new_qty
@@ -208,16 +210,22 @@ def print_cart_receipt(request):
     
     carts = Cart.objects.all().order_by('-pk')
     
-    sub_total = sum([cart.price for cart in carts])
+    sub_total = round(sum([cart.price for cart in carts]),2)
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
     
-    total = sub_total + vat
+    total = round(sub_total + vat,2)
      
     shop_name = carts[0].cart_stock.p_shop.shop_name
+    shop_cat = carts[0].cart_stock.p_shop.shop_cat
     shop_loc = carts[0].cart_stock.p_shop.shop_loc
+    shop_terms = carts[0].cart_stock.p_shop.shop_terms
     contxt = {
         "carts":carts,"total":total,"vat":vat,"sub_total":sub_total,
-        "shop_name":shop_name,"shop_loc":shop_loc,"date":datetime.now()
+        "shop_name":shop_name,"shop_loc":shop_loc,"shop_cat":shop_cat,
+        "shop_terms":shop_terms,
+        "date":datetime.now(),
+        "order_code":carts[0].order_code,
+        "user_names":f'{request.user.profile.first} {request.user.profile.surname}'
         
         }
     
@@ -245,7 +253,7 @@ def cart_to_sales(request):
                     s_profit = cart.price - cart.cart_stock.p_cost * cart.qty,
                     s_type = "cash",
                     s_status = "sold",
-                    
+                    s_order_code = cart.order_code,
                     s_creator = request.user
                     
                     
@@ -849,7 +857,7 @@ class ShopsCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     
     success_message = ' shop added successfully'
     
-    fields =['shop_name','shop_cat','shop_loc','shop_auth']
+    fields =['shop_name','shop_cat','shop_loc','shop_terms','shop_auth']
     
     def form_valid(self,form):
         return super().form_valid(form)
