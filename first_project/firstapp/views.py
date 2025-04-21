@@ -715,6 +715,25 @@ def stocksPostView(request):
         
         
         return JsonResponse(products,safe=False)
+    
+@login_required
+def filter_stocks_by_date(request):
+    
+    if request.POST:
+        
+        date1 = request.POST.get("date1")
+        date2 = request.POST.get("date2")
+        
+        if date1!='' or date1!='':
+            products = Stocks.objects.filter(p_created__gte=date1,p_created__lte=date2)
+            
+        else: 
+            
+            products = Stocks.objects.all()
+            
+    contxt = {"products":products}
+            
+    return render(request,"firstapp/filter_stocks.html",contxt)
 
 #=====view to handle stocks addittion=====
     
@@ -753,6 +772,8 @@ class StocksUpdateView(LoginRequiredMixin,UpdateView):
     def form_valid(self,form):
         form.instance.p_creator = self.request.user
         return super().form_valid(form)
+    
+
 
 
 #========add stocks simple method ========
@@ -913,6 +934,37 @@ def salesPostView(request):
             sales = serializers.serialize('json',sales)
         
         return JsonResponse(sales,safe=False)
+    
+    
+@login_required
+def filter_sales_by_date(request):
+    
+    if request.POST:
+        
+        date1 = request.POST.get("date1")
+        date2 = request.POST.get("date2")
+        
+        if date1!='' or date1!='':
+            sales = Sales.objects.filter(s_created__gte=date1).filter(s_created__lte=date2)
+            
+        else: 
+            
+            sales = Sales.objects.all() 
+            
+    contxt = {"sales":sales}
+            
+    return render(request,"firstapp/filter_sales.html",contxt)
+            
+            
+    
+            
+            
+    
+            
+             
+        
+        
+        
 
 #==========handles return of items======//moves from sales table to stocks table
 

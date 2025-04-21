@@ -1,7 +1,7 @@
 {% extends 'firstapp/base.html' %}      
         <!-- Main content -->
     {% block mainContent %}
- 
+    <div class="col" style="margin-left:10px;overflow-x:scroll;">
     <input style="margin-left:720px" list="stocksList" id="pname" name="pname" placeholder="search Shop here..." />
     <a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
     <br><br>
@@ -72,6 +72,8 @@
 
             
       </table>
+
+    </div>
       <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">
         <div class="modal-dialog" role="document">
           <div class="modal-content">

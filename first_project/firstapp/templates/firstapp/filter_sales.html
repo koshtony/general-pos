@@ -1,0 +1,45 @@
+{% for sale in sales %}
+          <tr>
+            
+            <td>
+              {{sale.s_serial}}
+            </td>
+            <td>
+              {{sale.s_order_code}}
+            </td>
+            <td>
+                {{sale.s_name}}
+              </td>
+              <td>
+                {{sale.s_shop.shop_name}}
+              </td>
+              <td>
+                   {{sale.s_qty}}
+              </td>
+              
+              <td>
+                {{sale.s_price}}
+              </td>
+              <td>
+                {{sale.s_profit}}
+              </td>
+            <td>
+              {% if sale.s_status == "sold" %}
+              <span style="background-color:red" class="badge badge-success rounded-pill d-inline">sold</span>
+              {% else %}
+              <span style="background-color:yellow" class="badge badge-success rounded-pill d-inline">returned</span>
+              {% endif %}
+            </td>
+            <td>{{sale.s_created}}</td>
+            <td>
+        
+              <button type="button" onclick="returnModal('{{sale.s_id}}','{{sale.s_qty}}','{{sale.s_name}}')" class="btn btn-link btn-sm btn-rounded">
+                <i class="fa fa-undo">return</i>
+              </button>
+              
+            </td>
+            <td>
+              {{sale.s_creator.username}}
+            </td>
+          </tr>
+          {% endfor %}

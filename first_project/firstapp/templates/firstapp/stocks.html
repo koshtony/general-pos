@@ -21,12 +21,30 @@
       </div>
       <div class="modal-body">
         
-        
+        <form hx-post="{% url 'firstapp-filter-stocks-by-date' %}" hx-target="#stocksTr" hx-indicatot="#filterSpinner">
+
+          {% csrf_token %}
+          <div class="form-group">
            <label>from</label>
-           <input type="date" name="date1" id="date1">
+           <input class="form-control" type="date" name="date1" id="date1">
+
+          </div>
+          <div class="form-group">
            <label>To</label>
-           <input type="date" name="date2" id="date2">
-           <button type="button" id="filtForm">filter</button>
+           <input class="form-control" type="date" name="date2" id="date2">
+          </div>
+          <div class="form-group">
+           <button class="btn btn-light" type="submit">
+            <i class="fa fa-filter"></i>
+            filter</button>
+          </div>
+
+          <div id="filterSpinner" class="spinner-border text-primary htmx-indicator" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+
+        </form>
+          
         
       </div>
     </div>
@@ -150,7 +168,7 @@
      
           
 
-    
+        <div class="col" style="margin-left:10px;overflow-x:scroll;">
  
     <table class="table align-middle mb-0 bg-white" style="margin-left:30px;margin-right:30px; width:95%; overflow-x:scroll;" id="stocks">
       <input style="margin-left:20px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
@@ -175,7 +193,7 @@
             <th>Created</th>
           </tr>
         </thead>
-        <tbody id="stocks">
+        <tbody id="stocksTr">
             {% for product in products %}
           <tr>
             
@@ -223,6 +241,7 @@
 
             
       </table>
+    </div>
     </div>
     <!--
         <div style="margin-left:20px">

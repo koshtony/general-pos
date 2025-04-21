@@ -1,18 +1,42 @@
-{% for stock in stocks %}
-                    <tr>
-                        <td>{{stock.p_name}}</td>
-                        <td>{{stock.p_category}}</td> 
-                        <td>{{stock.p_desc}}</td>
-                        <td>{{stock.p_price}}</td>
-                        {% if stock.p_qty > 5 %}
-                        <td><strong style="color:green">high</strong></td>
-                        {% else %}
-                        <td><strong style="color:red">high</strong></td>
-                        {% endif %}
-                       <td><a hx-get="{% url 'add-to-cart' stock.pk %}" hx-target="#sellResp" class="btn btn-primary">sell
-
-
-                       </a>
-                    </tr>
-
-                    {% endfor %}
+{% for product in products %}
+<tr>
+  
+  <td>
+    {{product.p_name}}
+  </td>
+  <td>
+      {{product.p_category}}
+    </td>
+    <td>
+      {{product.p_desc}}
+    </td>
+    <td>
+      {{product.p_qty}}
+    </td>
+    <td>
+      {{product.p_price}}
+    </td>
+    <td>
+      {{product.p_cost}}
+    </td>
+  <td>
+    {% if product.p_qty < 5 %}
+    <span class="badge badge-danger rounded-pill d-inline">low</span>
+    {% else %}
+       <span class="badge badge-success rounded-pill d-inline">Active</span>
+    {% endif %}
+  </td>
+  <td>{{product.p_shop.shop_name}}</td>
+  <td>{{product.p_creator}}</td>
+  <td>
+    <a href="{% url 'firstapp-updatestocks' product.p_id %}">
+    <button type="button" class="btn btn-link btn-sm btn-rounded">
+      Edit
+    </button>
+    </a>
+  </td>
+  <td>
+    {{product.p_created}}
+  </td>
+</tr>
+{% endfor %}

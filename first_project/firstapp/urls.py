@@ -13,7 +13,7 @@ from .views import StocksCreateView,\
                     offline,feeds_indexDB,mpesa_reg_url,c_2_b_conf_url,c_2_b_val_url,mpesa_sim,\
                         cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter,\
                             simple_counter,add_to_cart,del_cart_item,search_by_scan,search_by_name,search_by_category,\
-                                search_by_desc,print_cart_receipt,cart_to_sales,clear_cart,transfer_data
+                                search_by_desc,print_cart_receipt,cart_to_sales,clear_cart,transfer_data,filter_sales_by_date
             
 urlpatterns = [
 
@@ -65,6 +65,8 @@ urlpatterns = [
                     path('validate_url',views.c_2_b_val_url,name="validate-url"),
                     path('mpesa_sim',views.mpesa_sim,name="mpesa-sim"),
                     path('mpesa_msg',views.postMpesaMessage,name="mpesa-msg"),
+                    path('filter_sales_by_date',views.filter_sales_by_date,name="firstapp-filter-sales-by-date"),
+                    path('filter_stcoks_by_date',views.filter_stocks_by_date,name="firstapp-filter-stocks-by-date"),
                     
                     
                     # simple counter 
