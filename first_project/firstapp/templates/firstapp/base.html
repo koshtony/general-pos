@@ -210,6 +210,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         </li>
       </ul>
       &nbsp; &nbsp;
+      {% if user.is_superuser %}
       <ul class="navbar-nav">
         <li class="nav-item"id="dash">
           <a class="btn btn-primary" href="{% url 'firstapp-home' %}" role="button" hx-indicator="#newPageSpinner"><i class="nav-icon fas fa-tachometer-alt">Dashboard</i></a>
@@ -245,6 +246,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         <a class="btn btn-primary" href="" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-bell">notifications</i></a>
       </li>
        &nbsp; &nbsp;
+       &nbsp; &nbsp;
+      <li class="nav-item" id="notyTab">
+        <a class="btn btn-primary" onclick="location.reload();" role="button" hx-indicator="#newPageSpinner"><i class="faS fa-rotate">Refresh</i></a>
+      </li>
+       &nbsp; &nbsp;
        <!--
        <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-phone">Contacts</i>
@@ -261,6 +267,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
    
       
     </ul>
+    {% endif %}
     
      
         
@@ -295,10 +302,12 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
         </div>
         
         <!-- Sidebar Menu -->
-        <nav class="mt-2" hx-boost="true">
+        <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           {% if user.is_authenticated %}
-          <li class="nav-item">
+
+            {% if user.is_superuser %}
+          <li class="nav-item" hx-boost="true">
             <a href="{% url 'firstapp-home' %}" hx-indicator="#newPageSpinner" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -306,7 +315,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          {% endif %}
+          <li class="nav-item" hx-boost="true">
             <a href="{% url 'simple-counter' %}" hx-indicator="#newPageSpinner"  class="nav-link">
               <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
               
@@ -328,7 +338,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
             </a>
           </li>
         -->
-          <li class="nav-item">
+          <li class="nav-item" hx-boost="true">
             <a href="{% url 'firstapp-stocks' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
               <p>
@@ -336,7 +346,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          {% if user.is_superuser %}
+          <li class="nav-item" hx-boost="true">
             <a href="{% url 'firstapp-sales' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
               <p>
@@ -344,7 +355,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
               </p>
             </a>
           </li>
-           <li class="nav-item">
+           <li class="nav-item" hx-boost="true">
             <a href="{% url 'firstapp-cashier' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-credit-card" aria-hidden="true"></i>
               <p>
@@ -352,7 +363,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" hx-boost="true">
             <a href="{% url 'firstapp-orders' %}" class="nav-link" hx-indicator="#newPageSpinner">
               <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
               <p>
@@ -374,26 +385,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
                  Visuals
               </p>
             </a>
-          </li> 
-
-          <li class="nav-item">
-            <a href="{% url 'posUsers-profile' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-              <p>
-                User Profile
-              </p>
-            </a>
-          </li> 
-
-          <li class="nav-item">
-            <a href="{% url 'logout' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
-              <p>
-                 logout
-              </p>
-            </a>
           </li>
-          <li class="nav-item">
+           <li class="nav-item" hx-boost="true">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-desktop" aria-hidden="true" hx-indicator="#newPageSpinner"></i>
               <p>
@@ -425,29 +418,28 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
              
              
             </ul>
-          </li>
-          
-          
-          <li class="line"></li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-mobile" aria-hidden="true" hx-indicator="#newPageSpinner"></i>
+          </li> 
+          {% endif %}
+          <li class="nav-item" hx-boost="true">
+            <a href="{% url 'posUsers-profile' %}" class="nav-link" hx-indicator="#newPageSpinner">
+              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
               <p>
-                  Phone Sales
-                <i class="right fas fa-angle-left"></i>
+                User Profile
               </p>
             </a>
-            <ul class="nav nav-treeview">
-             
-              <li class="nav-item">
-                <a href="{% url 'smart-stocks-upload' %}" class="nav-link" hx-indicator="#newPageSpinner">
-                  <i class="nav-icon fa fa-user-circle" aria-hidden="true"></i>
-                  <p>Stocks Upload</p>
-                </a>
-              </li>
-             
-            </ul>
           </li>
+           
+
+          <li class="nav-item" hx-boost="true">
+            <a href="{% url 'logout' %}" class="nav-link" hx-indicator="#newPageSpinner">
+              <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
+              <p>
+                 logout
+              </p>
+            </a>
+          </li>
+         
+          
           
           
         
@@ -625,6 +617,42 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 <!-- ./wrapper -->
 <script>
 
+   let notifiedItems = new Set();
+
+  // Ask for permission once
+  document.addEventListener("DOMContentLoaded", () => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    // Start polling
+    setInterval(checkLowStock, 10000); // every 10 seconds
+  });
+
+  function checkLowStock() {
+    fetch("{% url 'low-stocks-alert' %}")
+      .then(res => res.json())
+      .then(data => {
+        data.low_stock.forEach(item => {
+          let key = item.p_name + item.p_qty;
+
+          if (!notifiedItems.has(key)) {
+            notifiedItems.add(key);
+            showNotification(item.p_name, item.p_qty);
+          }
+        });
+      });
+  }
+
+  function showNotification(name, qty) {
+    if (Notification.permission === "granted") {
+      new Notification("⚠ Low Stock Alert", {
+        body: `${name} has only ${qty} left in stock.`,
+        icon: "/static/icons/warning.png",  // Optional icon path
+      });
+    }
+  }
+/**
   function isMobile() {
     const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(navigator.userAgent);
@@ -647,7 +675,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
       document.getElementById("salesTab").style.display = "none"
     
   }
-
+  
+**/
   function addContacts(){
 
     $.post("{% url 'firstapp-addcontact' %}",{
@@ -742,7 +771,7 @@ function onStatus(){
 
 
 // mobile view setInterval
-
+/**
 if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
   // true for mobile device
         document.getElementById("mainCont").style.overflow = "scroll"
@@ -761,6 +790,8 @@ if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAge
             link.setAttribute("aria-current", "page");
         }
     });
+
+  /**
 
 </script>
 <script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 

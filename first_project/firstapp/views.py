@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
-from django.db.models import Sum
+from django.db.models import Sum,IntegerField
+from django.db.models.functions import Cast
+from django.db.models.functions import TruncDate
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -14,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.utils import timezone
 from .models import Stocks,Shops,Sales,Expenses,Location,\
 Tasks,Debts,Paid,Contacts,mpesaPay,Cart
 from posUsers.models import Profile
@@ -38,51 +41,132 @@ orders = [
 
 @login_required
 def home(request):
-    tasks = Tasks.objects.all()
-    _,_,sales_qty = sales_summ(Sales)
-    _,_,_,stocks_qty = stocks_summ(Stocks)
-    profit,qty,amount= today_summary(Sales,Sales)
     
-    stocks_items = Stocks.objects.values('p_name').annotate(total_qty = Sum('p_qty'))
-    today_sales = Sales.objects.filter(s_created__range=[date.today(),date.today()+timedelta(days=1)]).values('s_name').annotate(
-        total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
-    )
-    month_sales  = Sales.objects.filter(s_created__month = datetime.now().month).values('s_name').annotate(
-        total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
-    )
-    shop_sales = Sales.objects.filter(s_created__range=[date.today()-timedelta(datetime.now().day),date.today()]).values('s_shop').annotate(
-        total_qty = Sum('s_qty'),total_price=Sum('s_price'),total_profit = Sum('s_profit')
-    )
-    items,stoks,salez,seller_qty,seller,shop_qty,shop_name = monthly_comp(Sales,Stocks)
-    data={
-        "orders":profit,
-        "tasks":tasks,
-        "sales":qty,
-        "amount":amount,
-        "stocks":sum(stocks_qty),
-        "stocks_items": stocks_items,
-        "today_sales":today_sales,
-        "month_sales":month_sales,
-        "shop_sales":shop_sales,
-        "items":items,
-        "stoks":stoks,
-        "salez":salez,
-        "seller_qty":seller_qty,
-        "seller":seller,
-        "shop_qty":shop_qty,
-        "shop_name":shop_name,
-        
+    profit = Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]
+    expenses = Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"]
+    revenue = Sales.objects.aggregate(Sum("s_price"))["s_price__sum"]
+    sales_qty = Sales.objects.aggregate(Sum("s_qty"))["s_qty__sum"]
+    profit = profit - expenses
+    shops = Shops.objects.all()
+    users = User.objects.all()
+    
+    profit_per_store = Sales.objects.values('s_shop').annotate(total_profit=Sum('s_profit'))
+    revenue_per_store = Sales.objects.values('s_shop').annotate(total_revenue=Sum('s_price'))
+    expenses_per_store = Expenses.objects.values('exp_shop').annotate(total_expenses=Sum('exp_amount'))
+    sales_per_store = Sales.objects.values('s_shop').annotate(total_sales=Sum('s_qty'))
+    sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty'))
+    sales = Sales.objects.all()
+    
+  
+    
+    sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty'))
+    
+    print(expenses_per_store)
+    data = {
+        "profit":f"Ksh {profit}" if profit is not None else profit,
+        "expenses":f"Ksh {expenses}" if expenses is not None else expenses,
+        "revenue":f"Ksh {revenue}" if revenue is not None else revenue,
+        "sales_qty":f"{sales_qty}" if sales_qty is not None else sales_qty,
+        "profit_per_store":profit_per_store, 
+        "revenue_per_store":revenue_per_store,
+        "expenses_per_store":expenses_per_store,
+        "sales_per_store":sales_per_store,
+        "sales":sales,
+        "shops":shops,
+        "users":users,
+       
+        "sales_per_store_per_product":sales_per_store_per_product
     }
+    
     return render(request,'firstapp/home.html',data)
+
+#=============dashboard filter================
+def home_filter(request):
+    
+    if request.method == "POST":
+        from_date = request.POST.get("dateFrom")
+        to_date = request.POST.get("dateTo")
+        shop_id = request.POST.get("shops")
+        #user_id = request.POST.get("user")
+        
+        
+       
+        try:
+            start_date = datetime.strptime(from_date, "%Y-%m-%d")
+            end_date = datetime.strptime(to_date, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            return JsonResponse({"error": "Invalid date format"}, status=400)
+
+        # Optional filtering conditions
+        sales_filtered = Sales.objects.filter(s_created__range=(start_date, end_date))
+        expenses_filtered = Expenses.objects.filter(exp_date__range=(start_date, end_date))
+
+        if shop_id:
+            
+            shop_name = Shops.objects.get(shop_id=shop_id).shop_name
+            sales_filtered = sales_filtered.filter(s_shop__shop_id=int(shop_id))
+            print(sales_filtered)
+            expenses_filtered = expenses_filtered.filter(exp_shop=shop_name)
+
+      
+
+        # Aggregates
+        profit = sales_filtered.aggregate(Sum("s_profit"))["s_profit__sum"] or 0
+        expenses = expenses_filtered.aggregate(Sum("exp_amount"))["exp_amount__sum"] or 0
+        print(expenses)
+        revenue = sales_filtered.aggregate(Sum("s_price"))["s_price__sum"] or 0
+        sales_qty = sales_filtered.aggregate(Sum("s_qty"))["s_qty__sum"] or 0
+        net_profit = profit - expenses
+
+        # Per-store/grouped aggregates
+        profit_per_store = sales_filtered.values('s_shop').annotate(total_profit=Sum('s_profit'))
+        revenue_per_store = sales_filtered.values('s_shop').annotate(total_revenue=Sum('s_price'))
+        expenses_per_store = (
+            expenses_filtered
+            .values('exp_shop')
+            .annotate(total_expenses=Sum('exp_amount'))
+        )
+        sales_per_store = sales_filtered.values('s_shop').annotate(total_sales=Sum('s_qty'))
+        sales_per_product = sales_filtered.values('s_name').annotate(total_sales=Sum('s_qty'))
+        shops = Shops.objects.all()
+        
+        print(expenses_per_store)
+
+        # Render HTML or return JSON/partial
+        data = {
+            "profit": net_profit,
+            "revenue": revenue,
+            "expenses": expenses,
+            "sales_qty": sales_qty,
+            "profit_per_store": profit_per_store,
+            "revenue_per_store": revenue_per_store,
+            "expenses_per_store": expenses_per_store,
+            "sales_per_store": sales_per_store,
+            "sales_per_product": sales_per_product,
+            "shops":shops,
+        }
+
+        return render(request, "firstapp/home_filter.html", data) 
+        
+    
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
 #===========simple counter =============
 @login_required
 def simple_counter(request):
+    
+    shops = Shops.objects.filter(shop_auth__username = request.user.username)
+    
+    
+    
+    shops_ids = [shop.shop_id for shop in shops]
     
     stocks = cache.get('stocks')
     
     if stocks is None:
         
-        stocks = Stocks.objects.all().order_by('-p_created')
+        stocks = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')
         cache.set("stocks",stocks)
     
     carts = Cart.objects.all().order_by('-pk')
@@ -369,23 +453,90 @@ def cashier(request):
 # =============renders visuals page =================
 @login_required
 def Charts(request):
+    sales = Sales.objects.values('s_name').annotate(total=Sum('s_price'))
+    expenses = Expenses.objects.values('exp_shop').annotate(total=Sum('exp_amount'))
+    stocks = Stocks.objects.values('p_name').annotate(total=Sum('p_qty'))
+    sales_by_date = (
+        Sales.objects.annotate(date=TruncDate("s_created"))
+        .values("date")
+        .annotate(total=Sum("s_price"))
+        .order_by("date")
+    )
     
-    sales_labels,sales_profits,sales_qty = sales_summ(Sales)
+    profit_by_date = (
+    Sales.objects.annotate(date=TruncDate("s_created"))
+    .values("date")
+    .annotate(total=Sum("s_profit"))
+    .order_by("date")
+)
+
+    # Time series expenses per day
+    expenses_by_date = (
+        Expenses.objects.annotate(date=TruncDate("exp_date"))
+        .values("date")
+        .annotate(total=Sum("exp_amount"))
+        .order_by("date")
+    )
+
+    # Time series stock changes per day (assuming you store changes)
+    stocks_by_date = (
+        Stocks.objects.annotate(date=TruncDate("p_created"))
+        .values("date")
+        .annotate(total=Sum("p_qty"))
+        .order_by("date")
+    )
     
-    stocks_labels,_,_,stocks_qty = stocks_summ(Stocks)
-    dates,qty= time_sales_summ(Sales)
-    dates = [date.month for date in dates ]
+    sales_by_date = [
+    {"date": entry["date"].strftime("%Y-%m-%d"), "total": entry["total"]}
+    for entry in sales_by_date
+    ]
     
-    contxt = {
-        "sales_labels": sales_labels,
-        "sales_qty":sales_qty,
-        "sales_profits":sales_profits,
-        "stocks_labels":stocks_labels,
-        "stocks_qty":stocks_qty,
-        "months":dates,
-        "monthly_qty":qty
+    profit_by_date = [
+    {"date": entry["date"].strftime("%Y-%m-%d"), "total": float(entry["total"] or 0)}
+    for entry in profit_by_date
+    ]
+
+    expenses_by_date = [
+        {"date": entry["date"].strftime("%Y-%m-%d"), "total": entry["total"]}
+        for entry in expenses_by_date
+    ]
+
+    stocks_by_date = [
+        {"date": entry["date"].strftime("%Y-%m-%d"), "total": entry["total"]}
+        for entry in stocks_by_date
+    ]
+    
+    now = timezone.now()
+    start_of_month = datetime(now.year, now.month, 1)
+
+    sales_data = Sales.objects.filter(s_created__gte=start_of_month).values('s_name').annotate(
+        sales=Sum('s_qty'),
+        revenue=Sum('s_price'),
+        profit=Sum('s_profit')
+    )
+
+    chart_data = [
+        {
+            "product": row["s_name"],
+            "sales": row["sales"] or 0,
+            "revenue": row["revenue"] or 0,
+            "profit": row["profit"] or 0
+        }
+        for row in sales_data
+    ]
+
+        
+    context = {
+            "sales": sales,
+            "expenses": expenses,
+            "stocks": stocks,
+            "sales_by_date": sales_by_date,
+            "profit_by_date": profit_by_date,
+            "expenses_by_date": expenses_by_date,
+            "stocks_by_date": stocks_by_date,
+            "sales_profit_revenue_data": chart_data,
     }
-    return render(request,'firstapp/reports.html',contxt)
+    return render(request, "firstapp/reports.html", context)
 
 #============= gets info of the selected item===========
 #============= item added to cart=======================
@@ -861,6 +1012,15 @@ def StocksTransfer(request):
         
 
         return JsonResponse(data,status=200)
+    
+#====low stocks notifications============
+def low_stocks_alert(request): 
+    
+    low_stock_items = Stocks.objects.filter(p_qty__lte=5)
+    data = list(low_stock_items.values("p_name", "p_qty"))
+    return JsonResponse({"low_stock": data})
+    
+    
     
 #=======display the shops details========
 

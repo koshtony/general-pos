@@ -2,217 +2,285 @@
  {% extends 'firstapp/base.html' %}       
         <!-- Main content -->
     {% block mainContent %}
+<style>
+     .my-indicator{
+    display:none;
+}
+.htmx-request .my-indicator{
+    display:inline;
+}
+.htmx-request.my-indicator{
+    display:inline;
+}
+</style>
         <section class="content">
+         
           <div class="container-fluid">
+
+            <form method="post" hx-post="{% url 'home-filter' %}" hx-target="#homeResult" hx-indicatot="#newPageSpinner">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+
+
+
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+
+                <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+              <label for="exampleFormControlInput1">📅From</label>
+              <input type="date" class="form-control" id="dateFrom" name="dateFrom">
+
+            </div>
+
+          </div>
+          <div class="col-6">
+              <div class="form-group">
+              <label for="exampleFormControlInput1">📅To</label>
+              <input type="date" class="form-control" id="dateTo" name="dateTo">
+
+            </div>
+
+          </div>
+          </div>  
+          
+        </div>
+
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            
+                <div class="form-group">
+              <label for="exampleFormControlInput1">🏪Shop</label>
+              <select class="form-control" id="shop" name="shop">
+                {% for shop in shops %}
+               
+                <option value="{{shop.shop_id}}">{{shop.shop_name}}</option>
+
+                {% endfor %}
+              </select> 
+
+            </div>
+
+          </div>
+
+           
+
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+
+            <label for="exampleFormControlInput1">🔍Filter</label>
+            <br>
+                
+            <button class="btn btn-warning" type="submit">
+               
+              <i class="fa fa-filter"></i>
+            Filter
+              
+            </button>
+
+          </div>
+           
+
+          
+             </div>
+
+             </form>
+            
+
+        
+            </div>
             <!-- Small boxes (Stat box) -->
+             <div class="col" id="homeResult">
             <div class="row">
              
-              <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-dark">
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12" style="height:100px;">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
                   <div class="inner">
-                    <h5>KES {{orders}}</h5>
-                    
-                    <p>Today profit</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-bag"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+              
+                 <h4>💹Profit</h4>
+                 <strong>{{profit}}</strong>
+
+                </div></div>
               </div>
-              <!-- ./col -->
-              <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-success">
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12"  style="height:100px;">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
                   <div class="inner">
-                    <h5>KES {{amount}}<sup style="font-size: 20px"></sup></h5>
-                    
-                    <p>Today Amount</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+              
+                  <h4>💳Expenses</h4>
+                 <strong>{{expenses}}</strong>
+
+                </div></div>
               </div>
-              <!-- ./col -->
-              <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-primary">
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-dark rounded">
                   <div class="inner">
-                    <h5>{{ sales }}</h5>
-                    
-                    <p>Today qty Sales</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                  </div>
-                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more<i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+              
+
+                    <h4>💵Revenue</h4>
+                 <strong>{{revenue}}</strong>
+                  
+
+                </div></div>
               </div>
-              <!-- ./col -->
-              <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
                   <div class="inner">
-                    <h5>{{ stocks }}</h5>
-                    
-                    <p>Stock Levels</p>
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                  </div>
-                  <a href="{% url 'firstapp-stocks' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+              
+                  <h4>🔢Qty</h4>
+                 <strong>{{sales_qty}}</strong>
+
+                </div></div>
               </div>
+              
+             
          
               
               <!-- ./col -->
             </div>
 
-            <div class="row">
+           
+
+            <div class="row" style=" height:800px;overflow-x:scroll; scrollbar-width:none;">
+
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Profit Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for profit in profit_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == profit.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ profit.total_profit }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
              
-              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden; scrollbar-width: none;">
-                <!-- small box -->
-                <div class="small-box bg-white">
-                  <div class="inner">
-                    <h4>Stocks Holdings</h4>
-                    <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="stocks">
-                      <thead class="bg-light">
-                        <tr>
-                          
-                          <th>Item</th>
-                          <th>Qty</th>
-                          
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for item in stocks_items %}
-                        <tr>
-                            <td>{{item.p_name}}</td>
-                            <td>{{item.total_qty}}</td>
-                        </tr>
-                        {% endfor %}
-
-                      </tbody>
-                    </table>
-                    
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                  </div>
-                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+             
+             
+                  </table>
+            
               </div>
-              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden; scrollbar-width: none;">
-                <!-- small box -->
-                <div class="small-box bg-white">
-                  <div class="inner">
-                    <h4>today sales</h4>
-                    <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x:hidden;  scrollbar-width: none;" data-page-length='5' id="today-sales">
-                      <thead class="bg-light">
-                        <tr>
-                          
-                          <th>Item</th>
-                          <th>Qty</th>
-                          <th>Amount</th>
-                          <th>Profit</th>
-                          
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for sale in today_sales %}
-                        <tr>
-                            <td>{{sale.s_name}}</td>
-                            <td>{{sale.total_qty}}</td>
-                            <td>{{sale.total_price}}</td>
-                            <td>{{sale.total_profit}}</td>
-                        </tr>
-                        {% endfor %}
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
 
-                      </tbody>
-                    </table>
-                    
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                  </div>
-                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden;scrollbar-width: none;">
-                <!-- small box -->
-                <div class="small-box bg-white">
-                  <div class="inner">
-                    <h4>MTD sales</h4>
-                   <table class="table align-middle mb-0 bg-white" style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="sales">
-                            <thead class="bg-light">
-                              <tr>
-                                
-                                <th>Item</th>
-                                <th>Qty</th>
-                                <th>Amount</th>
-                                <th>Profit</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for sale in month_sales %}
-                              <tr>
-                                  <td>{{sale.s_name}}</td>
-                                  <td>{{sale.total_qty}}</td>
-                                  <td>{{sale.total_price}}</td>
-                                  <td>{{sale.total_profit}}</td>
-                              </tr>
-                              {% endfor %}
-      
-                            </tbody>
-                         
-                    </table>
-                    
-                  </div>
-                  
-                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
+                <h6>Expenses Per Store</h6>
 
-              <div class="col-lg-3 col-12" style="height:650px;overflow-x: hidden;scrollbar-width: none;">
-                <!-- small box -->
-                <div class="small-box bg-white">
-                  <div class="inner">
-                   <h4>Shop Sales </h4>
-                    <table class="table align-middle mb-0 bg-white"  style="height:650px;overflow-x: scroll; scrollbar-width: none;" id="sales2">
-                      <thead class="bg-light">
-                        <tr>
-                          
-                          <th>Shop</th>
-                          <th>Qty</th>
-                          <th>Amount</th>
-                          <th>Profit</th>
-                          
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for sale in shop_sales %}
-                        <tr>
-                            <td>{{sale.s_shop}}</td>
-                            <td>{{sale.total_qty}}</td>
-                            <td>{{sale.total_price}}</td>
-                            <td>{{sale.total_profit}}</td>
-                        </tr>
-                        {% endfor %}
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
 
-                      </tbody>
-                    </table>
-                    
-                  </div>
-                  <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                  </div>
-                  <a href="{% url 'firstapp-sales' %}" class="small-box-footer">view more <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for expense in expenses_per_store %}
+
+                                   
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                     
+                        {% if shop.shop_name == expense.exp_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ expense.total_expenses }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
               </div>
+               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Revenue Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for revenue in revenue_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == revenue.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ revenue.total_revenue }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Qty Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for qty in  sales_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == qty.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ qty.total_sales }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+            </div>
+
             </div>
          <!--
               <div class="row">
@@ -364,29 +432,6 @@
 
           // update confirmed tasks 
 
-          $(document).ready(function() {
-$('#sales').DataTable( {
-    "lengthMenu": [[2,5], [2,5]]
-} );
-          })
-          $(document).ready(function() {
-$('#today-sales').DataTable( {
-    "lengthMenu": [[2,5], [2,5]]
-} );
-
-$(document).ready(function() {
-$('#sales2').DataTable( {
-    "lengthMenu": [[2,5], [2,5]]
-} );
-          })
-          })
-          
-
-          $(document).ready(function() {
-$('#stocks').DataTable( {
-    "lengthMenu": [[2,5], [2,5]]
-} );
-          })
 
 
 

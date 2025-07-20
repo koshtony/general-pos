@@ -4,33 +4,20 @@
 <style>
  
 
-canvas {
-  border: 1px dotted red;
-}
-
-.chart-container {
-  position: relative;
-  margin: auto;
-  height: 50vh;
-  width: 80vh;
-}
-
 </style>
-<a style="margin-left:20px" ><i class="fa fa-cogs"></i></a>
-&nbsp; &nbsp;
-<input type="color" id="colors"> <button onclick="applyCol();" type="button" class="btn btn-success">set color</button>
-<br><br>
 
-<div class="container" style="overflow-x: scroll; margin-top:0px width:450px">
+
+<div class="container" style="margin-top:0px;">
+ 
   <div class="row">
-    <div class="col">
-      <div id="c1" class="chart-container">
-        <canvas id="chart"></canvas>
+    <div class="col-lg-6 col-md-6 col-sm-12" style="overflow-x: scroll; scrollbar-width: none;	">
+      <div class="chart-container shadow p-3 mb-5 bg-white rounded">
+        <canvas id="salesLineChart"></canvas>
     </div>
     </div>
-    <div id="c2" class="col" style="">
-      <div class="chart-container">
-        <canvas id="chart3"></canvas>
+    <div class="col-lg-6 col-md-6 col-sm-12" style="overflow-x: scroll; scrollbar-width: none;	">
+      <div class="chart-container shadow p-3 mb-5 bg-white rounded">
+        <canvas id="profitChart"></canvas>
     </div>
     </div>
     
@@ -38,138 +25,178 @@ canvas {
   </div>
   <br>
   <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12" style="overflow-x: scroll; scrollbar-width: none;">
+      <div  class="chart-container shadow p-3 mb-5 bg-white rounded">
+        <canvas id="expensesLineChart"></canvas>
+    </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12" style="overflow-x: scroll; scrollbar-width: none;	">
+      <div class="chart-container shadow p-3 mb-5 bg-white rounded">
+        <canvas id="stockLineChart"></canvas>
+    </div>
+    </div>
     
-    <div class="container" id="c3" style="height:300px;  margin-bottom: 30px;">
-      <canvas id="chart2"></canvas>
+    
   </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12" style="overflow-x: scroll; scrollbar-width: none;	">
+      <div class="chart-container shadow p-3 mb-5 bg-white rounded">
+                    
+        <h6>Revenue and Profit by Product Current Month</h6>
+        <canvas id="productMetricsChart"></canvas>
+    </div>
+    </div>
   </div>
+ 
 </div>
-     
+      {{ sales_by_date|json_script:"sales-time" }}
+  {{ expenses_by_date|json_script:"expenses-time" }}
+  {{ stocks_by_date|json_script:"stocks-time" }}
+  {{ profit_by_date|json_script:"profit-time" }}
+  {{ sales_profit_revenue_data|json_script:"sales-profit-revenue" }}
+
+
+
       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
       <script>
-         var data = {
-  labels: {{ sales_labels | safe }},
-  datasets: [{
-    label: "current month sold qty",
-    backgroundColor: "green",
-    borderColor: "blue",
-    borderWidth: 2,
-    hoverBackgroundColor: "rgba(255,99,132,0.4)",
-    hoverBorderColor: "rgba(255,99,132,1)",
-    fill:false,
-    data:{{ sales_qty | safe }},
-  },
-    
 
-]
-};
-
-var options = {
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      stacked: true,
-      grid: {
-        display: true,
-        color: "rgba(255,99,132,0.2)"
-      }
-    },
-    x: {
-      grid: {
-        display: false
-      }
+         function parseTimeSeries(jsonId, labelField, valueField) {
+      const data = JSON.parse(document.getElementById(jsonId).textContent);
+      const labels = data.map(item => item[labelField]);
+      const values = data.map(item => item[valueField]);
+      return { labels, values };
     }
-  }
-};
+   const profitData = JSON.parse(document.getElementById("profit-time").textContent);
 
-new Chart('chart', {
-  type: 'bar',
-  options: options,
-  text: 'sales level',
-  data: data
-});
-// end of chart 1
-var data = {
-  labels: {{months | safe }},
-  datasets: [{
-    label: "monthly profit",
-    backgroundColor: "rgba(255,99,132,0.2)",
-    borderColor: "rgba(255,99,132,1)",
-    borderWidth: 2,
-    hoverBackgroundColor: "rgba(255,99,132,0.4)",
-    hoverBorderColor: "rgba(255,99,132,1)",
-    data:{{monthly_qty | safe }},
-  }]
-};
+const profitLabels = profitData.map(entry => entry.date);
+const profitValues = profitData.map(entry => entry.total);
 
-var options = {
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      stacked: true,
-      grid: {
-        display: true,
-        color: "rgba(255,99,132,0.2)"
+    const sales = parseTimeSeries("sales-time", "date", "total");
+    const expenses = parseTimeSeries("expenses-time", "date", "total");
+    const stocks = parseTimeSeries("stocks-time", "date", "total");
+
+  const metrics_data = JSON.parse(document.getElementById('sales-profit-revenue').textContent);
+
+const metrics_labels = metrics_data.map(item => item.product);
+const metrics_sales = metrics_data.map(item => item.sales);
+const metrics_revenue = metrics_data.map(item => item.revenue);
+const metrics_profit = metrics_data.map(item => item.profit);
+
+    new Chart(document.getElementById('salesLineChart'), {
+      type: 'line',
+      data: {
+        labels: sales.labels,
+        datasets: [{
+          label: 'Sales (Ksh)',
+          data: sales.values,
+          borderColor: 'rgba(75,192,192,1)',
+          fill: false
+        }]
       }
+    });
+
+    new Chart(document.getElementById('expensesLineChart'), {
+      type: 'line',
+      data: {
+        labels: expenses.labels,
+        datasets: [{
+          label: 'Expenses (Ksh)',
+          data: expenses.values,
+          borderColor: 'rgba(255,99,132,1)',
+          fill: false
+        }]
+      }
+    });
+
+    new Chart(document.getElementById('stockLineChart'), {
+      type: 'line',
+      data: {
+        labels: stocks.labels,
+        datasets: [{
+          label: 'Stock Quantity',
+          data: stocks.values,
+          borderColor: 'rgba(153,102,255,1)',
+          fill: false
+        }]
+      }
+    });
+
+    new Chart(document.getElementById("profitChart"), {
+    type: "line",
+    data: {
+        labels: profitLabels,
+        datasets: [{
+            label: "Profit Over Time",
+            data: profitValues,
+            borderColor: "blue",
+            backgroundColor: "rgba(0, 0, 255, 0.1)",
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+        }]
     },
-    x: {
-      grid: {
-        display: false
-      }
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Daily Profit'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
     }
-  }
-};
-
-new Chart('chart2', {
-  type: 'line',
-  options: options,
-  data: data
-});
-
-// end of chart 2
-var data = {
-  labels: {{stocks_labels | safe }},
-  datasets: [{
-    label: "stocks quantity",
-    backgroundColor: "rgba(255,99,132,0.2)",
-    borderColor: "rgba(255,99,132,1)",
-    borderWidth: 2,
-    hoverBackgroundColor: "rgba(255,99,132,0.4)",
-    hoverBorderColor: "rgba(255,99,132,1)",
-    data:{{stocks_qty | safe }}
-  }]
-};
-
-var options = {
-  maintainAspectRatio: false,
-  scales: {
-    y: {
-      stacked: true,
-      grid: {
-        display: true,
-        color: "rgba(255,99,132,0.2)"
-      }
-    },
-    x: {
-      grid: {
-        display: false
-      }
-    }
-  }
-};
-
-new Chart('chart3', {
-  type: 'horizontalBar',
-  options: options,
-  text:"stocks level",
-  data: data
 });
 
-function applyCol(){
-   document.getElementById("c1").style.backgroundColor = $("#colors").val()
-   document.getElementById("c2").style.backgroundColor = $("#colors").val()
-   document.getElementById("c3").style.backgroundColor = $("#colors").val()
-}
+new Chart(document.getElementById("productMetricsChart"), {
+        type: 'bar',
+        data: {
+            labels: metrics_labels,
+            datasets: [
+                {
+                    label: 'Revenue',
+                    data: metrics_revenue,
+                    backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                    stack: 'Stack 1',
+                },
+                {
+                    label: 'Profit',
+                    data: metrics_profit,
+                    backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                    stack: 'Stack 1',
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Revenue and Profit by Product Current Month'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+
+
+
+
+
+
+
+          
 
        </script>
     {% endblock mainContent %}

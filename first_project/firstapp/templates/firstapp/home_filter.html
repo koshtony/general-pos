@@ -1,0 +1,190 @@
+  <div class="row">
+             
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12" style="height:100px;">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
+                  <div class="inner">
+              
+                 <h4>💹Profit</h4>
+                 <strong>{{profit}}</strong>
+
+                </div></div>
+              </div>
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12" style="height:100px;">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
+                  <div class="inner">
+              
+                  <h4>💳Expenses</h4>
+                 
+                 <strong>{{expenses}}</strong>
+              
+
+                </div></div>
+              </div>
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-dark rounded">
+                  <div class="inner">
+              
+
+                    <h4>💵Revenue</h4>
+                 <strong>{{revenue}}</strong>
+                  
+
+                </div></div>
+              </div>
+               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="small-box bg-white shadow p-3 mb-5 bg-white rounded">
+                  <div class="inner">
+              
+                  <h4>🔢Qty</h4>
+                 <strong>{{sales_qty}}</strong>
+
+                </div></div>
+              </div>
+              
+             
+         
+              
+              <!-- ./col -->
+            </div>
+
+           
+
+            <div class="row" style=" height:500px;overflow-x:scroll; scrollbar-width:none;">
+
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Profit Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for profit in profit_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == profit.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ profit.total_profit }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Expenses Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for expense in expenses_per_store %}
+
+                                   
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                     
+                        {% if shop.shop_name == expense.exp_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ expense.total_expenses }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Revenue Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for revenue in revenue_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == revenue.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ revenue.total_revenue }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                
+
+                <h6>Qty Per Store</h6>
+
+                <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;">
+                  <thead class="bg-light">
+
+                    <th>Shop</th>
+                     <th>Amount</th>
+
+                  </thead>
+
+                  <tbody>
+                                    {% for qty in  sales_per_store %}
+                  <tr>
+                    <td>
+                      {% for shop in shops %}
+                        {% if shop.shop_id == qty.s_shop %}
+                          {{ shop.shop_name }}
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+                    <td> Ksh {{ qty.total_sales }}</td>
+                  </tr>
+                {% endfor %}
+                  </tbody>
+             
+             
+             
+                  </table>
+            
+              </div>
+            </div>
