@@ -61,7 +61,7 @@ def home(request):
     
     sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty'))
     
-    print(expenses_per_store)
+    
     data = {
         "profit":f"Ksh {profit}" if profit is not None else profit,
         "expenses":f"Ksh {expenses}" if expenses is not None else expenses,
@@ -86,10 +86,10 @@ def home_filter(request):
     if request.method == "POST":
         from_date = request.POST.get("dateFrom")
         to_date = request.POST.get("dateTo")
-        shop_id = request.POST.get("shops")
+        shop_id = request.POST.get("shop_ids")
         #user_id = request.POST.get("user")
         
-        
+        print(shop_id)
        
         try:
             start_date = datetime.strptime(from_date, "%Y-%m-%d")
