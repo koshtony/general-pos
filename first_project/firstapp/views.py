@@ -41,7 +41,8 @@ orders = [
 
 @login_required
 def home(request):
-    
+    if not request.user.is_superuser:
+        return redirect("simple-counter")
     profit = Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]
     expenses = Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"]
     revenue = Sales.objects.aggregate(Sum("s_price"))["s_price__sum"]
@@ -61,6 +62,12 @@ def home(request):
     
     sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty'))
     
+    low_stock_threshold = 10  # customize as needed
+
+    low_stocks = Stocks.objects.filter(p_qty__lt=low_stock_threshold).values(
+        'p_name', 'p_qty'
+    )
+    
     
     data = {
         "profit":f"Ksh {profit}" if profit is not None else profit,
@@ -74,7 +81,7 @@ def home(request):
         "sales":sales,
         "shops":shops,
         "users":users,
-       
+       "low_stocks":low_stocks,
         "sales_per_store_per_product":sales_per_store_per_product
     }
     
@@ -162,6 +169,8 @@ def simple_counter(request):
     
     shops_ids = [shop.shop_id for shop in shops]
     
+    print(shops_ids)
+    
     stocks = cache.get('stocks')
     
     if stocks is None:
@@ -169,7 +178,7 @@ def simple_counter(request):
         stocks = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')
         cache.set("stocks",stocks)
     
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     
     sub_total = sum([0 if cart.cart_stock == None else (cart.cart_stock.p_price * cart.qty) for cart in carts])
@@ -189,12 +198,14 @@ def add_to_cart(request,id):
     cart = Cart(
         cart_stock = stock ,
         price = stock.p_price,
-        order_code = "ORD"+str(datetime.now().strftime('%Y%m%d%H%M%S%f'))
+        adjust_price = stock.p_price,
+        order_code = "ORD"+str(datetime.now().strftime('%Y%m%d%H%M%S%f')),
+        user = request.user
     )
     
     cart.save()
     
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
@@ -216,10 +227,35 @@ def update_cart_qty(request,id):
     
     cart = Cart.objects.get(pk=id)
     cart.qty = new_qty
-    cart.price = new_qty * cart.cart_stock.p_price
+    cart.price = new_qty * cart.adjust_price
     cart.save()
     
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
+    
+    sub_total = sum([cart.price for cart in carts])
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    total = sub_total + vat
+     
+    
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    
+    return render(request,'firstapp/cart.html',contxt)
+
+@csrf_exempt
+def update_cart_price(request,id):
+    
+    new_price = float(request.POST.get("itemPrice"))
+    
+    
+    
+    cart = Cart.objects.get(pk=id)
+   
+    cart.adjust_price = new_price
+    cart.price = cart.qty * cart.adjust_price
+    cart.save()
+    
+    carts = carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
@@ -236,7 +272,7 @@ def del_cart_item(request,id):
     cart = Cart.objects.get(pk=id)
     cart.delete()
     
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
@@ -292,7 +328,7 @@ def search_by_desc(request):
 
 def print_cart_receipt(request):
     
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     sub_total = round(sum([cart.price for cart in carts]),2)
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
@@ -319,7 +355,7 @@ def print_cart_receipt(request):
 
 def cart_to_sales(request):
     
-    carts = Cart.objects.all()
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     msg = ''
     if len(carts)>0:
        
@@ -367,7 +403,7 @@ def cart_to_sales(request):
 def clear_cart(request):
     msg = ''
     try:
-        Cart.objects.all().delete()
+        carts = Cart.objects.filter(user = request.user).delete()
         
         msg+='<strong style="color:orange">SUCCESS: cart deleted successfully</strong>'
         
@@ -375,7 +411,7 @@ def clear_cart(request):
         
         msg += f'<strong style="color:green">FAILED: {err}</strong>'
         
-    carts = Cart.objects.all().order_by('-pk')
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
@@ -453,6 +489,9 @@ def cashier(request):
 # =============renders visuals page =================
 @login_required
 def Charts(request):
+    
+    if not request.user.is_superuser:
+        return redirect("simple-counter")
     sales = Sales.objects.values('s_name').annotate(total=Sum('s_price'))
     expenses = Expenses.objects.values('exp_shop').annotate(total=Sum('exp_amount'))
     stocks = Stocks.objects.values('p_name').annotate(total=Sum('p_qty'))

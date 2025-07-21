@@ -12,10 +12,49 @@
 .htmx-request.my-indicator{
     display:inline;
 }
+.stock-alert-banner {
+  background-color: #ffe4e1;
+  color: #b30000;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 2px solid #ff9999;
+}
+
+.stock-ok {
+  animation: pulse 2s infinite;
+  text-align: center;
+  color: green;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
 </style>
         <section class="content">
          
           <div class="container-fluid">
+              <br>
+            <div class="row">
+              <div id="stock-banner" class="stock-alert-banner">
+                  {% if low_stocks %}
+              
+                    <marquee behavior="scroll" direction="left">
+                      Low Stock Alert::
+                      {% for stock in low_stocks %}
+                       ⚠️⚠️ {{ stock.p_name }}: {{ stock.p_qty }} left &nbsp;&nbsp;&nbsp;
+                      {% endfor %}
+                    </marquee>
+                  {% else %}
+                    <p class="stock-ok">✅ All stocks are healthy</p>
+                  {% endif %}
+        </div>
+
+            </div>
+            <br>
 
             <form method="post" hx-post="{% url 'home-filter' %}" hx-target="#homeResult" hx-indicatot="#newPageSpinner">
 
