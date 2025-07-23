@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pwa',
     'ckeditor',
+    'mathfilters',
     'django.contrib.humanize'
 ]
 

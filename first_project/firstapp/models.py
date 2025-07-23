@@ -61,9 +61,11 @@ class Cart(models.Model):
     cart_stock = models.ForeignKey(Stocks,null=True,on_delete=models.SET_NULL)
     qty = models.FloatField(default=1.0,null=True)
     adjust_price = models.FloatField(default=0.0,null=True)
+    initial_price = models.FloatField(default=0.0,null=True)
     price = models.FloatField(default=0.0,null=True)
     order_code = models.CharField(max_length=100,null=True,blank=True)
-    user = models.ForeignKey(User,on_delete=models.PROTECT,null=True) 
+    user = models.ForeignKey(User,on_delete=models.PROTECT,null=True)
+    status = models.CharField(max_length=100,null=True,blank=True)
     
     def __str__(self):
         return self.cart_stock.p_name

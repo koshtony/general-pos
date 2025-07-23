@@ -170,23 +170,26 @@ def simple_counter(request):
     shops_ids = [shop.shop_id for shop in shops]
     
     print(shops_ids)
-    
+    '''
     stocks = cache.get('stocks')
     
     if stocks is None:
         
         stocks = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')
         cache.set("stocks",stocks)
-    
+    '''
+    stocks = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
+    initial_subtotal = sum([cart.initial_price for cart in carts])
+    sub_total = sum([0 if cart.cart_stock == None else (cart.price * cart.qty) for cart in carts])
+    vat = sum([0 if cart.cart_stock==None else cart.cart_stock.p_vat*(cart.price * cart.qty) for cart in carts])
     
-    sub_total = sum([0 if cart.cart_stock == None else (cart.cart_stock.p_price * cart.qty) for cart in carts])
-    vat = sum([0 if cart.cart_stock==None else cart.cart_stock.p_vat*(cart.cart_stock.p_price * cart.qty) for cart in carts])
+    discount = initial_subtotal - sub_total
     
     total = sub_total + vat
     
-    contxt = {"stocks":stocks,"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    contxt = {"stocks":stocks,"carts":carts,"total":total,"vat":vat,"sub_total":sub_total,"discount":discount,"initial_subtotal":initial_subtotal}
     
     return render(request,'firstapp/simple_counter.html',contxt)
 
@@ -195,8 +198,17 @@ def add_to_cart(request,id):
     
     stock = Stocks.objects.get(pk=id)
     
+    if stock.p_qty <= 0:
+        
+         return HttpResponse("<h4 style='color:red'>😔⚠️⚠️ Out of stock: Failed to proceed</h4>")
+     
+    elif len(Cart.objects.filter(cart_stock = stock,user = request.user)) > 0:
+        
+        return HttpResponse("<h4 style='color:red'>😔⚠️⚠️ Item already in cart: Failed to proceed</h4>")
+    
     cart = Cart(
         cart_stock = stock ,
+        initial_price = stock.p_price,
         price = stock.p_price,
         adjust_price = stock.p_price,
         order_code = "ORD"+str(datetime.now().strftime('%Y%m%d%H%M%S%f')),
@@ -207,13 +219,18 @@ def add_to_cart(request,id):
     
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
+    initial_subtotal = sum([cart.initial_price for cart in carts])
+    
     sub_total = sum([cart.price for cart in carts])
+    
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    discount = initial_subtotal - sub_total
     
     total = sub_total + vat
      
     
-    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total,"discount":discount,"initial_subtotal":initial_subtotal}
     
     
     
@@ -226,19 +243,28 @@ def update_cart_qty(request,id):
     
     
     cart = Cart.objects.get(pk=id)
+    if cart.cart_stock.p_qty < new_qty:
+        
+        return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Out of stock: Failed to proceed</strong>")
+    
     cart.qty = new_qty
     cart.price = new_qty * cart.adjust_price
+    cart.initial_price = new_qty * cart.cart_stock.p_price
     cart.save()
     
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
+    initial_subtotal = sum([cart.initial_price for cart in carts])
+    
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    discount = initial_subtotal - sub_total
     
     total = sub_total + vat
      
     
-    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total,"discount":discount,"initial_subtotal":initial_subtotal}
     
     return render(request,'firstapp/cart.html',contxt)
 
@@ -253,17 +279,22 @@ def update_cart_price(request,id):
    
     cart.adjust_price = new_price
     cart.price = cart.qty * cart.adjust_price
+    cart.initial_price = cart.qty * cart.cart_stock.p_price
     cart.save()
     
     carts = carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
+ 
+    initial_subtotal = sum([cart.initial_price for cart in carts])
     sub_total = sum([cart.price for cart in carts])
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
+    
+    discount = initial_subtotal - sub_total
     
     total = sub_total + vat
      
     
-    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total}
+    contxt = {"carts":carts,"total":total,"vat":vat,"sub_total":sub_total,"discount":discount,"initial_subtotal":initial_subtotal}
     
     return render(request,'firstapp/cart.html',contxt)
 
@@ -330,9 +361,11 @@ def print_cart_receipt(request):
     
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
+    initial_subtotal = sum([cart.initial_price for cart in carts])
     sub_total = round(sum([cart.price for cart in carts]),2)
     vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
     
+    discount = initial_subtotal - sub_total
     total = round(sub_total + vat,2)
      
     shop_name = carts[0].cart_stock.p_shop.shop_name
@@ -345,7 +378,9 @@ def print_cart_receipt(request):
         "shop_terms":shop_terms,
         "date":datetime.now(),
         "order_code":carts[0].order_code,
-        "user_names":f'{request.user.profile.first} {request.user.profile.surname}'
+        "user_names":f'{request.user.profile.first} {request.user.profile.surname}',
+        "discount":discount,
+        "initial_subtotal":initial_subtotal
         
         }
     
@@ -862,6 +897,7 @@ def stocksView(request):
     
     shops_ids = [shop.shop_id for shop in shops]
     
+    '''
     products = cache.get('stocks')
     
     
@@ -879,7 +915,11 @@ def stocksView(request):
            
             cache.set('stocks',products)
             
-            
+      '''
+    if request.user.is_superuser or request.user.is_staff:
+        products = Stocks.objects.all().order_by('-p_created')
+    else: 
+        products = Stocks.objects.filter(p_shop__shop_id__in = shops_ids).order_by('-p_created')      
         
     
             
@@ -1105,8 +1145,13 @@ def SalesListView(request):
     shops = Shops.objects.filter(shop_auth__username = request.user.username)
     
     shops_ids = [shop.shop_id for shop in shops]
+    
+    if request.user.is_superuser or request.user.is_staff:
+        sales =  Sales.objects.all().order_by('-s_created')
+    else: 
+        sales =  Sales.objects.filter(s_shop__shop_id__in=shops_ids).order_by('-s_created')
             
-    sales =  Sales.objects.filter(s_shop__shop_id__in=shops_ids).order_by('-s_created')
+    
     
     contxt = { 
                 "sales":sales
@@ -1115,6 +1160,7 @@ def SalesListView(request):
     
     
     return render(request,'firstapp/sales_list.html',contxt)
+
     
     
 

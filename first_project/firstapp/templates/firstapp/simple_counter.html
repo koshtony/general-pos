@@ -51,6 +51,7 @@
                     <th> category </th>
                     <th> Description </th>
                     <th>Price </th>
+                    <th>Qty </th>
                     <th> Status </th>
                     <th> sell </th>
                     </tr>
@@ -63,6 +64,7 @@
                         <td>{{stock.p_category}}</td> 
                         <td>{{stock.p_desc}}</td>
                         <td>{{stock.p_price}}</td>
+                        <td>{{stock.p_qty}}</td>
                         {% if stock.p_qty > 5 %}
                         <td><strong style="color:green">high</strong></td>
                         {% else %}
@@ -92,14 +94,23 @@
 
                 
                 <div class="col-sm-3">
-                <a class="btn btn-light" hx-get="{% url 'print-cart-receipt' %}" hx-target="#receiptResp">
+                <a class="btn btn-light" hx-get="{% url 'print-cart-receipt' %}" hx-target="#receiptResp" id="receipt-btn">
                 <i class="fa fa-print"></i>Receipt
                 </a>
                 <div id="receiptResp" style="display:none">
                 </div>
             </div>
-            <div class="col-sm-3">
-                <a class="btn btn-light" hx-get="{% url 'cart-to-sales' %}" hx-target="#sellResp" hx-indicator='#checkoutSpin'>
+           
+            <div class="col-sm-3" >
+                <a class="btn btn-light" onclick="checkoutAndReceipt()">
+                <i class="fa fa-check"></i>checkout 
+                </a>
+                <div class="spinner-border htmx-indicator" id="checkoutSpin" role="status">
+                    <span class="sr-only">adding..</span>
+                </div>
+            </div>
+             <div class="col-sm-3" style="display:none">
+                <a class="btn btn-light" hx-get="{% url 'cart-to-sales' %}" hx-target="#sellResp" hx-indicator='#checkoutSpin' id="check-out-btn">
                 <i class="fa fa-check"></i>checkout 
                 </a>
                 <div class="spinner-border htmx-indicator" id="checkoutSpin" role="status">
@@ -158,6 +169,10 @@
                                   <td>Ksh {{sub_total}}</td>
                               </tr>
                               <tr style="font-weight: bold; font-size: 16px;">
+                                  <td>Discount</td>
+                                  <td>Ksh {{discount}}</td>
+                              </tr>
+                              <tr style="font-weight: bold; font-size: 16px;">
                                   <td>VAT(16%)</td>
                                   <td>Ksh {{vat}}</td>
                               </tr>
@@ -174,6 +189,16 @@
 
 </div>
 
+
+<script>
+
+    function checkoutAndReceipt(){
+         
+         document.getElementById("receipt-btn").click()
+         document.getElementById("check-out-btn").click()
+
+    }
+</script>
 
 
 {% endblock mainContent %}
