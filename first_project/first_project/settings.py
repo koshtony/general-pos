@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -24,10 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^8ykmy*#mg$kd1v61eg4t1_**ov^-cl82z@!8qn=fkl3*v)mmc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+SITE_ID = 1 
 
 # Application definition
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'admin_interface', 
     'colorfield', 
     'django.contrib.admin',
+     'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -92,7 +94,7 @@ WSGI_APPLICATION = 'first_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -104,14 +106,14 @@ DATABASES = {
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'railway',
-       'USER': 'postgres',
-       'PASSWORD': '326a45*4ABF1BD2-ADee44GF6BgF*gc4',
-       'HOST': 'roundhouse.proxy.rlwy.net',
-       'PORT': '15166',
+       'NAME': os.getenv("DB_NAME"),
+       'USER': os.getenv("DB_USER"),
+       'PASSWORD': os.getenv("DB_PASSWORD"),
+       'HOST': os.getenv("DB_HOST"),
+       'PORT': os.getenv("DB_PORT"),
    }
 }
-'''
+
 
 
 

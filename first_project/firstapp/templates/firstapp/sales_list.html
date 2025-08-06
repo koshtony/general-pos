@@ -18,7 +18,70 @@
 <button style="margin-left:10px; border:0px" type="button"  data-toggle="modal" data-target="#dateModal">
  <i class="fa fa-filter"></i>by date
 </button>
+&nbsp;&nbsp;
 <a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
+&nbsp;&nbsp;
+<a id="receiptsTab" class="btn btn-warning" style="margin-left:650" onclick="showReceiptModal();"><i class="fa fa-print"></i>Receipts</a>
+
+<!-- ====================Receipt Modal======================= -->
+
+
+<div class="modal fade bd-example-modal-lg" id="receiptsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false" >
+  <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#24a0ed">
+        <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
+        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="width:100%;height:500px;overflow-y:scroll">
+
+         <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;" id="sales">
+        <thead class="bg-light">
+          <tr>
+            
+            <th>Order Code</th>
+            <th>Qty</th>
+            <th>Date</th>
+            <th>Download</th>
+         
+        </thead>
+        <tbody id="receipts">
+          {% for order in orders %}
+          <tr>
+
+            <td>{{order.s_order_code}}</td>
+            <td>{{order.no_orders}}</td>
+            <td>{{order.date}}</td>
+            <td>
+              <a CLASS="btn btn-info" hx-get="{% url 'gen-sales-receipt' order.s_order_code %}" hx-target="#receiptResp">
+                <i class="fa fa-download"></i>Download
+              </a>
+            </td>
+
+          </tr>
+
+          {% endfor %}
+
+        </tbody>
+
+        
+      </table>
+        
+       
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <!-- ================filter Modal============== -->
 
@@ -94,7 +157,8 @@
   </div>
 
   <!-- ============================================================================================================-->
-
+<div id="receiptResp" style="display:none">
+                </div>
 <div class="col" style="margin-left:10px;overflow-x:scroll;">
     <input style="margin-left:620px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
     <br><br>
@@ -410,6 +474,10 @@ function summary(){
 }
 
 summary()
+
+function showReceiptModal(){
+  $("#receiptsModal").modal("show")
+}
 
 
 
