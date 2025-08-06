@@ -14,7 +14,7 @@ from .views import StocksCreateView,\
                         cashier,addPaid,addContact,getContact,sendSms,postMpesaMessage,scanCounter,\
                             simple_counter,add_to_cart,del_cart_item,search_by_scan,search_by_name,search_by_category,\
                                 search_by_desc,print_cart_receipt,cart_to_sales,clear_cart,transfer_data,filter_sales_by_date,home_filter,\
-                                    low_stocks_alert,update_cart_price
+                                    low_stocks_alert,update_cart_price,gen_sales_receipt
             
 urlpatterns = [
 
@@ -86,6 +86,7 @@ urlpatterns = [
                     path('home_filter/',views.home_filter,name="home-filter"),
                     path('low_stocks_alert/',views.low_stocks_alert,name="low-stocks-alert"),
                     path('update_cart_price/<int:id>/',views.update_cart_price,name="update-cart-price"),
+                    path('gen_sales_receipt/<str:order_num>/',views.gen_sales_receipt,name="gen-sales-receipt"),
                     
                     
                     

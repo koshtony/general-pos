@@ -13,8 +13,7 @@
         margin: 0 auto;
         width: 44mm;
         background: #FFF;
-        
-    }
+   }
       h1{
         font-size: 1.5em;
         color: #222;
@@ -126,13 +125,13 @@
 								<td class="Rate"><h4>Sub Total</h4></td>
 							</tr>
               <strong>===========================================</strong><br>
-                           {% for cart in carts %}
+                           {% for sale in sales %}
 							<tr class="service" style="font-size:12px">
-								<td class="tableitem"><p class="itemtext">{{cart.cart_stock.p_name}}</p></td>
-								<td class="tableitem"><p class="itemtext">{{cart.qty}}</p></td>
-                <td class="tableitem"><p class="itemtext">KES {{cart.initial_price | intcomma}}</p></td>
-                <td class="tableitem"><p class="itemtext">KES {{ cart.initial_price|sub:cart.price|intcomma }}</p></td>
-								<td class="tableitem"><p class="itemtext">KES {{cart.price | intcomma}}</p></td>
+								<td class="tableitem"><p class="itemtext">{{sale.s_name}}</p></td>
+								<td class="tableitem"><p class="itemtext">{{sale.s_qty}}</p></td>
+                <td class="tableitem"><p class="itemtext">KES {{sale.s_negatives | intcomma}}</p></td>
+                <td class="tableitem"><p class="itemtext">KES {{ cart.s_negatives|sub:sale.s_price|intcomma }}</p></td>
+								<td class="tableitem"><p class="itemtext">KES {{sale.s_price | intcomma}}</p></td>
 							</tr>
 
                             {% endfor %}
@@ -218,7 +217,7 @@
 } 
 printDiv()
 
-//location.reload()
+location.reload()
 
        
       

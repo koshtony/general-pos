@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse,HttpResponse
 from django.contrib import messages
-from django.db.models import Sum,IntegerField
+from django.db.models import Sum,IntegerField,Count
 from django.db.models.functions import Cast
 from django.db.models.functions import TruncDate
 from django.views.generic import ListView,CreateView,UpdateView,DetailView
@@ -43,19 +43,19 @@ orders = [
 def home(request):
     if not request.user.is_superuser:
         return redirect("simple-counter")
-    profit = Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"]
-    expenses = Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"]
-    revenue = Sales.objects.aggregate(Sum("s_price"))["s_price__sum"]
-    sales_qty = Sales.objects.aggregate(Sum("s_qty"))["s_qty__sum"]
+    profit = Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"] or 0
+    expenses = Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] or 0
+    revenue = Sales.objects.aggregate(Sum("s_price"))["s_price__sum"] or 0
+    sales_qty = Sales.objects.aggregate(Sum("s_qty"))["s_qty__sum"] or 0
     profit = profit - expenses
     shops = Shops.objects.all()
     users = User.objects.all()
     
-    profit_per_store = Sales.objects.values('s_shop').annotate(total_profit=Sum('s_profit'))
-    revenue_per_store = Sales.objects.values('s_shop').annotate(total_revenue=Sum('s_price'))
-    expenses_per_store = Expenses.objects.values('exp_shop').annotate(total_expenses=Sum('exp_amount'))
-    sales_per_store = Sales.objects.values('s_shop').annotate(total_sales=Sum('s_qty'))
-    sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty'))
+    profit_per_store = Sales.objects.values('s_shop').annotate(total_profit=Sum('s_profit')) 
+    revenue_per_store = Sales.objects.values('s_shop').annotate(total_revenue=Sum('s_price')) 
+    expenses_per_store = Expenses.objects.values('exp_shop').annotate(total_expenses=Sum('exp_amount')) 
+    sales_per_store = Sales.objects.values('s_shop').annotate(total_sales=Sum('s_qty')) 
+    sales_per_store_per_product = Sales.objects.values('s_name').annotate(total_sales=Sum('s_qty')) 
     sales = Sales.objects.all()
     
   
@@ -105,8 +105,8 @@ def home_filter(request):
             return JsonResponse({"error": "Invalid date format"}, status=400)
 
         # Optional filtering conditions
-        sales_filtered = Sales.objects.filter(s_created__range=(start_date, end_date))
-        expenses_filtered = Expenses.objects.filter(exp_date__range=(start_date, end_date))
+        sales_filtered = Sales.objects.filter(s_created__gte = start_date, s_created__lte = end_date + timedelta(days=1))
+        expenses_filtered = Expenses.objects.filter(exp_date__gte = start_date, exp_date__lte = end_date + timedelta(days=1))
 
         if shop_id:
             
@@ -372,6 +372,7 @@ def print_cart_receipt(request):
     shop_cat = carts[0].cart_stock.p_shop.shop_cat
     shop_loc = carts[0].cart_stock.p_shop.shop_loc
     shop_terms = carts[0].cart_stock.p_shop.shop_terms
+    name = carts[0].user.first_name + " " + carts[0].user.last_name
     contxt = {
         "carts":carts,"total":total,"vat":vat,"sub_total":sub_total,
         "shop_name":shop_name,"shop_loc":shop_loc,"shop_cat":shop_cat,
@@ -391,6 +392,7 @@ def print_cart_receipt(request):
 def cart_to_sales(request):
     
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
+    order_code = "ORD"+str(datetime.now().strftime('%Y%m%d%H%M%S%f'))
     msg = ''
     if len(carts)>0:
        
@@ -404,11 +406,11 @@ def cart_to_sales(request):
                     s_qty = cart.qty,
                     s_price = cart.price,
                     s_cost = cart.cart_stock.p_cost * cart.qty,
-                    s_negatives = 0,
+                    s_negatives = cart.initial_price,
                     s_profit = cart.price - cart.cart_stock.p_cost * cart.qty,
                     s_type = "cash",
                     s_status = "sold",
-                    s_order_code = cart.order_code,
+                    s_order_code = order_code,
                     s_creator = request.user
                     
                     
@@ -1147,19 +1149,65 @@ def SalesListView(request):
     shops_ids = [shop.shop_id for shop in shops]
     
     if request.user.is_superuser or request.user.is_staff:
+        
         sales =  Sales.objects.all().order_by('-s_created')
+        orders = Sales.objects.\
+            annotate(date=TruncDate('s_created')).values('s_order_code','date').\
+            annotate(no_orders=Count('s_order_code')).order_by('s_created').order_by('-date')
+        
     else: 
         sales =  Sales.objects.filter(s_shop__shop_id__in=shops_ids).order_by('-s_created')
+        orders = Sales.objects.filter(shop_auth__username = request.user.username).\
+            annotate(date=TruncDate('s_created')).values('s_order_code','date').\
+            annotate(no_orders=Count('s_order_code')).order_by('s_created').order_by('-date')
             
     
-    
+    print(orders)
     contxt = { 
-                "sales":sales
+                "sales":sales,
+                "orders":orders
               
               }
     
     
     return render(request,'firstapp/sales_list.html',contxt)
+
+
+def gen_sales_receipt(request,order_num): 
+    
+    
+    
+    
+        sales = Sales.objects.filter(s_order_code = order_num)
+    
+
+        
+        shop_name = sales[0].s_shop.shop_name
+        shop_term = sales[0].s_shop.shop_terms
+        shop_loc = sales[0].s_shop.shop_loc
+        shop_cat = sales[0].s_shop.shop_cat
+        name  = sales[0].s_creator.first_name + " " + sales[0].s_creator.last_name
+        
+        initial_subtotal = sum([sale.s_negatives for sale in sales])
+        sub_total = round(sum([sale.s_price for sale in sales]),2)
+        vat = 0
+        discount = initial_subtotal - sub_total
+        total = round(sub_total + vat,2)
+        
+    
+        contxt = {
+            "sales":sales,"total":total,"vat":vat,"sub_total":sub_total,
+            "shop_name":shop_name,"shop_loc":shop_loc,"shop_cat":shop_cat,
+            "shop_term":shop_term,
+            "order_code":order_num,
+            "discount":discount,
+            "name":name
+        }
+        
+        
+    
+        return render(request,'firstapp/sales_receipt.html',contxt)	
+    
 
     
     
@@ -1189,8 +1237,15 @@ def filter_sales_by_date(request):
         date1 = request.POST.get("date1")
         date2 = request.POST.get("date2")
         
+        try:
+            date1 = datetime.strptime(date1, "%Y-%m-%d")
+            date2 = datetime.strptime(date2, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            return JsonResponse({"error": "Invalid date format"}, status=400)
+
+        
         if date1!='' or date1!='':
-            sales = Sales.objects.filter(s_created__gte=date1).filter(s_created__lte=date2)
+            sales = Sales.objects.filter(s_created__gte=date1,s_created__lte=date2+timedelta(days=1))
             
         else: 
             
