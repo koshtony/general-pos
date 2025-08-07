@@ -18,7 +18,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.utils import timezone
 from .models import Stocks,Shops,Sales,Expenses,Location,\
-Tasks,Debts,Paid,Contacts,mpesaPay,Cart
+Tasks,Debts,Paid,Contacts,mpesaPay,Cart,Organisation,Invoices,Customers
 from posUsers.models import Profile
 from .sms import send_text
 from .mpesa import stk_push,c_2_b_reg_url,sim_c_2_b,get_token
@@ -43,6 +43,7 @@ orders = [
 def home(request):
     if not request.user.is_superuser:
         return redirect("simple-counter")
+    
     profit = Sales.objects.aggregate(Sum("s_profit"))["s_profit__sum"] or 0
     expenses = Expenses.objects.aggregate(Sum("exp_amount"))["exp_amount__sum"] or 0
     revenue = Sales.objects.aggregate(Sum("s_price"))["s_price__sum"] or 0
@@ -389,6 +390,122 @@ def print_cart_receipt(request):
     
     return render(request,'firstapp/simple_receipt.html',contxt)
 
+def gen_print_invoice(request,i_code):
+    
+    invoices = Invoices.objects.filter(i_code = i_code)
+    
+    customer = Customers.objects.get(cus_ref_code = i_code)
+    
+    organisation = Organisation.objects.first()
+    
+    if len(invoices)>0:
+        
+        date = invoices[0].i_created
+        
+        
+        
+    sub_total = sum([invoice.i_price for invoice in invoices])
+    vat = 0
+    total = sub_total + vat
+    total_discount = sum([invoice.i_discount for invoice in invoices])
+    intial_subtotal = sub_total + total_discount
+    
+    contxt = {"invoices":invoices,"date":date,
+              "customer":customer,"organisation":organisation,"i_code":i_code,
+              "sub_total":sub_total,"vat":vat,"total":total,
+              "total_discount":total_discount,"intial_subtotal":intial_subtotal
+              
+              }   
+  
+    
+    
+    
+    
+    return render(request,'firstapp/gen_invoice.html',contxt)
+
+def cart_to_invoice(request):
+    
+    carts = Cart.objects.filter(user = request.user).order_by('-pk')
+    order_code = "INV"+str(datetime.now().strftime('%Y%m%d%H%M%S%f'))
+    
+    if request.method == "POST":
+        
+        customer_name = request.POST.get("customer-name")
+        customer_email = request.POST.get("customer-email")
+        customer_phone = request.POST.get("customer-phone")
+        customer_address = request.POST.get("customer-address")
+        customer_other_details = request.POST.get("customer-other-details")
+        
+        print("start to save customer")
+        
+        try:
+            
+            customer = Customers(
+                
+                cus_name = customer_name,
+                cus_email = customer_email,
+                cus_phone = customer_phone,
+                cus_address = customer_address,
+                cus_details = customer_other_details,
+                cus_creator = request.user,
+                cus_created = timezone.now(),
+                cus_ref_code = order_code
+            )
+            
+            customer.save()
+            
+            print("customer saved")
+            
+        except Exception as e:
+            
+            msg = "<strong style='color:red'>FAILED: "+str(e)+"</strong>"
+            
+            print(msg)
+            
+            
+        
+    
+    
+    if len(carts)>0:
+       
+            
+        try:
+            for cart in carts:
+                invoice = Invoices(
+                    i_serial = cart.cart_stock.p_serial,
+                    i_name = cart.cart_stock.p_name,
+                    i_shop = cart.cart_stock.p_shop,
+                    i_qty = cart.qty,
+                    i_price = cart.price,
+                    i_cost = cart.cart_stock.p_cost * cart.qty,
+                    i_discount = cart.price - cart.initial_price,
+                    i_profit = cart.price - cart.cart_stock.p_cost * cart.qty,
+                    i_type = "cash",
+                    i_status = "Invoiced",
+                    i_code = order_code,
+               
+                    i_creator = request.user,
+                    i_created = timezone.now()
+                )
+                
+                invoice.save()
+                stock = cart.cart_stock
+                stock.p_qty = stock.p_qty-cart.qty
+                stock.save()
+                cart.delete()
+                
+            msg = "<strong style='color:green'>Invoiced Successfully</strong>"   
+                
+        except Exception as e:
+            
+            msg = "<strong style='color:red'>FAILED: "+str(e)+"</strong>"
+    else: 
+        
+        msg = "<strong style='color:red'>😔⚠️⚠️ No items in cart: Failed to proceed</strong>"    
+        
+    return HttpResponse(msg) 
+                
+
 def cart_to_sales(request):
     
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
@@ -488,7 +605,7 @@ def transfer_data(request):
         
         
         
-        
+
         
         
         
@@ -1315,17 +1432,14 @@ def OrdersView(request):
 
 
 def InvoiceView(request):
-    data = request.GET.get("htmlData")
-    dir= os.path.dirname(os.path.abspath(__file__))
-    if data != None:
-        data = '<html>'+data + '</html>'
-        html_path =  dir+"/static/firstapp/exports/invoice.html"
-        with open(html_path,"w+") as file:
+   
+    invoices = Invoices.objects.order_by('-i_created')
+    
+    contxt = {
+        "invoices":invoices
+    }
         
-            file.write(data)
-
-        
-    return render(request,'firstapp/invoice.html')
+    return render(request,'firstapp/invoice.html',contxt)
 
 @login_required
 def financeView(request):
@@ -1665,6 +1779,10 @@ def DebtPay(request):
             mssg = {"info":"pay failed"}
             
         return JsonResponse(mssg,status=200)
+    
+    
+
+
 
 
     

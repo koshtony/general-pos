@@ -92,6 +92,30 @@ class Sales(models.Model):
     class Meta:
         
         verbose_name_plural= "Sales"
+        
+class Invoices(models.Model):
+    i_id = models.AutoField(primary_key=True)
+    i_code = models.CharField(max_length=100)
+    i_serial = models.CharField(max_length=100)
+    i_name = models.CharField(max_length=100)
+    i_shop = models.CharField(max_length=100)
+    i_qty = models.FloatField()
+    i_price = models.FloatField()
+    i_cost = models.FloatField()
+    i_discount = models.FloatField()
+    i_profit = models.FloatField()
+    i_type = models.CharField(max_length=100)
+    i_status = models.CharField(max_length=100)
+    i_shop = models.ForeignKey(Shops,on_delete=models.PROTECT,null=True)
+    i_created = models.DateTimeField(default= timezone.now)
+    i_creator = models.ForeignKey(User,on_delete=models.PROTECT)
+    
+    def __str__(self):
+        return self.i_name
+    
+    class Meta:
+        
+        verbose_name_plural= "Invoices"
 
 class Paid(models.Model):
 
@@ -217,3 +241,41 @@ class Contacts(models.Model):
     class Meta:
         
         verbose_name_plural= "Customer Contacts"
+        
+        
+class Organisation(models.Model):
+    
+    org_id = models.AutoField(primary_key=True)
+    org_name = models.CharField(max_length=100)
+    org_details = models.TextField()
+    org_creator = models.ForeignKey(User,on_delete=models.PROTECT)
+    org_created = models.DateTimeField(default=timezone.now)
+    org_summary_notes = models.TextField(null=True,blank=True)
+    logo = models.ImageField(default = 'product.jpg' , upload_to='orgs_images')
+    
+    
+    
+    class Meta:
+        
+        verbose_name_plural= "Organisation"
+        
+        
+class Customers(models.Model):
+    
+    cus_id = models.AutoField(primary_key=True)
+    cus_name = models.CharField(max_length=100)
+    cus_phone = models.CharField(max_length=100)
+    cus_email = models.CharField(max_length=100)
+    cus_address = models.CharField(max_length=100)
+    cus_details = models.TextField()
+    cus_creator = models.ForeignKey(User,on_delete=models.PROTECT)
+    cus_created = models.DateTimeField(default=timezone.now)
+    
+    cus_ref_code = models.CharField(max_length=100,null=True,blank=True)  
+    
+    def __str__(self):
+        return self.cus_name 
+    
+    class Meta:
+        
+        verbose_name_plural= "Customers"
