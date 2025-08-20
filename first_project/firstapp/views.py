@@ -242,11 +242,19 @@ def update_cart_qty(request,id):
     new_qty = float(request.POST.get("itemQty"))
     
     
-    
     cart = Cart.objects.get(pk=id)
     if cart.cart_stock.p_qty < new_qty:
         
-        return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Out of stock: Failed to proceed</strong>")
+        
+        cart.delete()
+        
+        return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Out of stock: Failed to proceed..Item Cleared refresh</strong>")
+    
+    if new_qty <= 0:
+        
+        cart.delete()
+        
+        return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Invalid quantity: Failed to proceed..Item Cleared Refresh</strong>")
     
     cart.qty = new_qty
     cart.price = new_qty * cart.adjust_price
@@ -516,6 +524,11 @@ def cart_to_sales(request):
             
         try:
             for cart in carts:
+                if cart.cart_stock.p_qty < cart.qty:
+                    return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Out of stock: Failed to proceed</strong>")
+                
+                if cart.qty <= 0:
+                    return HttpResponse("<strong style='color:red'>😔⚠️⚠️ Invalid quantity: Failed to proceed</strong>")
                 sale = Sales(
                     s_serial = cart.cart_stock.p_serial,
                     s_name = cart.cart_stock.p_name,
