@@ -1,231 +1,198 @@
-{% extends 'firstapp/base.html' %}  
-{% load crispy_forms_filters %}
-{% load humanize %}
-{% load mathfilters %}
-
-{% block mainContent %}
-
-<style>
-
-    #invoice-POS{
-        box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
-        padding:2mm;
-        margin: 0 auto;
-        width: 44mm;
-        background: #FFF;
-   }
-      h1{
-        font-size: 1.5em;
-        color: #222;
-      }
-      h2{font-size: .9em;}
-      h3{
-        font-size: 1.2em;
-        font-weight: 300;
-        line-height: 2em;
-      }
-      p{
-        font-size: .7em;
-        color: #666;
-        line-height: 1.2em;
-      }
-       
-      #top, #mid,#bot{ /* Targets all id with 'col-' */
-        border-bottom: 1px solid #EEE;
-      }
-      
-      #top{min-height: 100px;}
-      #mid{min-height: 80px;} 
-      #bot{ min-height: 50px;}
-      
-      #top .logo{
-        //float: left;
-          height: 60px;
-          width: 60px;
-          background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
-          background-size: 60px 60px;
-      }
-      .clientlogo{
-        float: left;
-          height: 60px;
-          width: 60px;
-          background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
-          background-size: 60px 60px;
-        border-radius: 50px;
-      }
-      .info{
-        display: block;
-        //float:left;
-        margin-left: 0;
-      }
-      .title{
-        float: right;
-      }
-      .title p{text-align: right;} 
-      table{
-        width: 100%;
-        border-collapse: collapse;
-      }
-      td{
-        //padding: 5px 0 5px 15px;
-        //border: 1px solid #EEE
-      }
-      .tabletitle{
-        //padding: 5px;
-        font-size: .5em;
-        background: #EEE;
-      }
-      .service{border-bottom: 1px solid #EEE;}
-      .item{width: 24mm;}
-      .itemtext{font-size: .5em;}
-      
-      #legalcopy{
-        margin-top: 5mm;
-      }
-      
-        
-        
-      }
-</style>
-
-
-<div id="invoice-POS">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt #{{order_code}}</title>
+    {% load humanize %}
+    {% load mathfilters %}
     
-    <div id="top">
-      <div class="logo"></div>
-      <div class="info"> 
+    <!-- Barcode Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
+
+    <style>
+        /* --- POS Print Core Styles --- */
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace; /* Essential for alignment */
+            color: #000;
+        }
+
+        #receipt-content {
+            width: 76mm; /* Standard 80mm paper. Use 54mm for 58mm paper. */
+            margin: 0 auto;
+            padding: 2mm;
+        }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .bold { font-weight: bold; }
+
+        .header h2 { margin: 5px 0; font-size: 1.1rem; text-transform: uppercase; }
+        .header p { margin: 2px 0; font-size: 0.8rem; }
+
+        .divider {
+            border-bottom: 1px dashed #000;
+            margin: 3mm 0;
+        }
+
+        /* --- Table Styling --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        th {
+            text-align: left;
+            border-bottom: 1px solid #000;
+            padding-bottom: 1mm;
+        }
+
+        td {
+            padding: 1.5mm 0;
+            vertical-align: top;
+        }
+
+        .item-name { display: block; font-weight: bold; text-transform: uppercase; }
+        .item-meta { font-size: 0.7rem; color: #333; }
+
+        /* --- Financial Summary --- */
+        .summary-table { margin-top: 2mm; }
+        .summary-table td { padding: 0.5mm 0; }
+        .grand-total {
+            font-size: 1.1rem;
+            border-top: 1px solid #000;
+            padding-top: 1.5mm !important;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            margin-top: 5mm;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        .barcode-container { margin: 4mm 0; }
+        svg#barcode { max-width: 100%; height: 40px; }
+
+        /* --- Print Optimization --- */
+        @media print {
+            @page { margin: 0; size: auto; }
+            body { margin: 0; }
+            #receipt-content { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="receipt-content">
+    
+    <!-- Header Section -->
+    <div class="header text-center">
         <h2>{{shop_name}}</h2>
-        <h4>
-          {{shop_cat}}
-        </h4>
-      </div><!--End Info-->
-    </div><!--End InvoiceTop-->
-    
-    <div id="mid">
-      <div class="info">
-        <h2>Contact Info</h2>
-        <p> 
-           {{shop_loc | safe}}
-        
-            Date   : {{date}}</br>
-        </p>
-       
-      </div>
-    </div><!--End Invoice Mid-->
-    
-    <div id="bot">
+        <p>{{shop_cat}}</p>
+        <p>{{shop_loc | safe}}</p>
+    </div>
 
-					<div id="table">
-						<table>
-							<tr class="tabletitle">
-								<td class="item"><h4>Item</h4></td>
-								<td class="Hours"><h4>Qty</h4></td>
-                <td class="Hours"><h4>initial Price</h4></td>
-                <td class="Hours"><h4>Discount</h4></td>
-								<td class="Rate"><h4>Sub Total</h4></td>
-							</tr>
-              <strong>===========================================</strong><br>
-                           {% for sale in sales %}
-							<tr class="service" style="font-size:12px">
-								<td class="tableitem"><p class="itemtext">{{sale.s_name}}</p></td>
-								<td class="tableitem"><p class="itemtext">{{sale.s_qty}}</p></td>
-                <td class="tableitem"><p class="itemtext">KES {{sale.s_negatives | intcomma}}</p></td>
-                <td class="tableitem"><p class="itemtext">KES {{ cart.s_negatives|sub:sale.s_price|intcomma }}</p></td>
-								<td class="tableitem"><p class="itemtext">KES {{sale.s_price | intcomma}}</p></td>
-							</tr>
+    <div class="divider"></div>
 
-                            {% endfor %}
-           
-							
-                            <tr class="tabletitle">
-                <br>
-                <br>
-               
-							
-								<td class="Rate"><h4>Subtotal</h4></td>
-								<td class="payment"><h4>KES {{initial_subtotal | intcomma}}</h4></td>
-							</tr>
-               <tr class="tabletitle">
-							
-								<td class="Rate"><h4>Discount</h4></td>
-								<td class="payment"><h4>KES {{discount | intcomma}}</h4></td>
-							</tr>
-							<tr class="tabletitle">
-							
-								<td class="Rate"><h4>VAT</h4></td>
-								<td class="payment"><h4>KES {{vat | intcomma}}</h4></td>
-							</tr>
+    <!-- Transaction Meta -->
+    <div class="info" style="font-size: 0.75rem;">
+        <p><strong>DATE:</strong> {{date}}</p>
+        <p><strong>ORDER:</strong> #{{order_code}}</p>
+        <p><strong>CASHIER:</strong> {{name}}</p>
+    </div>
 
-							<tr class="tabletitle">
-								<td></td>
-								<td class="Rate"><h4>Total</h4></td>
-								<td class="payment"><h4>KES {{total | intcomma}}</h4></td>
-							</tr>
- 
-						</table>
-            <strong>===========================================</strong><br>
-					</div><!--End Table-->
+    <div class="divider"></div>
 
-					<div id="legalcopy">
-						<p class="legal"><strong>Terms & Conditions</strong><br>
-              {{shop_terms | safe}}
-						</p>
-					</div>
-        <div>
+    <!-- Items Table -->
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 50%;">ITEM</th>
+                <th style="width: 15%;">QTY</th>
+                <th class="text-right" style="width: 35%;">TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>
+                    <span class="item-name">{{sale.s_name}}</span>
+                    <span class="item-meta">@{{sale.s_negatives|intcomma}}</span>
+                </td>
+                <td>{{sale.s_qty|floatformat:0}}</td>
+                <td class="text-right">{{sale.s_price|intcomma}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-          <svg id="barcode">
+    <div class="divider"></div>
 
-          </svg>
-          <br>
+    <!-- Summary Section -->
+    <table class="summary-table">
+        <tr>
+            <td colspan="2" class="text-right">SUBTOTAL:</td>
+            <td class="text-right">KES {{initial_subtotal|intcomma}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-right">DISCOUNT:</td>
+            <td class="text-right">-{{discount|intcomma}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-right">VAT:</td>
+            <td class="text-right">{{vat|intcomma}}</td>
+        </tr>
+        <tr class="grand-total bold">
+            <td colspan="2" class="text-right">TOTAL:</td>
+            <td class="text-right">KES {{total|intcomma}}</td>
+        </tr>
+    </table>
 
-        <strong id="orderCode" style="margin-left:0px;display:none;">{{order_code}}</strong>
+    <!-- Footer Section -->
+    <div class="footer">
+        <div class="barcode-container">
+            <svg id="barcode"></svg>
+            <p style="margin-top: 1mm;">{{order_code}}</p>
+        </div>
 
-      </div>
+        <div class="terms" style="text-align: left; border-top: 1px dashed #ccc; padding-top: 2mm;">
+            <strong>TERMS & CONDITIONS:</strong><br>
+            {{shop_terms | safe}}
+        </div>
 
-       <strong>===========================================</strong><br>
-       <strong>Served By:|_| {{name}}<br>
-       <h4>Thank You </h4><br>
-       <strong>===========================================</strong>
+        <div style="margin-top: 5mm;">
+            <p class="bold">*** THANK YOU FOR YOUR BUSINESS ***</p>
+            <p>Please come again!</p>
+             <p style="font-size: 0.5rem; margin-top: 3mm;">POWERED BY Koshtech-systems</p>
+        </div>
+    </div>
 
-				</div><!--End InvoiceBot-->
-  </div>
- 
-  
+</div>
+
 <script>
+    // 1. Generate the Barcode on load
+    window.onload = function() {
+        try {
+            JsBarcode("#barcode", "{{order_code}}", {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 1.2,
+                height: 35,
+                displayValue: false
+            });
+        } catch (e) {
+            console.error("Barcode Error:", e);
+        }
 
-  
-  let text = document.getElementById("orderCode").innerHTML
-
-  JsBarcode("#barcode",text,{
-
-    width:`1`,
-    height:40,
-  
-  });
- 
-
-  function printDiv() { 
-
-    let divContents = document.getElementById("invoice-POS").innerHTML; 
-    let a = window.open('', '', 'height=500, width=500'); 
-    a.document.write('<html>'); 
-    a.document.write(divContents); 
-    a.document.write('</body></html>'); 
-    a.document.close(); 
-    a.print(); 
-
-} 
-printDiv()
-
-location.reload()
-
-       
-      
-            
-
-
-
-        
-
+        // 2. Trigger Print Dialog
+        window.print();
+    };
 </script>
-{% endblock mainContent %}
+
+</body>
+</html>

@@ -33,6 +33,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
     'firstapp.apps.FirstappConfig',
     'posUsers.apps.PosusersConfig',
     'smart_centre.apps.SmartCentreConfig',
@@ -185,6 +186,98 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOGIN_REDIRECT_URL = 'firstapp-home'
 
 LOGIN_URL = 'login'
+
+
+UNFOLD = {
+    "SITE_TITLE": "Shop System",
+    "SITE_HEADER": "Administration",
+    "SIDEBAR": {
+        "show_search": True,
+        "navigation": [
+            {
+                "title": "Inventory",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Stocks/Products",
+                        "icon": "inventory_2",
+                        "link": "/admin/firstapp/stocks/",
+                    },
+                    {
+                        "title": "Shops",
+                        "icon": "store",
+                        "link": "/admin/firstapp/shops/",
+                    },
+                ],
+            },
+            {
+                "title": "Sales & Billing",
+                "items": [
+                    {
+                        "title": "Direct Sales",
+                        "icon": "receipt_long",
+                        "link": "/admin/firstapp/sales/",
+                    },
+                    {
+                        "title": "Invoices",
+                        "icon": "description",
+                        "link": "/admin/firstapp/invoices/",
+                    },
+                    {
+                        "title": "Customer Paid",
+                        "icon": "payments",
+                        "link": "/admin/firstapp/paid/",
+                    },
+                ],
+            },
+            {
+                "title": "Finance",
+                "items": [
+                    {
+                        "title": "Mpesa Payments",
+                        "icon": "account_balance_wallet",
+                        "link": "/admin/firstapp/mpesapay/",
+                    },
+                    {
+                        "title": "Expenses",
+                        "icon": "money_off",
+                        "link": "/admin/firstapp/expenses/",
+                    },
+                    {
+                        "title": "Debts",
+                        "icon": "running_with_errors",
+                        "link": "/admin/firstapp/debts/",
+                    },
+                ],
+            },
+            {
+                "title": "CRM & Users",
+                "items": [
+                    {
+                        "title": "Customers",
+                        "icon": "groups",
+                        "link": "/admin/firstapp/customers/",
+                    },
+                    {
+                        "title": "Tasks",
+                        "icon": "assignment",
+                        "link": "/admin/firstapp/tasks/",
+                    },
+                ],
+            },
+            {
+                "title": "Settings",
+                "items": [
+                    {
+                        "title": "Organisation",
+                        "icon": "corporate_fare",
+                        "link": "/admin/firstapp/organisation/",
+                    },
+                ],
+            },
+        ],
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

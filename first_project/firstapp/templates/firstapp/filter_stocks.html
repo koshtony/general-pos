@@ -1,42 +1,39 @@
+{% load humanize %}
 {% for product in products %}
+<tr class="product-row">
+    <td class="font-weight-bold text-dark">
+        {{product.p_name}}
+        <div class="extra-small text-muted d-md-none">{{product.p_category}}</div>
+    </td>
+    <td><span class="badge badge-light border font-weight-normal">{{product.p_category}}</span></td>
+    <td class="font-weight-bold text-primary">Ksh {{product.p_price|intcomma}}</td>
+    <td class="text-center">{{product.p_qty}}</td>
+    <td>
+        {% if product.p_qty < 5 %}
+        <span class="stock-badge text-danger" style="background: #fff1f2; padding: 5px 10px; border-radius: 20px; font-size: 0.75rem;">Low Stock</span>
+        {% else %}
+        <span class="stock-badge text-success" style="background: #ecfdf5; padding: 5px 10px; border-radius: 20px; font-size: 0.75rem;">Active</span>
+        {% endif %}
+    </td>
+    <td class="text-right">
+        <!-- The Sell Button for POS -->
+        <button hx-get="{% url 'add-to-cart' product.p_id %}" 
+                hx-target="#sellResp" 
+                class="btn btn-primary btn-sm shadow-sm" 
+                style="border-radius: 8px;">
+            <i class="fa fa-plus"></i> Add
+        </button>
+        
+        <!-- The Edit Button -->
+        <a href="{% url 'firstapp-updatestocks' product.p_id %}" class="btn btn-light btn-sm border ml-1" style="border-radius: 8px;">
+            <i class="fa fa-edit"></i>
+        </a>
+    </td>
+</tr>
+{% empty %}
 <tr>
-  
-  <td>
-    {{product.p_name}}
-  </td>
-  <td>
-      {{product.p_category}}
+    <td colspan="6" class="text-center py-4 text-muted small">
+        <i class="fa fa-search mr-2"></i> No products match your search.
     </td>
-    <td>
-      {{product.p_desc}}
-    </td>
-    <td>
-      {{product.p_qty}}
-    </td>
-    <td>
-      {{product.p_price}}
-    </td>
-    <td>
-      {{product.p_cost}}
-    </td>
-  <td>
-    {% if product.p_qty < 5 %}
-    <span class="badge badge-danger rounded-pill d-inline">low</span>
-    {% else %}
-       <span class="badge badge-success rounded-pill d-inline">Active</span>
-    {% endif %}
-  </td>
-  <td>{{product.p_shop.shop_name}}</td>
-  <td>{{product.p_creator}}</td>
-  <td>
-    <a href="{% url 'firstapp-updatestocks' product.p_id %}">
-    <button type="button" class="btn btn-link btn-sm btn-rounded">
-      Edit
-    </button>
-    </a>
-  </td>
-  <td>
-    {{product.p_created}}
-  </td>
 </tr>
 {% endfor %}

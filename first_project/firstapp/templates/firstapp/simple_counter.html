@@ -1,281 +1,361 @@
-{% extends 'firstapp/base.html' %}  
-
-
+{% extends 'firstapp/base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block mainContent %}
 <style>
+    :root {
+        --pos-bg: #f8fafc;
+        --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        --accent-color: #3b82f6;
+    }
 
-    .htmx-indicator{
-        opacity:0;
-        transition: opacity 500ms ease-in;
+    body { background-color: var(--pos-bg); }
+
+    /* --- Responsive Search Bar --- */
+    .search-container {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: var(--card-shadow);
+        border: 1px solid #e2e8f0;
     }
-    .htmx-request .htmx-indicator{
-        opacity:1
+    .search-input {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px !important;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        margin-bottom: 5px;
     }
-    .htmx-request.htmx-indicator{
-        opacity:1
+
+    /* --- Catalog Area --- */
+    .catalog-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        height: 70vh; /* Reduced height for better visibility of the cart below on mobile */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
- .modal-backdrop.fade.show{
-   display:none;
- }
+    @media (min-width: 992px) {
+        .catalog-card { height: 75vh; }
+    }
+    .scroll-body { overflow-y: auto; flex-grow: 1; }
+
+    /* --- Cart Sidebar (Sticky only on Large Screens) --- */
+    .cart-sidebar {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 30px;
+    }
+    
+    @media (min-width: 992px) {
+        .cart-sidebar {
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 20px;
+        }
+    }
+
+    .receipt-body { flex-grow: 1; overflow-y: auto; padding: 12px; min-height: 200px; }
+    .receipt-footer { padding: 15px; background: #f8fafc; border-radius: 0 0 12px 12px; border-top: 1px solid #e2e8f0; }
+
+    /* --- Financials --- */
+    .grand-total {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 2px solid #e2e8f0;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    /* --- Buttons --- */
+    .btn-pos { border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+    
+    /* --- Hide non-essential columns on small mobile --- */
+    @media (max-width: 576px) {
+        .hide-mobile { display: none; }
+        .product-name-cell { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+    }
+
+  /* Styling to ensure clarity in all themes */
+    .total-payable-card {
+        transition: transform 0.2s;
+    }
+    
+    @media (max-width: 576px) {
+        .total-payable-card h3 {
+            font-size: 1.4rem; /* Scale down slightly for very small screens */
+        }
+    }
+    
+    .font-weight-bolder {
+        font-weight: 900 !important;
+    }
+    
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.6) !important;
+    } 
 </style>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="invoiceModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Invoice Details</h5>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div id="invoiceCreateResp" style="margin-right:40px;">
-
-      </div>
-      <div>
-        <div id="invoiceCreateSpinner" class="spinner-border htmx-indicator" role="status" style="margin-left:150px; display:none">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div class="modal-body">
-        <form hx-post="{% url 'cart-to-invoice' %}" hx-target="#invoiceCreateResp" hx-indicatot="#invoiceCreateSpinner" hx-swap="innerHTML" method="post">
-            {% csrf_token %}
-          <div class="form-group">
-            <label for="customer-name" class="col-form-label">Customer Name/Company Name:</label>
-            <input type="text" class="form-control" name="customer-name" required>
-          </div>
-          <div class="form-group">
-            <label for="customer-name" class="col-form-label">Email:</label>
-            <input type="email" class="form-control" name="customer-email" required>
-          </div>
-           <div class="form-group">
-            <label for="customer-phone" class="col-form-label">Phone:</label>
-            <input type="text" class="form-control" name="customer-phone" required>
-          </div>
-          <div class="form-group">
-            <label for="customer-address" class="col-form-label">Address:</label>
-            <input type="text" class="form-control" name="customer-address" required>
-          </div>
-          <div class="form-group">
-            <label for="customer-other-details" class="col-form-label">Other Details:</label>
-            <textarea class="form-control" name="customer-other-details" required></textarea>
-          </div>
-          <div class="form-group">
-           <button type="submit" class="btn btn-primary">Save</button>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container">
-
-    <div class="row row-cols row-cols-lg-2">
-        <div class="col">
-            <div class="row">
-            <div class="d-flex">
-                <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-scan' %}" hx-target="#filterResp" hx-indicator="#searchSpinner"  hx-trigger="change" name="serial" placeholder="scan" >
-                </div>
-                <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-name' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="name" placeholder="search by name">
-                </div>
-                <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-category' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="category" placeholder="search by category">
-                </div>
-                <div class="col-3">
-                    <input class="form-control" type="text" hx-post="{% url 'search-by-desc' %}" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:1s" name="desc"  placeholder="search by description">
-                </div>
+<!-- Invoice Modal -->
+<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title font-weight-bold">🧾 Invoice Details</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
             </div>
-        </div>
-
-        <br>
-        <div id="searchSpinner" class="htmx-indicator">
-        <div class="spinner-grow spinner-grow-sm" ></div>
-        <p>Searching..</p>
-        </div>
-           
-        <div style="height:800px; overflow-y:scroll">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th> category </th>
-                    <th> Description </th>
-                    <th>Price </th>
-                    <th>Qty </th>
-                    <th> Status </th>
-                    <th> sell </th>
-                    </tr>
-                </thead>
-
-                <tbody id="filterResp">
-                    {% for stock in stocks %}
-                    <tr>
-                        <td>{{stock.p_name}}</td>
-                        <td>{{stock.p_category}}</td> 
-                        <td>{{stock.p_desc}}</td>
-                        <td>{{stock.p_price}}</td>
-                        <td>{{stock.p_qty}}</td>
-                        {% if stock.p_qty > 5 %}
-                        <td><strong style="color:green">high</strong></td>
-                        {% else %}
-                        <td><strong style="color:red">high</strong></td>
-                        {% endif %}
-                       <td><a hx-get="{% url 'add-to-cart' stock.pk %}" hx-target="#sellResp" class="btn btn-primary">sell
-
-
-                       </a>
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-
-            </table>
-        </div>
-        
-        </div>
-
-        <div class="col">
-            <h4>Cart Items </h4>
-            <div id="dispResp">
-            </div>
-            <div class="row">
-
-                
-                <div class="col-sm-3">
-                <a class="btn btn-light" hx-get="{% url 'print-cart-receipt' %}" hx-target="#receiptResp" id="receipt-btn">
-                <i class="fa fa-print"></i>Receipt
-                </a>
-                <div id="receiptResp" style="display:none">
-                </div>
-            </div>
-           
-            <div class="col-sm-3" >
-                <a class="btn btn-light" onclick="checkoutAndReceipt()">
-                <i class="fa fa-check"></i>checkout 
-                </a>
-                <div class="spinner-border htmx-indicator" id="checkoutSpin" role="status">
-                    <span class="sr-only">adding..</span>
-                </div>
-            </div>
-
-             <div class="col-sm-3" style="display:none">
-                <a class="btn btn-light" hx-get="{% url 'cart-to-sales' %}" hx-target="#sellResp" hx-indicator='#checkoutSpin' id="check-out-btn">
-                <i class="fa fa-check"></i>checkout 
-                </a>
-                <div class="spinner-border htmx-indicator" id="checkoutSpin" role="status">
-                    <span class="sr-only">adding..</span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a class="btn btn-light" hx-get="{% url 'clear-cart' %}" hx-target="#sellResp" hx-indicator='#clearSpin'>
-                <i class="fa fa-trash"></i>clear
-                </a>
-                <div class="spinner-border htmx-indicator" id="clearSpin" role="status">
-                    <span class="sr-only">del..</span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a class="btn btn-warning" id="invoice-btn" onclick="showInvoiceModal()">
-                <i class="fa fa-credit-card"></i>Invoice
-                </a>
-                <div class="spinner-border htmx-indicator" id="invoiceSpin" role="status">
-                    <span class="sr-only">del..</span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a class="btn btn-light" onclick="location.reload()">
-                <i class="fa fa-refresh"></i>Refresh
-                </a>
-               
-            </div>
-            </div>
-            <br>
-
-            <div class="col" id="sellResp">
-                <div class="row" style="height:500px; overflow-y:scroll;" id="nosalesRep">
-                    <table class="table">
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Actual Price</th>
-                              <th>Changed Price</th>
-                              <th>Qty</th>
-                              <th>Total</th>
-                              <th>Remove </th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        {% for cart in carts %}
-                          <tr>
-                              <td>{{cart.cart_stock.p_name}}</td>
-                              <td>{{cart.cart_stock.p_price}}</td>
-                              <td><input type="number" value="{{cart.adjust_price}}" hx-post="{% url 'update-cart-price' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemPrice" class="form-control" style="width:100px; height:50px;"></td>
-                              <td><input type="number" value="{{cart.qty}}" hx-post="{% url 'update-cart-qty' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemQty" class="form-control" style="width:100px; height:50px;"></td>
-                              <td>Ksh {{cart.price}}</td>
-                              <td> <a class="btn btn-danger" hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp"><i class="fa fa-trash"></i></a></td>
-                          </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                  </div>
-                   <div class="row">
-                      <table>
-                          <tbody>
-                              <tr style="font-weight: bold; font-size: 16px;">
-                                  <td>Subtotal</td>
-                                  <td>Ksh {{sub_total}}</td>
-                              </tr>
-                              <tr style="font-weight: bold; font-size: 16px;">
-                                  <td>Discount</td>
-                                  <td>Ksh {{discount}}</td>
-                              </tr>
-                              <tr style="font-weight: bold; font-size: 16px;">
-                                  <td>VAT(16%)</td>
-                                  <td>Ksh {{vat}}</td>
-                              </tr>
-                              <tr style="font-weight: bold; font-size: 16px;">
-                                  <td>Total</td>
-                                  <td>Ksh {{total}}</td>
-                              </tr>
-                          </tbody>
-                      </table>
+            <div id="invoiceCreateResp" class="px-3 pt-2"></div>
+            <div class="modal-body p-3 p-md-4">
+                <form hx-post="{% url 'cart-to-invoice' %}" hx-target="#invoiceCreateResp" hx-indicator="#invoiceCreateSpinner" hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label class="small font-weight-bold">CUSTOMER NAME</label>
+                            <input type="text" class="form-control" name="customer-name" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="small font-weight-bold">EMAIL</label>
+                            <input type="email" class="form-control" name="customer-email" required>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label class="small font-weight-bold">PHONE</label>
+                            <input type="text" class="form-control" name="customer-phone" required>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label class="small font-weight-bold">ADDRESS</label>
+                            <input type="text" class="form-control" name="customer-address" required>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label class="small font-weight-bold">NOTES</label>
+                        <textarea class="form-control" name="customer-other-details" rows="2"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <div id="invoiceCreateSpinner" class="spinner-border text-primary htmx-indicator mb-2"></div>
+                        <button type="submit" class="btn btn-primary btn-block btn-pos py-2">PROCESS INVOICE</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        </div>
-    </div> 
-
+    </div>
 </div>
 
+<div class="container-fluid py-2 py-md-4">
+    <div class="row">
+        <!-- LEFT: Catalog -->
+        <div class="col-12 col-lg-7 mb-4">
+            <div class="search-container mb-3">
+                <div class="row no-gutters">
+                    <div class="col-6 col-md-3 px-1">
+                        <input class="form-control search-input bg-light border-0" type="text" hx-get="{% url 'search-by-scan' %}" name="serial" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="change" placeholder="Scan Item">
+                    </div>
+                    <div class="col-6 col-md-3 px-1">
+                        <input class="form-control search-input bg-light border-0" type="text" hx-get="{% url 'search-by-name' %}" name="name" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:500ms" placeholder="Name">
+                    </div>
+                    <div class="col-6 col-md-3 px-1">
+                        <input class="form-control search-input bg-light border-0" type="text" hx-get="{% url 'search-by-category' %}" name="category" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:500ms" placeholder="Category">
+                    </div>
+                    <div class="col-6 col-md-3 px-1">
+                        <input class="form-control search-input bg-light border-0" type="text" hx-get="{% url 'search-by-desc' %}" name="desc" hx-target="#filterResp" hx-indicator="#searchSpinner" hx-trigger="keyup changed delay:500ms" placeholder="Description">
+                    </div>
+                </div>
+                <div id="searchSpinner" class="htmx-indicator text-center mt-1">
+                    <div class="spinner-border spinner-border-sm text-primary"></div>
+                </div>
+            </div>
+
+            <div class="catalog-card shadow-sm">
+                <div class="scroll-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light sticky-top">
+                                <tr class="extra-small text-muted font-weight-bold">
+                                    <th>PRODUCT</th>
+                                    <th class="hide-mobile">CAT</th>
+                                    <th>PRICE</th>
+                                    <th>STOCK</th>
+                                    <th class="text-right">ADD</th>
+                                </tr>
+                            </thead>
+                            <tbody id="filterResp">
+                                {% for stock in stocks %}
+                                <tr class="product-row">
+                                    <td class="product-name-cell">
+                                        <div class="font-weight-bold text-dark small">{{stock.p_name}}</div>
+                                        <div class="extra-small text-muted d-md-none">{{stock.p_category}}</div>
+                                    </td>
+                                    <td class="hide-mobile small">{{stock.p_category}}</td>
+                                    <td class="font-weight-bold text-primary small text-nowrap">Ksh {{stock.p_price|intcomma}}</td>
+                                    <td>
+                                        {% if stock.p_qty > 5 %}
+                                        <span class="badge badge-pill badge-success">High</span>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-danger">Low</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        <button hx-get="{% url 'add-to-cart' stock.pk %}" hx-target="#sellResp" class="btn btn-primary btn-sm rounded-circle px-2">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Cart Sidebar -->
+       <!-- RIGHT: Cart Sidebar -->
+<div class="col-12 col-lg-5">
+    <div class="cart-sidebar">
+        <!-- Static Header -->
+        <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white" style="border-radius: 12px 12px 0 0;">
+            <h6 class="font-weight-bold mb-0">🛒 Current Order</h6>
+            <button class="btn btn-sm btn-light border" onclick="location.reload()"><i class="fa fa-sync-alt"></i></button>
+        </div>
+
+        <!-- REFRESHABLE SECTION START -->
+        <div class="receipt-body" id="sellResp">
+            <!-- Items Loop -->
+            <div class="cart-items-list">
+                {% for cart in carts %}
+                <div class="card border-0 mb-2 shadow-sm bg-light" style="border-radius: 10px;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <div class="font-weight-bold text-dark extra-small">{{cart.cart_stock.p_name}}</div>
+                            <a hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp" class="text-danger pointer"><i class="fa fa-times-circle"></i></a>
+                        </div>
+                        <div class="row align-items-center no-gutters">
+                            <div class="col-4 pr-1">
+                                <label class="extra-small text-muted mb-0" style="font-size: 10px;">PRICE</label>
+                                <input type="number" value="{{cart.adjust_price}}" hx-post="{% url 'update-cart-price' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemPrice" class="form-control form-control-sm border-0 shadow-sm text-center px-1">
+                            </div>
+                            <div class="col-3 px-1">
+                                <label class="extra-small text-muted mb-0" style="font-size: 10px;">QTY</label>
+                                <input type="number" value="{{cart.qty}}" hx-post="{% url 'update-cart-qty' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemQty" class="form-control form-control-sm border-0 shadow-sm text-center px-1">
+                            </div>
+                            <div class="col-5 text-right font-weight-bold text-primary extra-small pt-3">
+                                Ksh {{cart.price|intcomma}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5 text-muted opacity-50">
+                    <i class="fa fa-shopping-basket fa-3x mb-2"></i>
+                    <p>Your cart is empty</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- TOTALS SECTION (Inside sellResp so it updates) -->
+            {% if carts %}
+        <div class="summary-section mt-4 pt-3" style="border-top: 2px dashed #cbd5e1;">
+    <!-- Subtotal Line -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted small font-weight-bold" style="letter-spacing: 0.5px;">SUBTOTAL</span>
+        <span class="font-weight-bold text-dark">Ksh {{sub_total|intcomma}}</span>
+    </div>
+
+    <!-- Discount Line -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center">
+            <span class="text-danger small font-weight-bold" style="letter-spacing: 0.5px;">DISCOUNT</span>
+            <span class="badge badge-pill ml-2 px-2" style="background: rgba(244, 63, 94, 0.1); color: #f43f5e; font-size: 0.65rem;">PROMO</span>
+        </div>
+        <span class="font-weight-bold text-danger">- Ksh {{discount|intcomma}}</span>
+    </div>
+
+    <!-- Tax Line -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted small font-weight-bold" style="letter-spacing: 0.5px;">VAT (16%)</span>
+        <span class="text-muted font-weight-bold">Ksh {{vat|intcomma}}</span>
+    </div>
+
+    <!-- Total Payable High-Contrast Card -->
+    <div class="total-payable-card p-3 rounded-lg shadow-sm" style="background: #1e293b; border-radius: 12px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="text-left">
+                <p class="mb-0 text-uppercase font-weight-bold text-white-50" style="font-size: 0.65rem; letter-spacing: 1px;">Gross Amount</p>
+                <h5 class="mb-0 font-weight-bold text-white">Total Payable</h5>
+            </div>
+            <div class="text-right">
+                <!-- Using a contrasting color (Warning Gold) for the final number -->
+                <h3 class="mb-0 font-weight-bolder text-warning">Ksh {{total|intcomma}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+            {% endif %}
+        </div>
+        <!-- REFRESHABLE SECTION END -->
+
+        <!-- Action Buttons -->
+        <div class="receipt-footer">
+            <div class="row mt-1 no-gutters">
+                <div class="col-6 pr-1">
+                    <a href="{% url 'print-cart-receipt' %}" class="btn btn-outline-info btn-block btn-pos mb-2" download>
+                        <i class="fa fa-download"></i> Receipt
+                    </a>
+                </div>
+                <div class="col-6 pl-1">
+                    <button class="btn btn-warning btn-block btn-pos text-white mb-2" onclick="showInvoiceModal()">
+                        <i class="fa fa-file-invoice"></i> Invoice
+                    </button>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-success btn-block btn-pos py-3 shadow mb-2" onclick="checkoutAndReceipt()">
+                        <i class="fa fa-check-circle"></i> COMPLETE SALE
+                    </button>
+                </div>
+                <div class="col-12 text-center mt-1">
+                     <button class="btn btn-link btn-sm text-danger" hx-get="{% url 'clear-cart' %}" hx-target="#sellResp" hx-confirm="Are you sure you want to clear the cart?">
+                        <i class="fa fa-trash"></i> Empty Cart
+                    </button>
+                </div>
+            </div>
+            <a hx-get="{% url 'cart-to-sales' %}" hx-target="#sellResp" id="check-out-btn" style="display:none"></a>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
 
 <script>
-
     function checkoutAndReceipt(){
-         
-         document.getElementById("receipt-btn").click()
          document.getElementById("check-out-btn").click()
-
     }
-
 
     function showInvoiceModal(){
        $('#invoiceModal').modal('show')
     }
 
     document.body.addEventListener('htmx:afterSwap', function (e) {
-    if (e.detail.target.id === "invoiceCreateResp") {
-      // Manually update another element
-      document.querySelector("#sellResp").innerHTML = "🛒🛒Add Items to Cart";
-    }
-  });
+        if (e.detail.target.id === "invoiceCreateResp") {
+            document.querySelector("#sellResp").innerHTML = `
+                <div class="text-center py-5 fade-in">
+                    <div class="h2 text-success mb-3">✅</div>
+                    <h6 class="font-weight-bold">Transaction Complete</h6>
+                    <button class="btn btn-primary btn-sm btn-pos mt-3" hx-get="{% url 'clear-cart' %}" hx-target="#sellResp">
+                        <i class="fa fa-redo"></i> New Sale
+                    </button>
+                </div>
+            `;
+            htmx.process(document.querySelector("#sellResp"));
+            setTimeout(() => { $('#invoiceModal').modal('hide'); }, 2000);
+        }
+    });
 </script>
-
-
 {% endblock mainContent %}
