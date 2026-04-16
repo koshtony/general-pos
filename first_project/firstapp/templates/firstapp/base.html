@@ -1,802 +1,302 @@
 {% load static %}
-<!DOCTYPE html>
-<html class="dark">
- <head>
-  {% load static %}
 {% load pwa %}
-{% progressive_web_app_meta %}
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    {% progressive_web_app_meta %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>POS System</title>
 
- </head>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>POS</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/fontawesome-free/css/all.min.css' %}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/jqvmap/jqvmap.min.css' %}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{% static 'firstapp/dist/css/adminlte.min.css' %}">
-  <link rel="stylesheet" href="{% static 'firstapp/dist/css/custom_style.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/4.0.1/css/bootstrap-toaster.min.css">
-
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/daterangepicker/daterangepicker.css' %}">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{% static 'firstapp/plugins/summernote/summernote-bs4.css' %}">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap4.min.css"></script>
-  
-
-
-<script type="text/javascript" src="{% static 'js/idb.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/idbop.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
-  <script src=
-  "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
-      </script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
-<style>
-
-  .my-indicator{
-    display:none;
-}
-.htmx-request .my-indicator{
-    display:inline;
-}
-.htmx-request.my-indicator{
-    display:inline;
-}
-
-/* Absolute Center Spinner */
-.loading {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* Transparent Overlay */
-.loading:before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-}
-
-/* :not(:required) hides these rules from IE9 and below */
-.loading:not(:required) {
-  /* hide "loading..." text */
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
-}
-
-.loading:not(:required):after {
-  content: '';
-  display: block;
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  margin-top: -0.5em;
-  -webkit-animation: spinner 150ms infinite linear;
-  -moz-animation: spinner 150ms infinite linear;
-  -ms-animation: spinner 150ms infinite linear;
-  -o-animation: spinner 150ms infinite linear;
-  animation: spinner 150ms infinite linear;
-  border-radius: 0.5em;
-  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-}
-
-/* Animation */
-
-@-webkit-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-</style>
-
-
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="zoom:75%">
-
-  <div class="wrapper" >
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light" id="uphead" hx-boost="true">
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="display:none;"><i class="fas fa-bars"></i></a>
-        </li>
-      </ul>
-      &nbsp; &nbsp;
-      {% if user.is_superuser %}
-      <ul class="navbar-nav">
-        <li class="nav-item"id="dash">
-          <a class="btn btn-primary" href="{% url 'firstapp-home' %}" role="button" hx-indicator="#newPageSpinner"><i class="nav-icon fas fa-tachometer-alt">Dashboard</i></a>
-        </li>
-        &nbsp; &nbsp;
-        <li class="nav-item" id="salesTab">
-          <a  class="btn btn-primary" href="{% url 'firstapp-sales' %}" role="button" hx-indicator="#newPageSpinner"><i class="nav-icon nav-icon fa fa-ship">Sales</i></a>
-          
-          </li>
-          &nbsp; &nbsp;
-        <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addstocks' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-plus">products</i></a>
-        </li>
-        &nbsp; &nbsp;
-        
-        <li class="nav-item">
-          <a class="btn btn-primary" href="{% url 'firstapp-addshops' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-plus">shops</i></a>
-        </li>
+    <!-- CSS Frameworks -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
-        &nbsp; &nbsp;
-      <li class="nav-item">
-        <a  class="btn btn-primary" href="{% url 'firstapp-shops' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-list">shops</i></a>
-        
-        </li>
-        &nbsp; &nbsp;
-      <li class="nav-item" id="counter">
-        <a class="btn btn-primary" href="{% url 'firstapp-counter' %}" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-table">Counter</i></a>
-      </li>
-      &nbsp; &nbsp;
-     
-      &nbsp; &nbsp;
-      <li class="nav-item" id="notyTab">
-        <a class="btn btn-primary" href="" role="button" hx-indicator="#newPageSpinner"><i class="fas fa-bell">notifications</i></a>
-      </li>
-       &nbsp; &nbsp;
-       &nbsp; &nbsp;
-      <li class="nav-item" id="notyTab">
-        <a class="btn btn-primary" onclick="location.reload();" role="button" hx-indicator="#newPageSpinner"><i class="faS fa-rotate">Refresh</i></a>
-      </li>
-       &nbsp; &nbsp;
-       <!--
-       <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-phone">Contacts</i>
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactModal"><i class="fa fa-money-bill"> Add Contacts</i></a></li>
-          <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#contactListModal"><i class="fa fa-file"> List Contacts</i></a></li>
-           <li><a style="margin-left:30px" type="button" data-toggle="modal" data-target="#smsModal"><i class="fa fa-comment"> Bulk Sms </i></a></li>
-          
-          
-        </ul>
-      </div>
-    -->
-   
-      
-    </ul>
-    {% endif %}
+    <!-- FIXED: FontAwesome CDN (Using 6.4.0 for the latest modern icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-     
-        
-      
-      
-      <!-- Right navbar links -->
-      <!-- <ul class="navbar-nav ml-auto">
-        
-      </ul> -->
-    </nav>
-    <!-- /.navbar -->
-    
-    <!-- Main Sidebar Container -->
-   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
-     
-      
-      <!-- Sidebar -->
-      <div class="sidebar" id="sidemenu">
-      
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-          {% if user.is_superuser %}
-          <div class="image">
-            <img src="{{user.profile.image.url}}" class="img-circle elevation-2" alt="User Image">
-          </div>
-         
-          <div class="info">
-            <a href="/admin" class="d-block" hx-indicator="#newPageSpinner">Admin</a>
-          </div>
-         {% endif %}
-        </div>
-        
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          {% if user.is_authenticated %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-            {% if user.is_superuser %}
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'firstapp-home' %}" hx-indicator="#newPageSpinner" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-             dashboard
-              </p>
-            </a>
-          </li>
-          {% endif %}
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'simple-counter' %}" hx-indicator="#newPageSpinner"  class="nav-link">
-              <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
-              
-              <p>
-                 simple counter
+    <style>
+        :root {
+            --bg-body: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --primary-accent: #3b82f6;
+            --border-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-              </p>
-              <i class="fa fa-spinner htmx-indicator" id="counterSpin" ></i>
-            </a>
-            
-          </li>
-          <!--
-          <li class="nav-item">
-            <a href="{% url 'firstapp-counter' %}" class="nav-link">
-              <i class="nav-icon fa fa-shopping-basket" aria-hidden="true"></i>
-              <p>
-                 counter
-              </p>
-            </a>
-          </li>
-        -->
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'firstapp-stocks' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-cubes" aria-hidden="true"></i>
-              <p>
-                 Stocks
-              </p>
-            </a>
-          </li>
-          {% if user.is_superuser %}
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'firstapp-sales' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-ship" aria-hidden="true"></i>
-              <p>
-              Sales
-              </p>
-            </a>
-          </li>
-           <li class="nav-item" hx-boost="true">
-            <a href="{% url 'firstapp-cashier' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-credit-card" aria-hidden="true"></i>
-              <p>
-              Cashier
-              </p>
-            </a>
-          </li>
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'firstapp-orders' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-rocket" aria-hidden="true"></i>
-              <p>
-              Ecommerce
-              </p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{% url 'firstapp-financesummary' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fas fa-table"></i>
-              <p>reports</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'firstapp-charts' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-eye" aria-hidden="true"></i>
-              <p>
-                 Visuals
-              </p>
-            </a>
-          </li>
-           <li class="nav-item" hx-boost="true">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-desktop" aria-hidden="true" hx-indicator="#newPageSpinner"></i>
-              <p>
-                  Manage
-               
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-             
-              <li class="nav-item"><a style="margin-left:30px" type="button" href="{% url 'firstapp-finance' %}" hx-indicator="#newPageSpinner"><i class="fa fa-money-bill"> Add Expenses</i></a></li>
-          <li class="nav-item"><a style="margin-left:30px" type="button" href="{% url 'firstapp-taskslist' %}"hx-indicator="#newPageSpinner"><i class="fa fa-file"> Tasks</i></a></li>
-           <li class="nav-item"><a style="margin-left:30px" type="button" href="{% url 'firstapp-locationlist' %}" hx-indicator="#newPageSpinner"><i class="fa fa-clock"> Attendance </i></a></li>
-           <li class="nav-item"><a style="margin-left:30px" type="button" href="{% url 'firstapp-debtlist' %}" hx-indicator="#newPageSpinner"><i class="fa fa-clock"> Debts </i></a></li>
-             
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --primary-accent: #60a5fa;
+            --border-color: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.8);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body) !important;
+            color: var(--text-main);
+            transition: var(--transition);
+            padding-top: 75px; 
+            margin: 0;
+        }
+
+        @media (min-width: 992px) {
+            body { padding-bottom: 0; }
+            .bottom-nav { display: none !important; }
+        }
+
+        @media (max-width: 991px) {
+            body { padding-bottom: calc(85px + env(safe-area-inset-bottom)); }
+            .desktop-only { display: none !important; }
+        }
+
+        .main-header {
+            background-color: var(--glass-bg) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color) !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1040;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-main) !important;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 50px;
+            margin: 0 4px;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-accent) !important;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 75px;
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1050;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .bottom-nav-item {
+            color: var(--text-main);
+            text-decoration: none !important;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.6;
+            flex: 1;
+            transition: var(--transition);
+        }
+
+        .bottom-nav-item i { font-size: 1.4rem; margin-bottom: 3px; }
+        .bottom-nav-item.active { color: var(--primary-accent); opacity: 1; }
+
+        .theme-toggle {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .my-indicator { display: none; }
+        .htmx-request .my-indicator { display: block; }
+    </style>
+</head>
+
+<body>
+
+    <!-- FIXED TOP NAVBAR -->
+    <nav class="main-header navbar navbar-expand-lg">
+        <a class="navbar-brand font-weight-bold text-primary" href="/">
+           Sales Sys
+        </a>
+
+        <div class="collapse navbar-collapse desktop-only">
+            <ul class="navbar-nav mx-auto">
+                {% if user.is_superuser or user.is_staff %}
+                <li class="nav-item" hx-boost="true">
+                    <a class="nav-link" href="{% url 'firstapp-home' %}" hx-indicator="#newPageSpinner">
+                        <i class="fas fa-chart-pie mr-2"></i> Dash
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item" hx-boost="true">
+                    <a class="nav-link" href="{% url 'simple-counter' %}" hx-indicator="#newPageSpinner">
+                        <i class="fas fa-calculator mr-2"></i> Counter
+                    </a>
+                </li>
+                <li class="nav-item" hx-boost="true">
+                    <a class="nav-link" href="{% url 'firstapp-stocks' %}" hx-indicator="#newPageSpinner">
+                        <i class="fas fa-boxes mr-2"></i> Stocks
+                    </a>
+                </li>
+                {% if user.is_superuser or user.is_staff %}
+                <li class="nav-item" hx-boost="true">
+                    <a class="nav-link" href="{% url 'firstapp-sales' %}" hx-indicator="#newPageSpinner">
+                        <i class="fas fa-receipt mr-2"></i> Sales
+                    </a>
+                </li>
+                {% endif %}
+                
+                
+                {% if user.is_staff or user.is_superuser %}
+                <li class="nav-item ml-2 pl-2 border-left">
+                    <a class="nav-link text-warning" href="/admin">
+                        <i class="fas fa-user-shield mr-2"></i> Admin
+                    </a>
+                </li>
+                {% endif %}
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-wrench" aria-hidden="true" hx-indicator="#newPageSpinner"></i>
-              <p>
-                  Generate
-               
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-             
-              <li class="nav-item"><a style="margin-left:30px" href="{% url 'firstapp-invoice' %}" hx-indicator="#newPageSpinner"><i class="fa fa-file-invoice"> invoice </i></a></li>
-              <li class="nav-item"><a style="margin-left:30px" href="#" hx-indicator="#newPageSpinner"><i class="fa fa-money-check">PO</i></a></li>
-             
-             
-            </ul>
-          </li> 
-          {% endif %}
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'posUsers-profile' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-              <p>
-                User Profile
-              </p>
-            </a>
-          </li>
-           
-
-          <li class="nav-item" hx-boost="true">
-            <a href="{% url 'logout' %}" class="nav-link" hx-indicator="#newPageSpinner">
-              <i class="nav-icon fa fa-user-times" aria-hidden="true"></i>
-              <p>
-                 logout
-              </p>
-            </a>
-          </li>
-         
-          
-          
-          
-        
-       
-        </ul>
-        {% else %}
-          <li class="nav-item">
-            <a href="{% url 'login' %}" class="nav-link">
-              <i class="nav-icon fa fa-user" aria-hidden="true"></i>
-              <p>
-                 login
-              </p>
-            </a>
-          </li>
-          {% endif %}
-          </nav>
-          <!-- /.sidebar-menu -->
         </div>
-        <!-- /.sidebar -->
-    </aside>
 
-    <!-- add contacts modals -->
-
-    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">add contacts</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-
-          </div>
-          </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addContacts()">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--end contacts modal-->
-
-    <!--  list contacts modal-->
-
-
-    <div class="modal fade" id="contactListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Contacts List</h4>
-          </div>
-          <div class="modal-body">
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
-              <thead>
-                  <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Phone</th>
-                      <th>Created</th>
-                      
-                  </tr>
-              </thead>
-              <tbody id="contacts">
-              </tbody>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    
-    </div>
-
-    <!-- end list contacts modal-->
-
-    <!-- send bulky sms modal-->
-
-    <div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">send bulky sms </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <div id="plagSpinner" style="display:none; margin-left:50px"> 
-              <div class="spinner-grow text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-              <div class="spinner-grow text-secondary" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-              <div class="spinner-grow text-success" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+        <div class="ml-auto d-flex align-items-center">
+            <div class="theme-toggle mr-3" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i>
             </div>
-          </div>
-          <div class="modal-body">
-
-            <textarea cols="40" rows="5" id="sms_text"></textarea>
-              
-           
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-success" onclick="sendSms()"><i class="fa fa-plane"></i></button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-             
-          </div>
+            
+            <div class="dropdown">
+                <a href="#" data-toggle="dropdown">
+                    <img src="{{user.profile.image.url}}" class="rounded-circle border shadow-sm" width="38" height="38" style="object-fit: cover;">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right border-0 shadow-lg p-2 mt-2" style="border-radius: 12px;">
+                    <a class="dropdown-item small rounded mb-1" href="{% url 'posUsers-profile' %}" hx-boost="true">
+                        <i class="fas fa-user-circle mr-2 opacity-75"></i> Profile
+                    </a>
+                    {% if user.is_staff or user.is_superuser %}
+                    <a class="dropdown-item small rounded text-primary" href="/admin">
+                        <i class="fas fa-cog mr-2 opacity-75"></i> Admin Panel
+                    </a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item small rounded text-danger" href="{% url 'logout' %}">
+                        <i class="fas fa-power-off mr-2 opacity-75"></i> Logout
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+    </nav>
 
-
-    <!-- end bulky sms modal-->
-       
-  <div class="toast" style="position: absolute; top: 50px; right: 0;">
-    <div class="toast-header">
-      <img src="..." class="rounded mr-2" alt="...">
-      <strong class="mr-auto">sys notification</strong>
-      <small>0 mins ago</small>
-      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="toast-body">
-  
-      
-    </div>
-  </div>
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper" id="mainCont">
-
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-           
+    <!-- MAIN CONTENT AREA -->
+    <main id="mainCont" class="container-fluid">
+        <div id="newPageSpinner" class="my-indicator text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="small font-weight-bold mt-2">Loading...</p>
         </div>
 
-     
-        <!-- /.content-header -->
-         <section class="content shadow-lg p-3 mb-5 bg-white rounded" id="linkResp" style="margin:40px;">
+        <div id="linkResp">
+            {% block mainContent %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}} alert-dismissible fade show border-0 shadow-sm mb-4">
+                            {{message}}
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endblock mainContent %}
+        </div>
+    </main>
 
-          <div class="loading my-indicator" id="newPageSpinner">Loading&#8230;</div>
-
-         
-         
-        <!-- Main content -->
-        {% block mainContent %}
-        {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{message.tags}}">
-            {{message}}
-          </div>
-        {% endfor %}
+    <!-- FIXED MOBILE BOTTOM NAVIGATION -->
+    <nav class="bottom-nav" hx-boost="true">
+        {% if user.is_superuser %}
+        <a href="{% url 'firstapp-home' %}" class="bottom-nav-item">
+            <i class="fas fa-th-large"></i><span>Dash</span>
+        </a>
         {% endif %}
-        {% endblock mainContent %}
-          <!-- /.Left col -->
-      </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-</div>
+        <a href="{% url 'simple-counter' %}" class="bottom-nav-item">
+            <i class="fas fa-calculator"></i><span>Counter</span>
+        </a>
+        <a href="{% url 'firstapp-stocks' %}" class="bottom-nav-item">
+            <i class="fas fa-box"></i><span>Stocks</span>
+        </a>
+        <a href="#" class="bottom-nav-item" data-toggle="modal" data-target="#moreMenuModal">
+            <i class="fas fa-ellipsis-h"></i><span>More</span>
+        </a>
+    </nav>
 
-<!-- ./wrapper -->
-<script>
+    <!-- MOBILE "MORE" MODAL -->
+    <div class="modal fade" id="moreMenuModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-body p-4">
+                    <h6 class="text-uppercase text-muted font-weight-bold mb-3" style="font-size: 0.7rem; letter-spacing: 1px;">Navigation</h6>
+                    <div class="list-group list-group-flush" hx-boost="true">
+                        {% if user.is_staff or user.is_superuser %}
+                        <a href="/admin" class="list-group-item list-group-item-action border-0 py-3 rounded mb-2 text-primary font-weight-bold">
+                            <i class="fas fa-user-shield mr-3"></i> Admin Panel
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'firstapp-sales' %}" class="list-group-item list-group-item-action border-0 py-3 rounded mb-1">
+                            <i class="fas fa-receipt text-primary mr-3"></i> Sales History
+                        </a>
+                        <a href="{% url 'posUsers-profile' %}" class="list-group-item list-group-item-action border-0 py-3 rounded mb-1">
+                            <i class="fas fa-user-circle text-info mr-3"></i> My Profile
+                        </a>
+                        <a href="{% url 'logout' %}" class="list-group-item list-group-item-action border-0 py-3 rounded text-danger">
+                            <i class="fas fa-power-off mr-3"></i> Logout
+                        </a>
+                    </div>
+                    <button type="button" class="btn btn-light btn-block mt-3 py-3 font-weight-bold" data-dismiss="modal" style="border-radius: 12px;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  document.body.style.zoom = "75%"; 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
 
-   let notifiedItems = new Set();
-
-  // Ask for permission once
-  document.addEventListener("DOMContentLoaded", () => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-
-    // Start polling
-    setInterval(checkLowStock, 10000); // every 10 seconds
-  });
-
-  function checkLowStock() {
-    fetch("{% url 'low-stocks-alert' %}")
-      .then(res => res.json())
-      .then(data => {
-        data.low_stock.forEach(item => {
-          let key = item.p_name + item.p_qty;
-
-          if (!notifiedItems.has(key)) {
-            notifiedItems.add(key);
-            showNotification(item.p_name, item.p_qty);
-          }
-        });
-      });
-  }
-
-  function showNotification(name, qty) {
-    if (Notification.permission === "granted") {
-      new Notification("⚠ Low Stock Alert", {
-        body: `${name} has only ${qty} left in stock.`,
-        icon: "/static/icons/warning.png",  // Optional icon path
-      });
-    }
-  }
-/**
-  function isMobile() {
-    const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    return regex.test(navigator.userAgent);
-  }
-  
-  if (isMobile()) {
-     
-     
-     document.getElementById("counter").style.display = "none"
-     document.getElementById("notyTab").style.display = "none"
-      
-     
-
-       
-
-
-  } else {
-
-     document.getElementById("dash").style.display = "none"
-      document.getElementById("salesTab").style.display = "none"
-    
-  }
-  
-**/
-  function addContacts(){
-
-    $.post("{% url 'firstapp-addcontact' %}",{
-
-      name: $("#cname").val(),
-      phone: $("#cnum").val(),
-      csrfmiddlewaretoken:'{{ csrf_token }}',
-      },
-      function(data,status){
-
-          alert(data)
-          location.reload()
-      }
-
-
-      )
-
-  }
-
-  $.get("{% url 'firstapp-getcontact' %}",function(data,status){
-
-     var contacts = JSON.parse(data)
-     for (var contact in contacts){
-    $("#contacts").html(
-
-        `
-        <tr>
-          <td>${contacts[contact]["pk"]}</td>
-          <td>${contacts[contact]["fields"]["cont_name"]}</td>
-          <td>${contacts[contact]["fields"]["cont_phone"]}</td>
-          <td>${contacts[contact]["fields"]["cont_created"]}</td>
-          </tr>
-
-        `
-    )
-     }
-
-  })
-
-  function sendSms(){
-
-    $.ajax({
-
-         type:"POST",
-         url:"{% url 'firstapp-sendsms' %}",
-         data:{
-          sms:$("#sms_text").val(),
-          csrfmiddlewaretoken:'{{ csrf_token }}',
-         },      
-                    beforeSend:function(){
-
-                        $("#plagSpinner").show()
-
-                    },
-                    complete:function(){
-                        $("#plagSpinner").hide()
-                    },
-        success:function(data,status){
-
-            alert(data)
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', newTheme);
         }
-    }
-
-)
-
-  }
-
-
-setInterval(onStatus,60000)
-function onStatus(){
- if(navigator.onLine){
-
-
-
-    $('.toast').toast('show');
-    $(".toast-body").html("you are online")
-  
-
-
- }else{
-
-        $('.toast').toast('show');
-     $("#toast-body").html("you are offline")
- }
-}
-
-  $(document).ready(function () {
-    $('#sales').DataTable();
-});
-
- 
-
-
-// mobile view setInterval
-/**
-if(/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-  // true for mobile device
-        document.getElementById("mainCont").style.overflow = "scroll"
-        document.getElementById("mainCont").style.width = "480px"
-        document.getElementById("uphead").style.overflow = "scroll"
-        document.getElementById("uphead").style.width = "480px"
-        document.getElementById("cBtn").style.margin ="0px"
-      }else{
-  // false for not mobile device
-        console.log("operating on pc")
-      }
-
-      document.querySelectorAll(".nav-link").forEach((link) => {
-        if (link.href === window.location.href) {
-            link.classList.add("active");
-            link.setAttribute("aria-current", "page");
-        }
-    });
-
-  **/
-
-</script>
-<script src="{% static 'firstapp/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 
-<script src="{% static 'firstapp/dist/js/adminlte.js' %}"></script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('themeIcon').className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    </script>
 </body>
 </html>

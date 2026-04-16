@@ -1,49 +1,127 @@
+{% load humanize %}
 
-<div class="row" style="height:500px; overflow-y:scroll;">
-   <table class="table">
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Actual Price</th>
-                              <th>Changed Price</th>
-                              <th>Qty</th>
-                              <th>Total</th>
-                              <th>Remove </th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        {% for cart in carts %}
-                          <tr>
-                              <td>{{cart.cart_stock.p_name}}</td>
-                              <td>{{cart.cart_stock.p_price}}</td>
-                              <td><input type="number" value="{{cart.adjust_price}}" hx-post="{% url 'update-cart-price' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemPrice" class="form-control" style="width:100px; height:50px;"></td>
-                              <td><input type="number" value="{{cart.qty}}" hx-post="{% url 'update-cart-qty' cart.pk %}" hx-trigger="change" hx-target="#sellResp" name="itemQty" class="form-control" style="width:100px; height:50px;"></td>
-                              <td>Ksh {{cart.price}}</td>
-                              <td> <a class="btn btn-danger" hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp"><i class="fa fa-trash"></i></a></td>
-                          </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-  </div>
-   <div class="row">
-      <table>
-          <tbody>
-              <tr style="font-weight: bold; font-size: 16px;">
-                  <td>Subtotal</td>
-                  <td>Ksh {{sub_total}}</td>
-              </tr>
-              <tr style="font-weight: bold; font-size: 16px;">
-                                  <td>Discount</td>
-                                  <td>Ksh {{discount}}</td>
-                              </tr>
-              <tr style="font-weight: bold; font-size: 16px;">
-                  <td>VAT(16%)</td>
-                  <td>Ksh {{vat}}</td>
-              </tr>
-              <tr style="font-weight: bold; font-size: 16px;">
-                  <td>Total</td>
-                  <td>Ksh {{total}}</td>
-              </tr>
-          </tbody>
-      </table>
+<!-- 1. Scrollable Cart Items Container -->
+<div class="receipt-body-inner" style="max-height: 450px; overflow-y: auto; padding-right: 5px;">
+    {% for cart in carts %}
+    <div class="card border-0 mb-3 shadow-sm bg-light" style="border-radius: 12px; border-left: 4px solid var(--accent-color) !important;">
+        <div class="card-body p-3">
+            <!-- Header: Product Name and Remove Button -->
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div style="max-width: 80%;">
+                    <div class="font-weight-bold text-dark small text-uppercase" style="letter-spacing: 0.5px;">{{cart.cart_stock.p_name}}</div>
+                    <div class="extra-small text-muted font-weight-normal">Base Price: Ksh {{cart.cart_stock.p_price|intcomma}}</div>
+                </div>
+                <button class="btn btn-link text-danger p-0" hx-get="{% url 'del-cart-item' cart.pk %}" hx-target="#sellResp" title="Remove Item">
+                    <i class="fa fa-times-circle fa-lg"></i>
+                </button>
+            </div>
+
+            <!-- Controls: Adjustable Price, Qty, and Subtotal -->
+            <div class="row align-items-end no-gutters">
+                <!-- Change Price Input -->
+                <div class="col-4 pr-1">
+                    <label class="extra-small font-weight-bold text-muted mb-1">UNIT PRICE</label>
+                    <input type="number" value="{{cart.adjust_price}}" 
+                           hx-post="{% url 'update-cart-price' cart.pk %}" 
+                           hx-trigger="change" hx-target="#sellResp" 
+                           name="itemPrice" 
+                           class="form-control form-control-sm border-0 shadow-sm text-center font-weight-bold" 
+                           style="background: #fff; color: #3b82f6;">
+                </div>
+                
+                <!-- Change Qty Input -->
+                <div class="col-3 px-1">
+                    <label class="extra-small font-weight-bold text-muted mb-1">QTY</label>
+                    <input type="number" value="{{cart.qty}}" 
+                           hx-post="{% url 'update-cart-qty' cart.pk %}" 
+                           hx-trigger="change" hx-target="#sellResp" 
+                           name="itemQty" 
+                           class="form-control form-control-sm border-0 shadow-sm text-center font-weight-bold"
+                           style="background: #fff;">
+                </div>
+
+                <!-- Calculated Item Total -->
+                <div class="col-5 text-right pl-1">
+                    <label class="extra-small font-weight-bold text-muted mb-1 text-uppercase">Subtotal</label>
+                    <div class="font-weight-bold text-primary small">Ksh {{cart.price|intcomma}}</div>
+                </div>
+            </div>
+        </div>
     </div>
+    {% empty %}
+    <div class="text-center py-5 text-muted opacity-50">
+        <i class="fa fa-shopping-cart fa-3x mb-3"></i>
+        <p class="font-weight-bold">Your cart is empty</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- 2. Financial Summary (Receipt Style) -->
+<div class="summary-section mt-4 pt-3" style="border-top: 2px dashed #cbd5e1;">
+    <!-- Subtotal Line -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted small font-weight-bold" style="letter-spacing: 0.5px;">SUBTOTAL</span>
+        <span class="font-weight-bold text-dark">Ksh {{sub_total|intcomma}}</span>
+    </div>
+
+    <!-- Discount Line -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center">
+            <span class="text-danger small font-weight-bold" style="letter-spacing: 0.5px;">DISCOUNT</span>
+            <span class="badge badge-pill ml-2 px-2" style="background: rgba(244, 63, 94, 0.1); color: #f43f5e; font-size: 0.65rem;">PROMO</span>
+        </div>
+        <span class="font-weight-bold text-danger">- Ksh {{discount|intcomma}}</span>
+    </div>
+
+    <!-- Tax Line -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted small font-weight-bold" style="letter-spacing: 0.5px;">VAT (16%)</span>
+        <span class="text-muted font-weight-bold">Ksh {{vat|intcomma}}</span>
+    </div>
+
+    <!-- Total Payable High-Contrast Card -->
+    <div class="total-payable-card p-3 rounded-lg shadow-sm" style="background: #1e293b; border-radius: 12px;">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="text-left">
+                <p class="mb-0 text-uppercase font-weight-bold text-white-50" style="font-size: 0.65rem; letter-spacing: 1px;">Gross Amount</p>
+                <h5 class="mb-0 font-weight-bold text-white">Total Payable</h5>
+            </div>
+            <div class="text-right">
+                <!-- Using a contrasting color (Warning Gold) for the final number -->
+                <h3 class="mb-0 font-weight-bolder text-warning">Ksh {{total|intcomma}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Custom Styling for the Partial */
+    .border-dashed { border-style: dashed !important; }
+    .extra-small { font-size: 0.65rem; }
+    .receipt-body-inner::-webkit-scrollbar { width: 4px; }
+    .receipt-body-inner::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    
+    /* Ensure inputs don't show spinners by default for a cleaner look */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        opacity: 1; /* Keep them visible for UX but styled */
+    }
+
+        /* Styling to ensure clarity in all themes */
+    .total-payable-card {
+        transition: transform 0.2s;
+    }
+    
+    @media (max-width: 576px) {
+        .total-payable-card h3 {
+            font-size: 1.4rem; /* Scale down slightly for very small screens */
+        }
+    }
+    
+    .font-weight-bolder {
+        font-weight: 900 !important;
+    }
+    
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+</style>

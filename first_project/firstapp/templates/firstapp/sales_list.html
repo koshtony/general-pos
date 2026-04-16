@@ -1,487 +1,361 @@
-{% extends 'firstapp/base.html' %}      
-        <!-- Main content -->
-    {% block mainContent %}
+{% extends 'firstapp/base.html' %}
+{% load static %}
+
+{% block mainContent %}
+<style>
+   .badge-soft-success { background: rgba(16, 185, 129, 0.15); color: #065f46; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .badge-soft-danger { background: rgba(239, 68, 68, 0.15); color: #991b1b; border: 1px solid rgba(239, 68, 68, 0.2); }
     
-    <style type="text/css">
-      .htmx-indicator{
-          opacity:0;
-          transition: opacity 500ms ease-in;
-      }
-      .htmx-request .htmx-indicator{
-          opacity:1;
-      }
-      .htmx-request.htmx-indicator{
-          opacity:1;
-      }
-      </style>
-    <!-- Button trigger modal -->
-<button style="margin-left:10px; border:0px" type="button"  data-toggle="modal" data-target="#dateModal">
- <i class="fa fa-filter"></i>by date
-</button>
-&nbsp;&nbsp;
-<a id="downTab" style="margin-left:650"><i class="fa fa-download"></i></a>
-&nbsp;&nbsp;
-<a id="receiptsTab" class="btn btn-warning" style="margin-left:650" onclick="showReceiptModal();"><i class="fa fa-print"></i>Receipts</a>
+    /* 1. Desktop Styles (Linear Table) */
+    @media (min-width: 768px) {
+        .table th, .table td {
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+            padding: 0.6rem 0.8rem !important;
+        }
+        .sticky-top { position: sticky; top: 0; z-index: 10; background: #f8f9fa; }
+    }
 
-<!-- ====================Receipt Modal======================= -->
+    /* 2. Mobile Friendly & Scrollable Tweaks */
+    @media (max-width: 991px) {
+        /* Extra padding at the bottom so content clears the mobile bottom-nav */
+        .container-fluid {
+            padding-bottom: 120px !important; 
+        }
+        
+        /* Stack KPI cards on mobile */
+        .kpi-row .col-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            border-left: none !important;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+        .kpi-row .col-4:last-child { border-bottom: none; }
 
+        /* Transform Table into Cards for readability */
+        #salesTable, #salesTable thead, #salesTable tbody, #salesTable th, #salesTable td, #salesTable tr {
+            display: block;
+        }
+        #salesTable thead { display: none; } /* Hide headers */
+        #salesTable tr {
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        #salesTable td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+        #salesTable td::before {
+            content: attr(data-label); /* Uses the labels we defined in HTML */
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: #64748b;
+            text-align: left;
+        }
+        
+        /* Adjust Insight Card for small screens */
+        .insight-card { padding: 15px !important; }
+    }
 
-<div class="modal fade bd-example-modal-lg" id="receiptsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false" >
-  <div class="modal-dialog  modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#24a0ed">
-        <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
-        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
-          <span class="sr-only">Loading...</span>
+    /* Extra Small Button Utility */
+    .btn-xs {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+        line-height: 1.2;
+        border-radius: 4px;
+    }
+
+    /* General Styling */
+    .nav-pills .nav-link { color: #64748b; transition: all 0.2s; border-radius: 8px; margin: 0 5px; font-size: 0.85rem; }
+    .nav-pills .nav-link.active { background-color: #3b82f6 !important; color: white !important; }
+    .extra-small { font-size: 0.7rem; }
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .insight-card { border-left: 5px solid #3b82f6; background: #f0f7ff; border-radius: 12px; transition: all 0.3s; }
+</style>
+
+<!-- Main Container with extra bottom padding for mobile -->
+<div class="container-fluid fade-in pb-5">
+    
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border">
+        <div class="mb-3 mb-md-0 text-center text-md-left">
+            <h4 class="font-weight-bold mb-0 text-primary" style="font-size: 1.2rem;">Sales</h4>
+            <p class="text-muted small mb-0">Live transaction history</p>
         </div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="width:100%;height:500px;overflow-y:scroll">
-
-         <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;" id="sales">
-        <thead class="bg-light">
-          <tr>
-            
-            <th>Order Code</th>
-            <th>Qty</th>
-            <th>Date</th>
-            <th>Download</th>
-         
-        </thead>
-        <tbody id="receipts">
-          {% for order in orders %}
-          <tr>
-
-            <td>{{order.s_order_code}}</td>
-            <td>{{order.no_orders}}</td>
-            <td>{{order.date}}</td>
-            <td>
-              <a CLASS="btn btn-info" hx-get="{% url 'gen-sales-receipt' order.s_order_code %}" hx-target="#receiptResp">
-                <i class="fa fa-download"></i>Download
-              </a>
-            </td>
-
-          </tr>
-
-          {% endfor %}
-
-        </tbody>
-
         
-      </table>
-        
-       
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<!-- ================filter Modal============== -->
-
-<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false" style="zoom:80%">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#24a0ed">
-        <h5 class="modal-title" id="exampleModalLabel">filter by date</h5>
-        <div id="spinners" class="spinner-border" role="status" style="margin-left:150px; display:none">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-        <form hx-post="{% url 'firstapp-filter-sales-by-date' %}" hx-target="#salesTr" hx-indicatot="#filterSpinner">
-
-          {% csrf_token %}
-          <div class="form-group">
-           <label>from</label>
-           <input class="form-control" type="date" name="date1" id="date1">
-
-          </div>
-          <div class="form-group">
-           <label>To</label>
-           <input class="form-control" type="date" name="date2" id="date2">
-          </div>
-          <div class="form-group">
-           <button class="btn btn-light" type="submit">
-            <i class="fa fa-filter"></i>
-            filter</button>
-          </div>
-
-          <div id="filterSpinner" class="spinner-border text-primary htmx-indicator" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-
-        </form>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--===============================return item modal===========================-->
-
-<div class="modal fade" id="returnsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="False">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">items info</h5>
-        <div id="spinner-return" class="spinner-border" role="status" style="margin-left:150px; display:none">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p id="item_id"></p>
-         <input type="text" id="item_name">
-         <input type="number" id="item_qty">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" id="returnBtn">return</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-     
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <!-- ============================================================================================================-->
-<div id="receiptResp" style="display:none">
+        <div class="d-flex flex-column flex-sm-row w-100 w-md-auto align-items-center">
+            <div class="input-group input-group-sm mb-2 mb-sm-0 mr-sm-2" style="max-width: 100%; width: 250px;">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-light border-0"><i class="fa fa-search"></i></span>
                 </div>
-<div class="col" style="margin-left:10px;overflow-x:scroll;">
-    <input style="margin-left:620px" list="stocksList" id="pname" name="pname" placeholder="search product here..." />
-    <br><br>
-    <datalist id="stocksList">
-          {% for sale in sales %}
-          <option value="{{sale.s_name}}">{{sale.s_name}}</option>
-          {% endfor %}
-    </datalist>
-    
-    <table class="table align-middle mb-0 bg-white" style="margin-left:10px;overflow-x:scroll;" id="sales">
-        <thead class="bg-light">
-          <tr>
-            
-            <th>Serial</th>
-            <th>Order Code</th>
-            <th>Name</th>
-            <th>shop</th>
-            <th>Qty</th>
-           
-            <th>Total</th>
-            <th>profit</th>
-            <th>Status</th>
-            <th>Created</th>
-            <th>Actions</th>
-            <th>Person</th>
-          </tr>
-        </thead>
-        <tbody id="salesTr">
-            {% for sale in sales %}
-          <tr>
-            
-            <td>
-              {{sale.s_serial}}
-            </td>
-            <td>
-              {{sale.s_order_code}}
-            </td>
-            <td>
-                {{sale.s_name}}
-              </td>
-              <td>
-                {{sale.s_shop.shop_name}}
-              </td>
-              <td>
-                   {{sale.s_qty}}
-              </td>
-              
-              <td>
-                {{sale.s_price}}
-              </td>
-              <td>
-                {{sale.s_profit}}
-              </td>
-            <td>
-              {% if sale.s_status == "sold" %}
-              <span style="background-color:red" class="badge badge-success rounded-pill d-inline">sold</span>
-              {% else %}
-              <span style="background-color:yellow" class="badge badge-success rounded-pill d-inline">returned</span>
-              {% endif %}
-            </td>
-            <td>{{sale.s_created}}</td>
-            <td>
-        
-              <button type="button" onclick="returnModal('{{sale.s_id}}','{{sale.s_qty}}','{{sale.s_name}}')" class="btn btn-link btn-sm btn-rounded">
-                <i class="fa fa-undo">return</i>
-              </button>
-              
-            </td>
-            <td>
-              {{sale.s_creator.username}}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-       
-
-            
-      </table>
-
-    </div>
-    <!--
-        <div style="margin-left:20px">
-          {% if page_obj.has_previous %}
-              <a class="btn btn-info mb-4" href="?page=1">first</a>
-              <a class="btn btn-info mb-4" href="?page={{page_obj.previous_page_number}}">prev</a>
-          {% endif %}
-
-          {% for num in page_obj.paginator.page_range %}
-             {% if page_obj.number == num %}
-
-                  <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
-                  
-              {% elif num > page_obj.number|add:'-2' and  num < page_obj.number|add:'2' %}
-
-                  <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>                    
-              {% endif %}
-
-             
-          {% endfor %}
-          
-          {% if page_obj.has_next %}
-
-              <a class="btn btn-info mb-4" href="?page={{page_obj.next_page_number}}">Next</a>
-              <a class="btn btn-info mb-4" href="?page={{page_obj.paginator_num_pages}}">Last</a>
-
-          {% endif %}
+                <input type="text" id="pname" class="form-control border-0 bg-light" placeholder="Search...">
+            </div>
+            <button id="downTab" class="btn btn-success btn-xs shadow-sm px-3 py-2">
+                <i class="fa fa-file-excel mr-1"></i> EXPORT CSV
+            </button>
         </div>
-      -->
-      
-      <script>
-        $(document).ready(function(){
-        $("#pname").on("keyup",function(){
-            var value=$(this).val().toLowerCase();
-            $("#sales tr").filter(function(){
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+    </div>
+
+    <!-- Smart Sales Analyst -->
+    <div class="card insight-card border-0 shadow-sm mb-4">
+        <div class="card-body p-3">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h6 class="font-weight-bold text-dark mb-2 small"><i class="fas fa-robot mr-2 text-primary"></i>Smart Sales Analyst</h6>
+                    <div id="analysisText" class="extra-small text-muted" style="line-height: 1.6;">Analyzing sales trends...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills mb-4 bg-white p-2 rounded shadow-sm border" id="salesTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active font-weight-bold" id="ledger-tab" data-toggle="pill" href="#ledger-content" role="tab">Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link font-weight-bold" id="orders-tab" data-toggle="pill" href="#orders-content" role="tab">Receipt History</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="salesTabContent">
+        <!-- TAB 1: LEDGER -->
+        <div class="tab-pane fade show active" id="ledger-content" role="tabpanel">
+            
+            <!-- Filters & KPIs -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-2 p-md-3">
+                    <div class="row kpi-row align-items-center text-center">
+                        <div class="col-12 col-md-4 mb-3 mb-md-0 d-flex justify-content-between px-1">
+                            <div class="w-50 mr-1 text-left">
+                                <label class="extra-small font-weight-bold text-muted d-block">FROM</label>
+                                <input type="date" id="jsDateFrom" class="form-control form-control-sm border-0 bg-light">
+                            </div>
+                            <div class="w-50 ml-1 text-left">
+                                <label class="extra-small font-weight-bold text-muted d-block">TO</label>
+                                <input type="date" id="jsDateTo" class="form-control form-control-sm border-0 bg-light">
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-2 border-left px-1">
+                            <small class="text-muted d-block extra-small">QTY</small>
+                            <span id="labelQty" class="font-weight-bold text-primary small">0</span>
+                        </div>
+                        <div class="col-4 col-md-3 border-left px-1">
+                            <small class="text-muted d-block extra-small">REVENUE</small>
+                            <span id="labelRev" class="font-weight-bold text-success small">0</span>
+                        </div>
+                        <div class="col-4 col-md-3 border-left px-1">
+                            <small class="text-muted d-block extra-small">PROFIT</small>
+                            <span id="labelProf" class="font-weight-bold text-info small">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container: Scrollable -->
+            <div class="card border-0 shadow-sm border">
+                <div class="card-body p-0 p-md-2">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="salesTable">
+                            <thead class="sticky-top">
+                                <tr class="extra-small text-uppercase text-muted border-bottom">
+                                    <th>Product</th>
+                                    <th>Code</th>
+                                    <th>Date</th>
+                                    <th>Shop</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                    <th>Profit</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesTr">
+                                {% for sale in sales %}
+                                <tr data-date="{{ sale.s_created|date:'Y-m-d' }}">
+                                    <td data-label="Product" class="font-weight-bold text-dark small">{{ sale.s_name }}</td>
+                                    <td data-label="Code" class="extra-small text-muted">{{ sale.s_order_code }}</td>
+                                    <td data-label="Date" class="extra-small">{{ sale.s_created|date:"d M Y" }}</td>
+                                    <td data-label="Shop"><span class="badge badge-light border extra-small">{{ sale.s_shop.shop_name }}</span></td>
+                                    <td data-label="Qty" class="small font-weight-bold text-md-center">{{ sale.s_qty }}</td>
+                                    <td data-label="Total" class="text-success font-weight-bold small">Ksh {{ sale.s_price }}</td>
+                                    <td data-label="Profit" class="text-info small">{{ sale.s_profit }}</td>
+                                    <td data-label="Status">
+                                        {% if sale.s_status == "sold" %}
+                                        <span class="badge badge-pill badge-success extra-small">Sold</span>
+                                        {% else %}
+                                        <span class="badge badge-pill badge-warning extra-small">Returned</span>
+                                        {% endif %}
+                                    </td>
+                                    <td data-label="Action" class="text-right">
+                                        <button onclick="returnModal('{{sale.s_id}}','{{sale.s_qty}}','{{sale.s_name}}')" class="btn btn-outline-danger btn-xs">
+                                            <i class="fa fa-undo"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ORDERS (Already optimized cards) -->
+        <div class="tab-pane fade" id="orders-content" role="tabpanel">
+            <div id="ordersMobileList">
+                {% for order in orders %}
+                <div class="card shadow-sm border p-3 mb-2 rounded-lg bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="font-weight-bold text-primary mb-1 small">{{ order.s_order_code }}</h6>
+                            <small class="text-muted extra-small">{{ order.no_orders }} Items | {{ order.date }}</small>
+                        </div>
+                        <a href="{% url 'gen-sales-receipt' order.s_order_code %}" class="btn btn-primary btn-xs rounded-circle shadow-sm">
+                            <i class="fa fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Modal: Mobile Friendly Centering -->
+<div class="modal fade" id="returnsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white py-2">
+                <h6 class="modal-title font-weight-bold small">Confirm Return</h6>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body p-3">
+                <div class="form-group mb-2">
+                    <label class="extra-small font-weight-bold">PRODUCT</label>
+                    <input type="text" id="item_name" class="form-control form-control-sm border-0 bg-light small" readonly>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="extra-small font-weight-bold">QUANTITY</label>
+                    <input type="number" id="item_qty" class="form-control form-control-sm border-0 bg-light small">
+                </div>
+                <p id="item_id" class="d-none"></p>
+                <button type="button" class="btn btn-danger btn-sm btn-block shadow-sm font-weight-bold" id="returnBtn">CONFIRM RETURN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function applyAllFilters() {
+        const searchTerm = $('#pname').val().toLowerCase();
+        const dateFrom = $('#jsDateFrom').val();
+        const dateTo = $('#jsDateTo').val();
+
+        let qtySum = 0, revSum = 0, profSum = 0;
+        let productPerformance = {};
+
+        $("#salesTr tr").each(function() {
+            const rowDate = $(this).data('date');
+            const rowText = $(this).text().toLowerCase();
+            const pName = $(this).find("td:first").text();
+            
+            const pQty = parseFloat($(this).find("td[data-label='Qty']").text()) || 0;
+            const pPrice = parseFloat($(this).find("td[data-label='Total']").text().replace('Ksh ', '').replace(/,/g, '')) || 0;
+            const pProf = parseFloat($(this).find("td[data-label='Profit']").text()) || 0;
+
+            const matchSearch = rowText.indexOf(searchTerm) > -1;
+            let matchDate = true;
+            if (dateFrom && rowDate < dateFrom) matchDate = false;
+            if (dateTo && rowDate > dateTo) matchDate = false;
+
+            if (matchSearch && matchDate) {
+                $(this).show();
+                qtySum += pQty;
+                revSum += pPrice;
+                profSum += pProf;
+                productPerformance[pName] = (productPerformance[pName] || 0) + pQty;
+            } else {
+                $(this).hide();
+            }
+        });
+
+        $('#labelQty').text(qtySum);
+        $('#labelRev').text('Ksh ' + revSum.toLocaleString());
+        $('#labelProf').text('Ksh ' + profSum.toLocaleString());
+        generateAnalysis(productPerformance);
+    }
+
+    function generateAnalysis(stats) {
+        const analyst = document.getElementById('analysisText');
+        const products = Object.entries(stats).sort((a, b) => b[1] - a[1]);
+
+        if (products.length === 0) {
+            analyst.innerHTML = "<i class='fas fa-info-circle mr-1'></i> No data found.";
+            return;
+        }
+
+        const totalQty = products.reduce((acc, curr) => acc + curr[1], 0);
+        const topProduct = products[0];
+        const lowProduct = products[products.length - 1];
+        const topConcentration = ((topProduct[1] / totalQty) * 100).toFixed(1);
+
+        let insight = `<strong>Summary:</strong> Total moved: <b>${totalQty}</b> units. <br>`;
+        insight += `<span class='badge badge-soft-success px-2 mr-1'>STAR</span> <b>${topProduct[0]}</b> (${topConcentration}% of volume). `;
+
+        if (products.length > 1 && topProduct[0] !== lowProduct[0]) {
+            insight += `<span class='badge badge-soft-danger px-2 mr-1'>LOW</span> <b>${lowProduct[0]}</b> (${lowProduct[1]} units).`;
+        }
+
+        analyst.innerHTML = insight;
+    }
+
+    $('#pname, #jsDateFrom, #jsDateTo').on('input change', applyAllFilters);
+    $(document).ready(applyAllFilters);
+
+    function returnModal(id, qty, name) {
+        $("#returnsModal").modal("show");
+        $("#item_id").text(id);
+        $("#item_qty").val(qty);
+        $("#item_name").val(name);
+    }
+
+    $("#returnBtn").click(function() {
+        $.post("{% url 'firstapp-salesreturn' %}", {
+            id: $("#item_id").text(),
+            name: $("#item_name").val(),
+            qty: $("#item_qty").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }, function(data) {
+            location.reload();
         });
     });
 
-// handle post requests
-$(document).ready(function(){
-
-$("#filtForm").click(function(){
-
-     $.ajax({
-       type: "POST",
-       url: "{% url 'firstapp-salespost' %}",
-       data:{
-         date1: $("#date1").val(),
-         date2: $("#date2").val(),
-         csrfmiddlewaretoken:'{{ csrf_token }}'
-
-       },
-       beforeSend:function(){
-
-            $("#spinners").show()
-       },
-       complete:function(){
-           $("#spinners").hide()
-       },
-       success:function(data,status){
-          var info = JSON.parse(data)
-          $("#sales").html('')
-          for( var key in info){
-            $("#sales").prepend(
-
-            `
-            <tr>
-                  <td>${info[key]["fields"]["s_serial"]}</td>
-           
-                    <td>${info[key]["fields"]["s_name"]}</td>
-                    <td>${info[key]["fields"]["s_shop"]}</td>
-                    <td>${info[key]["fields"]["s_cost"]}</td>
-                    <td>${info[key]["fields"]["s_price"]}</td>
-                    <td>${info[key]["fields"]["s_profit"]}</td>
-                    <td>
-              <span style="background-color:red" class="badge badge-success rounded-pill d-inline">sold</span>
-            </td>
-                    <td>${info[key]["fields"]["s_created"]}</td>
-                    
-                    
-                   
-                   <td>
-              <a href="">
-              <button type="button" class="btn btn-link btn-sm btn-rounded">
-                <i class="fa fa-undo">return</i>
-              </button>
-              </a>
-              </td>
-              <td>${info[key]["fields"]["s_creator"]}</td>
-                  </tr>
-
-            `
-
-
-            )
-            //alert(info[key]["fields"]["p_serial"])
-          }
-       }
-
-
-
-     })
-})
-
-
-})
-
-    function download_csv(csv, filename) {
-    var csvFile;
-    var downloadLink;
-
-    // CSV FILE
-    csvFile = new Blob([csv], {type: "text/csv"});
-
-    // Download link
-    downloadLink = document.createElement("a");
-
-    // File name
-    downloadLink.download = filename;
-
-    // We have to create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-
-    // Make sure that the link is not displayed
-    downloadLink.style.display = "none";
-
-    // Add the link to your DOM
-    document.body.appendChild(downloadLink);
-
-    // Lanzamos
-    downloadLink.click();
-}
-
-// html table converted to csv format
-
-function export_table_to_csv(html, filename) {
-	var csv = [];
-	var rows = document.querySelectorAll("table tr");
-	
-    for (var i = 0; i < rows.length; i++) {
-		var row = [], cols = rows[i].querySelectorAll("td, th");
-		
-        for (var j = 0; j < cols.length; j++) 
-            row.push(cols[j].innerText);
-        
-		csv.push(row.join(","));		
-	}
-
-    // Download CSV
-    download_csv(csv.join("\n"), filename);
-}
-
-document.getElementById("downTab").addEventListener("click", function () {
-    var html = document.querySelector("table").outerHTML;
-    var now = new Date().toLocaleDateString()
-    var fileName = 'sales' + now
-	export_table_to_csv(html, fileName);
-});
-
-// modal button triggered
-
-function returnModal(id,qty,name){     
-        $(document).ready(function() {
-                $("#returnsModal").modal("show");
-                                    
-                });
-
-                    document.getElementById("item_id").innerHTML=id
-                    document.getElementById("item_qty").value=qty
-                    document.getElementById("item_name").value=name
-                    
-                               
-            }
-
-// pass item info to be passed 
-
-$(document).ready(function(){
-
-  $("#returnBtn").click(function(){
-
-      $.ajax({
-        type:"post",
-        url:"{% url 'firstapp-salesreturn' %}",
-        data:{
-
-                id:$("#item_id").text(),
-                name:$("#item_name").val(),
-                qty:$("#item_qty").val(),
-                csrfmiddlewaretoken:'{{ csrf_token }}'
-
-        },
-        beforeSend:function(){
-
-          $("#spinner-return").show()
-        },
-        complete: function(){
-        
-          $("#spinner-return").hide()
-        },
-        success:function(data,status){
-
-          if(data["success"]){
-
-             alert(data["success"])
-          }else{
-
-            data["error"]
-          }
-
-
+    document.getElementById("downTab").addEventListener("click", function () {
+        var csv = [];
+        var rows = document.querySelectorAll("#salesTable tr:not([style*='display: none'])");
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText.replace(/,/g, ""));
+            csv.push(row.join(","));
         }
-      })
-  })
-  
-})
-
-// columns summations
-
-function summary(){
-
-  var qtySum = 0;
-  var revSum = 0;
-  var profSum = 0;
-  $("#sales tr").each(function(){
-              qtySum += parseFloat($(this).find("td:eq(3)").text());
-              revSum += parseFloat($(this).find("td:eq(5)").text());
-              profSum += parseFloat($(this).find("td:eq(6)").text());
-          });
-    $("#qtysums").val(qtySum)
-    $("#revenues").val(revSum)
-    $("#profits").val(profSum)
-}
-
-summary()
-
-function showReceiptModal(){
-  $("#receiptsModal").modal("show")
-}
-
-
-
+        var blob = new Blob([csv.join("\n")], {type: "text/csv"});
+        var link = document.createElement("a");
+        link.download = "Sales_Report.csv";
+        link.href = window.URL.createObjectURL(blob);
+        link.click();
+    });
 </script>
-      
-
-    {% endblock mainContent %}
+{% endblock %}

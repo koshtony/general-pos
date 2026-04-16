@@ -324,47 +324,32 @@ def del_cart_item(request,id):
     
     return render(request,'firstapp/cart.html',contxt)
 
-# search items by scanning 
-@csrf_exempt
+# search items by scanning @csrf_exempt
 def search_by_scan(request):
-    
-    serial = request.POST.get("serial")
-    stocks = Stocks.objects.filter(p_serial = serial)
-    
-    contxt = {"stocks":stocks}
-    
-    return render(request,'firstapp/filter_stocks.html',contxt)
-    
+
+    serial = request.GET.get("serial")
+    stocks = Stocks.objects.filter(p_serial=serial)
+
+    return render(request, 'firstapp/filter_stocks.html', {"products": stocks})
 
 @csrf_exempt
 def search_by_name(request):
-    
-    name = request.POST.get("name")
-    stocks = Stocks.objects.filter(p_name__contains = name)
-    
-    contxt = {"stocks":stocks}
-    
-    return render(request,'firstapp/filter_stocks.html',contxt)
-    
+    name = request.GET.get("name", "")
+
+    stocks = Stocks.objects.filter(p_name__icontains=name)
+    return render(request, 'firstapp/filter_stocks.html', {"products": stocks})
+
 @csrf_exempt
 def search_by_category(request):
-    
-    category = request.POST.get("category")
-    stocks = Stocks.objects.filter(p_category__contains = category)
-    
-    contxt = {"stocks":stocks}
-    
-    return render(request,'firstapp/filter_stocks.html',contxt)
+    category = request.GET.get("category", "")
+    stocks = Stocks.objects.filter(p_category__icontains=category)
+    return render(request, 'firstapp/filter_stocks.html', {"products": stocks})
 
 @csrf_exempt
 def search_by_desc(request):
-    
-    desc = request.POST.get("desc")
-    stocks = Stocks.objects.filter(p_desc__contains = desc)
-    
-    contxt = {"stocks":stocks}
-    
-    return render(request,'firstapp/filter_stocks.html',contxt)
+    desc = request.GET.get("desc", "")
+    stocks = Stocks.objects.filter(p_desc__icontains=desc)
+    return render(request, 'firstapp/filter_stocks.html', {"products": stocks})
 
 def print_cart_receipt(request):
     

@@ -1,37 +1,160 @@
 {% extends 'firstapp/base.html' %}
-{% load  crispy_forms_tags %}
+{% load crispy_forms_tags %}
+
 {% block mainContent %}
-<div class="container rounded bg-white mt-5 mb-5">
+<div class="container-fluid fade-in py-4">
+    
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h2 class="font-weight-bold h4 mb-1">Account Settings</h2>
+        <p class="text-muted small">Manage your personal information and profile preferences.</p>
+    </div>
+
     <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="{{user.profile.image.url}}"><span class="font-weight-bold">{{user.username}}</span><span class="text-black-50">{{user.email}}</span><span> </span></div>
-        </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Profile Settings</h4>
+        <!-- 1. Profile Summary Card (Top on Mobile, Sidebar on Desktop) -->
+        <div class="col-12 col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                <div class="position-relative d-inline-block mx-auto mb-3">
+                    <img class="rounded-circle border shadow-sm" 
+                         width="140px" height="140px" 
+                         src="{{user.profile.image.url}}" 
+                         style="object-fit: cover; border-width: 4px !important;">
+                    <div class="status-indicator bg-success border border-white rounded-circle" 
+                         style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: 10px;"></div>
                 </div>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                <div class="row mt-3">
-                    <div class="col-md-12">{{user_form | crispy }}</div>
-                    <div class="col-md-12">{{profile_form | crispy }}</div>
-                   
+                
+                <h4 class="font-weight-bold mb-0">{{user.username}}</h4>
+                <p class="text-muted small mb-3">{{user.email}}</p>
+                
+                <div class="d-flex justify-content-center border-top pt-3 mt-2">
+                    <div class="px-3 border-right">
+                        <small class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 0.65rem;">Role</small>
+                        <span class="badge {% if user.is_superuser %}badge-primary{% else %}badge-secondary{% endif %} px-3">
+                            {% if user.is_superuser %}Administrator{% else %}Staff{% endif %}
+                        </span>
+                    </div>
+                    <div class="px-3">
+                        <small class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 0.65rem;">Status</small>
+                        <span class="text-success small font-weight-bold">Active</span>
+                    </div>
                 </div>
-               
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
-                </form>
+            </div>
+
+            <!-- Quick Account Actions (Extra Details) -->
+            <div class="card border-0 shadow-sm mt-4 p-4 d-none d-lg-block">
+                <h6 class="font-weight-bold mb-3">System Information</h6>
+                <ul class="list-unstyled small mb-0">
+                    <li class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Last Login:</span>
+                        <span class="font-weight-bold">{{ user.last_login|date:"d M, H:i" }}</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span class="text-muted">Member Since:</span>
+                        <span class="font-weight-bold">{{ user.date_joined|date:"M Y" }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience"><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Additionals</span></div><br>
-                <div class="col-md-12"><label class="labels">Experience</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
-                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div>
+
+        <!-- 2. Edit Profile Form -->
+        <div class="col-12 col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm p-4 p-md-5">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="icon-box bg-soft-primary mr-3">
+                        <i class="fas fa-user-edit text-primary"></i>
+                    </div>
+                    <h5 class="font-weight-bold mb-0">Update Information</h5>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="modern-form">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <!-- User Fields -->
+                        <div class="col-12 mb-3">
+                            <h6 class="text-primary font-weight-bold small text-uppercase mb-3" style="letter-spacing: 1px;">Base Account</h6>
+                            {{ user_form|crispy }}
+                        </div>
+                        
+                        <!-- Profile Fields -->
+                        <div class="col-12 mb-3 mt-2">
+                            <h6 class="text-primary font-weight-bold small text-uppercase mb-3" style="letter-spacing: 1px;">Display Preferences</h6>
+                            {{ profile_form|crispy }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 border-top pt-4 text-right">
+                        <button class="btn btn-primary px-5 py-2 font-weight-bold shadow-sm rounded-pill" type="submit">
+                            <i class="fas fa-check-circle mr-2"></i> Save All Changes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
+
+<style>
+    /* Modern UI Components */
+    .icon-box {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(59, 130, 246, 0.1);
+    }
+
+    /* Form Styling Overrides for Crispy */
+    .modern-form .form-group label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-main);
+        opacity: 0.8;
+    }
+
+    .modern-form .form-control {
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+        border: 1px solid var(--border-color);
+        background-color: rgba(128, 128, 128, 0.05);
+        transition: all 0.2s;
+    }
+
+    .modern-form .form-control:focus {
+        background-color: var(--card-bg);
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Mobile Enhancements */
+    @media (max-width: 767px) {
+        .card { padding: 20px !important; }
+        .profile-button { width: 100%; }
+        
+        /* Ensure the form doesn't horizontally scroll */
+        .modern-form .row { margin-left: -5px; margin-right: -5px; }
+        .modern-form .col-12 { padding-left: 5px; padding-right: 5px; }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    // Automatically apply a professional class to all Crispy inputs for better styling
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll('.modern-form input, .modern-form textarea, .modern-form select');
+        inputs.forEach(input => {
+            input.classList.add('shadow-none');
+        });
+    });
+</script>
 {% endblock mainContent %}

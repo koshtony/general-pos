@@ -42,6 +42,10 @@
     }
 }
 
+.admin-interface {
+    overflow-x: hidden;
+}
+
 .admin-interface #header {
     background: var(--admin-interface-header-background-color);
     color: var(--admin-interface-header-text-color);
@@ -131,14 +135,28 @@
     max-height: var(--admin-interface-logo-max-height);
 }
 
-.admin-interface #header #user-tools a {
+.admin-interface #header #user-tools a,
+.admin-interface #header #user-tools #logout-form button {
     color: var(--admin-interface-header-link-color);
 }
 
 .admin-interface #header #user-tools a:hover,
-.admin-interface #header #user-tools a:active {
+.admin-interface #header #user-tools a:active,
+.admin-interface #header #user-tools #logout-form button:hover,
+.admin-interface #header #user-tools #logout-form button:active {
     color: var(--admin-interface-header-link-hover-color);
     border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-interface #header #user-tools button.theme-toggle svg {
+    color: transparent;
+    fill: var(--admin-interface-header-link-color);
+}
+
+.admin-interface #header #user-tools button.theme-toggle:hover svg,
+.admin-interface #header #user-tools button.theme-toggle:active svg {
+    color: transparent;
+    fill: var(--admin-interface-header-link-hover-color);
 }
 
 .admin-interface #nav-sidebar .current-app .section:link,
@@ -192,21 +210,21 @@
     color: var(--admin-interface-module-link-hover-color);
 }
 
-.admin-interface fieldset.collapse.collapsed a.collapse-toggle {
-    color: var(--admin-interface-module-link-color);
-}
-
-.admin-interface fieldset.collapse.collapsed a.collapse-toggle:hover,
-.admin-interface fieldset.collapse.collapsed a.collapse-toggle:active {
-    color: var(--admin-interface-module-link-hover-color);
-}
-
-.admin-interface fieldset.collapse a.collapse-toggle {
+.admin-interface fieldset.collapse a.collapse-toggle,
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle,
+.admin-interface .inline-group .inline-related fieldset.module a.collapse-toggle,
+.admin-interface .inline-group .inline-related fieldset.module.collapsed a.collapse-toggle {
     color: var(--admin-interface-module-link-color);
 }
 
 .admin-interface fieldset.collapse a.collapse-toggle:hover,
-.admin-interface fieldset.collapse a.collapse-toggle:active {
+.admin-interface fieldset.collapse a.collapse-toggle:active,
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle:hover,
+.admin-interface fieldset.collapse.collapsed a.collapse-toggle:active,
+.admin-interface .inline-group .inline-related fieldset.module a.collapse-toggle:hover,
+.admin-interface .inline-group .inline-related fieldset.module a.collapse-toggle:active,
+.admin-interface .inline-group .inline-related fieldset.module.collapsed a.collapse-toggle:hover,
+.admin-interface .inline-group .inline-related fieldset.module.collapsed a.collapse-toggle:active {
     color: var(--admin-interface-module-link-hover-color);
 }
 
@@ -233,6 +251,21 @@
 .admin-interface .selector a.selector-clearall:hover {
     color: var(--admin-interface-generic-link-hover-color);
 }
+
+/* fix #393  */
+.admin-interface .selector-chosen .list-footer-display {
+    background: var(--admin-interface-module-background-color);
+}
+.admin-interface .selector-chosen .list-footer-display {
+    color: var(--admin-interface-module-text-color);
+}
+.admin-interface .selector-chosen .list-footer-display__clear {
+    color: var(--admin-interface-module-link-color);
+}
+.admin-interface .selector-chosen .list-footer-display__clear:hover {
+    color: var(--admin-interface-module-link-hover-color);
+}
+/* endfix */
 
 .admin-interface a:link,
 .admin-interface a:visited {
