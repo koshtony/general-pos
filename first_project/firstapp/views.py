@@ -183,8 +183,10 @@ def simple_counter(request):
     carts = Cart.objects.filter(user = request.user).order_by('-pk')
     
     initial_subtotal = sum([cart.initial_price for cart in carts])
-    sub_total = sum([0 if cart.cart_stock == None else (cart.price * cart.qty) for cart in carts])
-    vat = sum([0 if cart.cart_stock==None else cart.cart_stock.p_vat*(cart.price * cart.qty) for cart in carts])
+    
+    sub_total = sum([cart.price for cart in carts])
+    
+    vat = sum([cart.cart_stock.p_vat*cart.price for cart in carts])
     
     discount = initial_subtotal - sub_total
     
